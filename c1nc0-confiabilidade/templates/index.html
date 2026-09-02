@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        C1NC0 - Painel de Indícios
+    </title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #243043;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #153b68;
+        }
+
+        .descricao {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        form {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        button {
+            padding: 14px 24px;
+            background-color: #153b68;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+
+            box-shadow:
+                0 2px 8px
+                rgba(0, 0, 0, 0.08);
+        }
+
+        .score {
+            font-size: 44px;
+            font-weight: bold;
+            color: #153b68;
+        }
+
+        .indicio {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .aviso {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff6d8;
+            border-left: 5px solid #d5a000;
+        }
+
+        .erro {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ffeaea;
+            border-left: 5px solid #c33;
+        }
+
+        @media(max-width: 600px) {
+
+            form {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>
+        C1NC0 — Painel de Indícios
+    </h1>
+
+    <p class="descricao">
+
+        Protótipo experimental para analisar
+        indícios observáveis relacionados à
+        <strong>transparência e procedência</strong>
+        de uma notícia.
+
+    </p>
+
+
+    <form method="POST">
+
+        <input
+            type="url"
+            name="url"
+            placeholder="Cole aqui a URL da notícia"
+            value="{{ url or '' }}"
+            required
+        >
+
+        <button type="submit">
+            Analisar
+        </button>
+
+    </form>
+
+
+    {% if resultado %}
+
+
+        {% if resultado.dados.status == "OK" %}
+
+            <div class="card">
+
+                <h2>
+                    Resultado
+                </h2>
+
+                <div class="score">
+
+                    {{ resultado.analise.score }}
+
+                    /100
+
+                </div>
+
+                <h3>
+
+                    {{ resultado.analise.faixa }}
+
+                </h3>
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Painel de indícios
+                </h2>
+
+
+                {% for indicio in resultado.analise.indicios %}
+
+                    <div class="indicio">
+
+                        <strong>
+
+                            {% if indicio.ok %}
+
+                                ✓
+
+                            {% else %}
+
+                                ○
+
+                            {% endif %}
+
+                            {{ indicio.nome }}
+
+                        </strong>
+
+                        <br>
+
+                        {{ indicio.texto }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="card">
+
+                <h2>
+                    Dados coletados
+                </h2>
+
+                <p>
+
+                    <strong>Domínio:</strong>
+
+                    {{ resultado.dados.dominio }}
+
+                </p>
+
+                <p>
+
+                    <strong>Status HTTP:</strong>
+
+                    {{ resultado.dados.http_status }}
+
+                </p>
+
+                <p>
+
+                    <strong>Autor:</strong>
+
+                    {{ resultado.dados.autor or "Não encontrado" }}
+
+                </p>
+
+                <p>
+
+                    <strong>Data:</strong>
+
+                    {{ resultado.dados.data or "Não encontrada" }}
+
+                </p>
+
+                <p>
+
+                    <strong>H1:</strong>
+
+                    {{ resultado.dados.titulo_h1 or "Não encontrado" }}
+
+                </p>
+
+                <p>
+
+                    <strong>og:title:</strong>
+
+                    {{ resultado.dados.titulo_og or "Não encontrado" }}
+
+                </p>
+
+                <p>
+
+                    <strong>Canonical:</strong>
+
+                    {{ resultado.dados.canonical or "Não encontrada" }}
+
+                </p>
+
+                <p>
+
+                    <strong>Links externos:</strong>
+
+                    {{ resultado.dados.qtd_links_externos }}
+
+                </p>
+
+                <p>
+
+                    <strong>JSON-LD:</strong>
+
+                    {% if resultado.dados.json_ld %}
+
+                        Encontrado
+
+                    {% else %}
+
+                        Não encontrado
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+
+            {% if resultado.dados.imagem %}
+
+                <div class="card">
+
+                    <h2>
+                        Imagem identificada
+                    </h2>
+
+                    <img
+                        src="{{ resultado.dados.imagem }}"
+                        alt="Imagem da notícia"
+                        style="
+                            max-width: 100%;
+                            border-radius: 8px;
+                        "
+                    >
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="aviso">
+
+                <strong>
+                    Atenção:
+                </strong>
+
+                {{ resultado.analise.explicacao }}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="erro">
+
+                <h2>
+                    Coleta não concluída
+                </h2>
+
+                <p>
+
+                    <strong>Status:</strong>
+
+                    {{ resultado.dados.status }}
+
+                </p>
+
+
+                {% if resultado.dados.http_status %}
+
+                    <p>
+
+                        <strong>HTTP:</strong>
+
+                        {{ resultado.dados.http_status }}
+
+                    </p>
+
+                {% endif %}
+
+
+                {% if resultado.dados.erro %}
+
+                    <p>
+
+                        <strong>Detalhe:</strong>
+
+                        {{ resultado.dados.erro }}
+
+                    </p>
+
+                {% endif %}
+
+
+                <p>
+
+                    Uma falha na coleta
+                    <strong>
+                        não significa baixa confiabilidade
+                    </strong>
+                    da notícia.
+
+                </p>
+
+            </div>
+
+        {% endif %}
+
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>
