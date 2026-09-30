@@ -1,16 +1,852 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C1NC0 — Painel de Indícios</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f5f7fa;color:#243043;margin:0}.container{max-width:980px;margin:36px auto;padding:20px}h1,h2{color:#153b68}.descricao{line-height:1.55;color:#4f5b6a}form{display:flex;gap:10px;margin:28px 0}input{flex:1;padding:14px;border:1px solid #ccd3dd;border-radius:8px;font-size:16px}button{padding:14px 24px;border:0;border-radius:8px;background:#153b68;color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;padding:20px;margin-top:18px;border-radius:12px;box-shadow:0 2px 10px #00000012}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.bar{height:16px;background:#e9edf2;border-radius:10px;overflow:hidden}.fill{height:100%;background:#153b68}.indicio{padding:12px 0;border-bottom:1px solid #eee}.tag{display:inline-block;padding:4px 8px;border-radius:12px;background:#edf2f8;font-size:12px}.aviso{padding:15px;background:#fff6d8;border-left:5px solid #d5a000;margin-top:18px}.erro{padding:15px;background:#ffeaea;border-left:5px solid #c33;margin-top:18px}.feature{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:9px 0;border-bottom:1px solid #eee}.small{font-size:13px;color:#657184}.questions li{margin:9px 0}@media(max-width:650px){form,.grid{display:block}button{width:100%;margin-top:10px}.feature{grid-template-columns:1fr}.container{margin:10px auto}}
-</style></head><body><div class="container">
-<h1>C1NC0 — Painel de Indícios</h1><p class="descricao">Protótipo experimental para apoiar a avaliação da confiabilidade por meio de <strong>evidências observáveis, transparência, procedência e leitura crítica</strong>. A ferramenta não determina se uma notícia é verdadeira ou falsa.</p>
-<form method="post"><input type="url" name="url" placeholder="Cole aqui a URL da notícia" value="{{url or ''}}" required><button>Analisar</button></form>
-{% if resultado %}{% if resultado.dados.status == 'OK' %}
-<div class="card"><h2>Notícia analisada</h2><p><strong>{{resultado.dados.titulo or 'Título não identificado'}}</strong></p><p class="small">{{resultado.dados.dominio}} · Autor: {{resultado.dados.autor or 'não identificado'}} · Data: {{resultado.dados.data or 'não identificada'}} · {{resultado.dados.texto|length}} caracteres extraídos</p></div>
-{% if resultado.ml and resultado.ml.disponivel %}
-<div class="card"><h2>Distribuição relativa das evidências</h2><div class="grid"><div><strong>Mais próximas do padrão TRUE do dataset</strong><p>{{resultado.ml.percentual_true}}% ({{resultado.ml.true_like}} features)</p><div class="bar"><div class="fill" style="width:{{resultado.ml.percentual_true}}%"></div></div></div><div><strong>Mais próximas do padrão FAKE do dataset</strong><p>{{resultado.ml.percentual_fake}}% ({{resultado.ml.fake_like}} features)</p><div class="bar"><div class="fill" style="width:{{resultado.ml.percentual_fake}}%"></div></div></div></div><div class="aviso"><strong>Como interpretar:</strong> estes percentuais representam a proporção de features que apresentam maior verossimilhança relativa para cada classe do dataset. <strong>Não são predict_proba(), não são probabilidade calibrada de veracidade e não constituem veredito.</strong></div></div>
-<div class="card"><h2>19 features e evidências experimentais</h2>{% for f in resultado.ml.evidencias %}<div class="feature"><span><strong>{{f.nome}}</strong>{% if f.foi_imputada %} <span class="tag">imputada</span>{% endif %}</span><span>{{f.valor_formatado}}</span><span>{{f.classe_evidencia}} ({{'%+.2f'|format(f.evidencia)}})</span></div>{% endfor %}</div>
-{% elif resultado.ml %}<div class="aviso"><strong>Análise ML indisponível:</strong> {{resultado.ml.erro}}</div>{% endif %}
-<div class="card"><h2>Painel de indícios observáveis</h2>{% for i in resultado.indicios %}<div class="indicio"><strong>{{'✓' if i.ok else '○'}} {{i.nome}}</strong><br>{{i.texto}}</div>{% endfor %}</div>
-<div class="card"><h2>Leitura crítica: próximos passos para o usuário</h2><ul class="questions"><li>O autor e a publicação original estão claramente identificados?</li><li>Outras fontes independentes relatam o mesmo fato?</li><li>A data é compatível com o contexto da publicação?</li><li>Os links apresentados realmente sustentam as afirmações?</li><li>É possível localizar a fonte primária da informação, imagem ou dado citado?</li><li>O título representa adequadamente o conteúdo da matéria?</li></ul><p class="small">O objetivo do painel é apoiar — e não substituir — julgamento humano e consulta a fontes independentes.</p></div>
-{% else %}<div class="erro"><h2>Coleta não concluída</h2><p><strong>Status:</strong> {{resultado.dados.status}}</p>{% if resultado.dados.http_status %}<p><strong>HTTP:</strong> {{resultado.dados.http_status}}</p>{% endif %}{% if resultado.dados.erro %}<p>{{resultado.dados.erro}}</p>{% endif %}<p>Uma falha na coleta <strong>não significa baixa confiabilidade</strong> da notícia.</p></div>{% endif %}{% endif %}
-</div></body></html>
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1"
+    >
+
+    <title>
+        C1NC0 — Painel de Pensamento Crítico
+    </title>
+
+    <style>
+        :root {
+            --azul: #153b68;
+            --azul-secundario: #285d91;
+            --fundo: #f5f7fa;
+            --texto: #243043;
+            --muted: #657184;
+            --borda: #dfe5ec;
+            --claro: #edf2f8;
+            --amarelo: #fff6d8;
+            --verde-claro: #edf8f1;
+            --verde: #43805a;
+            --laranja: #b07828;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--fundo);
+            color: var(--texto);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1080px;
+            margin: 34px auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--azul);
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .descricao {
+            line-height: 1.6;
+            color: #4f5b6a;
+            max-width: 900px;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+            margin: 28px 0;
+        }
+
+        input[type="url"] {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid #ccd3dd;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--azul);
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .card {
+            background: #fff;
+            padding: 22px;
+            margin-top: 18px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px #00000012;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .observamos {
+            border-top: 5px solid var(--verde);
+        }
+
+        .nao-sabemos {
+            border-top: 5px solid var(--laranja);
+        }
+
+        .section-kicker {
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--muted);
+        }
+
+        .indicio,
+        .limite {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            line-height: 1.45;
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .flow {
+            text-align: center;
+            color: var(--azul);
+            font-weight: 700;
+            padding: 14px 8px 0;
+        }
+
+        .checklist {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .check {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 12px;
+            padding: 14px;
+            border: 1px solid var(--borda);
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .check input {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+        }
+
+        .check strong {
+            color: var(--azul);
+        }
+
+        .check p {
+            margin: 5px 0 0;
+            line-height: 1.5;
+        }
+
+        .human {
+            background: var(--verde-claro);
+            border-left: 5px solid var(--verde);
+        }
+
+        .avaliacao label {
+            display: block;
+            padding: 11px 0;
+            border-bottom: 1px solid #e6ece8;
+            line-height: 1.4;
+            cursor: pointer;
+        }
+
+        .avaliacao input {
+            margin-right: 8px;
+        }
+
+        details {
+            margin-top: 18px;
+            background: #fff;
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 0 20px 20px;
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 18px 0;
+            font-weight: 700;
+            color: var(--azul);
+        }
+
+        .badge-exp {
+            display: inline-block;
+            background: #f1e9ff;
+            color: #604080;
+            padding: 4px 9px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .bar {
+            height: 14px;
+            background: #e9edf2;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .fill {
+            height: 100%;
+            background: var(--azul-secundario);
+        }
+
+        .feature {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 8px;
+            padding: 9px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            background: var(--claro);
+            font-size: 12px;
+        }
+
+        .aviso {
+            padding: 15px;
+            background: var(--amarelo);
+            border-left: 5px solid #d5a000;
+            margin-top: 18px;
+            line-height: 1.5;
+        }
+
+        .erro {
+            padding: 15px;
+            background: #ffeaea;
+            border-left: 5px solid #c33;
+            margin-top: 18px;
+        }
+
+        @media (max-width: 700px) {
+            form,
+            .grid {
+                display: block;
+            }
+
+            button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .feature {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 10px auto;
+            }
+
+            .nao-sabemos {
+                margin-top: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        C1NC0 — Painel de Pensamento Crítico
+    </h1>
+
+    <p class="descricao">
+        Ferramenta experimental de apoio à avaliação de
+        confiabilidade. O C1NC0 organiza
+        <strong>o que foi possível observar</strong>,
+        explicita
+        <strong>o que a análise não permite saber</strong>
+        e orienta uma
+        <strong>leitura lateral</strong>.
+        A decisão final permanece com a pessoa que está
+        avaliando o conteúdo.
+    </p>
+
+    <form method="post">
+
+        <input
+            type="url"
+            name="url"
+            placeholder="Cole aqui a URL da notícia"
+            value="{{ url or '' }}"
+            required
+        >
+
+        <button type="submit">
+            Analisar
+        </button>
+
+    </form>
+
+
+    {% if resultado %}
+
+        {% if resultado.dados.status == 'OK' %}
+
+
+            <!-- ==================================================
+                 NOTÍCIA ANALISADA
+                 ================================================== -->
+
+            <div class="card">
+
+                <span class="section-kicker">
+                    Conteúdo analisado
+                </span>
+
+                <h2>
+                    Notícia analisada
+                </h2>
+
+                <p>
+                    <strong>
+                        {{
+                            resultado.dados.titulo
+                            or 'Título não identificado'
+                        }}
+                    </strong>
+                </p>
+
+                <p class="small">
+
+                    {{ resultado.dados.dominio }}
+
+                    · Autor:
+                    {{
+                        resultado.dados.autor
+                        or 'não identificado'
+                    }}
+
+                    · Data:
+                    {{
+                        resultado.dados.data
+                        or 'não identificada'
+                    }}
+
+                    ·
+                    {{ resultado.dados.texto|length }}
+                    caracteres extraídos
+
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 OBSERVAMOS × NÃO SABEMOS
+                 ================================================== -->
+
+            <div class="grid">
+
+                <div class="card observamos">
+
+                    <span class="section-kicker">
+                        Evidências disponíveis
+                    </span>
+
+                    <h2>
+                        O que observamos
+                    </h2>
+
+                    <p class="small">
+                        Elementos que a aplicação conseguiu
+                        localizar ou calcular na página analisada.
+                    </p>
+
+                    {% for i in resultado.indicios %}
+
+                        <div class="indicio">
+
+                            <strong>
+                                {{ '✓' if i.ok else '○' }}
+                                {{ i.nome }}
+                            </strong>
+
+                            <br>
+
+                            {{ i.texto }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="card nao-sabemos">
+
+                    <span class="section-kicker">
+                        Limites da análise
+                    </span>
+
+                    <h2>
+                        O que NÃO sabemos
+                    </h2>
+
+                    <p class="small">
+                        Estes pontos não podem ser concluídos
+                        automaticamente a partir da análise
+                        desta página.
+                    </p>
+
+                    {% for i in resultado.limites %}
+
+                        <div class="limite">
+
+                            <strong>
+                                ? {{ i.nome }}
+                            </strong>
+
+                            <br>
+
+                            {{ i.texto }}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <div class="flow">
+                O que observamos + o que não sabemos
+                ↓
+            </div>
+
+
+            <!-- ==================================================
+                 LEITURA LATERAL
+                 ================================================== -->
+
+            <div class="card">
+
+                <span class="section-kicker">
+                    Próxima etapa
+                </span>
+
+                <h2>
+                    O que checar?
+                </h2>
+
+                <p class="descricao">
+
+                    <strong>
+                        Faça leitura lateral:
+                    </strong>
+
+                    não permaneça apenas nesta página.
+
+                    Abra novas abas, procure a origem das
+                    informações e compare fontes independentes.
+
+                </p>
+
+
+                <div class="checklist">
+
+                    {% for c in resultado.checagens %}
+
+                        <label class="check">
+
+                            <input
+                                type="checkbox"
+                                class="check-item"
+                            >
+
+                            <span>
+
+                                <strong>
+                                    {{ loop.index }}.
+                                    {{ c.titulo }}
+                                </strong>
+
+                                <p>
+                                    {{ c.texto }}
+                                </p>
+
+                            </span>
+
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <p class="small">
+                    As marcações são um roteiro visual para
+                    sua checagem e não alteram a análise do
+                    modelo.
+                </p>
+
+            </div>
+
+
+            <div class="flow">
+                Leitura lateral
+                →
+                fontes independentes
+                →
+            </div>
+
+
+            <!-- ==================================================
+                 JULGAMENTO HUMANO
+                 ================================================== -->
+
+            <div class="card human">
+
+                <span class="section-kicker">
+                    A decisão permanece humana
+                </span>
+
+                <h2>
+                    Sua avaliação neste momento
+                </h2>
+
+                <p>
+                    Depois de observar os indícios e realizar
+                    as verificações acima, como você avaliaria
+                    o próximo passo?
+                </p>
+
+
+                <div class="avaliacao">
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="avaliacao_usuario"
+                        >
+
+                        Tenho elementos suficientes para confiar,
+                        considerando as verificações que realizei.
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="avaliacao_usuario"
+                        >
+
+                        Ainda tenho dúvidas.
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="avaliacao_usuario"
+                        >
+
+                        Preciso verificar outras fontes.
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="avaliacao_usuario"
+                        >
+
+                        Encontrei evidências que contradizem
+                        o conteúdo.
+                    </label>
+
+                </div>
+
+
+                <p>
+                    <strong>
+                        O C1NC0 apoia sua análise;
+                        não substitui seu julgamento nem a
+                        verificação das afirmações.
+                    </strong>
+                </p>
+
+
+                <p class="small">
+                    Nesta V2, sua escolha não é enviada nem
+                    armazenada. Ela funciona apenas como uma
+                    etapa reflexiva do protótipo.
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CAMADA EXPERIMENTAL DE MACHINE LEARNING
+                 ================================================== -->
+
+            <details>
+
+                <summary>
+
+                    Análise experimental de Machine Learning
+
+                    <span class="badge-exp">
+                        Naive Bayes V1
+                    </span>
+
+                </summary>
+
+
+                {% if resultado.ml and resultado.ml.disponivel %}
+
+                    <h2>
+                        Distribuição relativa das evidências
+                    </h2>
+
+                    <p class="small">
+                        Esta seção pertence à camada experimental
+                        do projeto e não deve ser interpretada
+                        como um veredito sobre a notícia.
+                    </p>
+
+
+                    <div class="grid">
+
+                        <div>
+
+                            <strong>
+                                Mais próximas do padrão TRUE
+                                do dataset
+                            </strong>
+
+                            <p>
+                                {{ resultado.ml.percentual_true }}%
+                                (
+                                {{ resultado.ml.true_like }}
+                                features
+                                )
+                            </p>
+
+                            <div class="bar">
+
+                                <div
+                                    class="fill"
+                                    style="
+                                        width:
+                                        {{ resultado.ml.percentual_true }}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Mais próximas do padrão FAKE
+                                do dataset
+                            </strong>
+
+                            <p>
+                                {{ resultado.ml.percentual_fake }}%
+                                (
+                                {{ resultado.ml.fake_like }}
+                                features
+                                )
+                            </p>
+
+                            <div class="bar">
+
+                                <div
+                                    class="fill"
+                                    style="
+                                        width:
+                                        {{ resultado.ml.percentual_fake }}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="aviso">
+
+                        <strong>
+                            Como interpretar:
+                        </strong>
+
+                        estes percentuais representam a proporção
+                        de features que apresentam maior
+                        verossimilhança relativa para cada classe
+                        do dataset.
+
+                        <strong>
+                            Não são predict_proba(),
+                            não são probabilidade calibrada de
+                            veracidade e não constituem veredito.
+                        </strong>
+
+                    </div>
+
+
+                    <h3>
+                        19 features e evidências experimentais
+                    </h3>
+
+
+                    {% for f in resultado.ml.evidencias %}
+
+                        <div class="feature">
+
+                            <span>
+
+                                <strong>
+                                    {{ f.nome }}
+                                </strong>
+
+                                {% if f.foi_imputada %}
+
+                                    <span class="tag">
+                                        imputada
+                                    </span>
+
+                                {% endif %}
+
+                            </span>
+
+
+                            <span>
+                                {{ f.valor_formatado }}
+                            </span>
+
+
+                            <span>
+
+                                {{ f.classe_evidencia }}
+
+                                (
+                                {{
+                                    '%+.2f'
+                                    |format(f.evidencia)
+                                }}
+                                )
+
+                            </span>
+
+                        </div>
+
+                    {% endfor %}
+
+
+                {% elif resultado.ml %}
+
+                    <div class="aviso">
+
+                        <strong>
+                            Análise ML indisponível:
+                        </strong>
+
+                        {{ resultado.ml.erro }}
+
+                    </div>
+
+                {% endif %}
+
+            </details>
+
+
+        {% else %}
+
+
+            <!-- ==================================================
+                 ERRO DE COLETA
+                 ================================================== -->
+
+            <div class="erro">
+
+                <h2>
+                    Coleta não concluída
+                </h2>
+
+                <p>
+                    <strong>Status:</strong>
+                    {{ resultado.dados.status }}
+                </p>
+
+
+                {% if resultado.dados.http_status %}
+
+                    <p>
+                        <strong>HTTP:</strong>
+                        {{ resultado.dados.http_status }}
+                    </p>
+
+                {% endif %}
+
+
+                {% if resultado.dados.erro %}
+
+                    <p>
+                        {{ resultado.dados.erro }}
+                    </p>
+
+                {% endif %}
+
+
+                <p>
+                    Uma falha na coleta
+                    <strong>
+                        não significa baixa confiabilidade
+                    </strong>
+                    da notícia.
+                </p>
+
+            </div>
+
+
+        {% endif %}
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
