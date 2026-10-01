@@ -1,33 +1,29 @@
-# C1NC0 — Extensão Browser V1
+# C1NC0 — Extensão opcional do piloto
 
-Extensão Manifest V3 para Chrome/Edge que identifica localmente páginas com características jornalísticas e oferece acesso ao Painel C1NC0.
+A extensão **não é obrigatória** para usar o C1NC0. No celular, notebook ou computador,
+a pessoa pode copiar o link da notícia, abrir o C1NC0, colar a URL e selecionar **Analisar**.
 
-## Privacidade
+## Para que serve a extensão
 
-A detecção é feita no navegador. A URL da página não é enviada automaticamente ao C1NC0. Ela só é encaminhada quando o usuário clica em **Analisar com C1NC0** ou **Analisar página atual**.
+No Chrome/Edge de computador, ela agiliza o fluxo: identifica características jornalísticas
+na página e permite abrir a análise C1NC0 com a URL atual. A URL só é enviada quando a
+pessoa escolhe analisar.
 
-## Detecção V1
+## Instalação manual do MVP
 
-A heurística considera sinais como JSON-LD Article/NewsArticle, `og:type=article`, elemento `<article>`, data de publicação, autoria, H1 e volume de texto. A sugestão aparece quando a soma atinge o limiar configurado em `content.js`.
+1. Descompacte `c1nc0-extension-piloto-v1.zip`.
+2. Abra `chrome://extensions` ou `edge://extensions`.
+3. Ative **Modo do desenvolvedor**.
+4. Clique em **Carregar sem compactação**.
+5. Selecione a pasta `c1nc0-extension`.
+6. Recarregue qualquer aba do C1NC0 que já estava aberta.
 
-## Instalação local
+Versão: **1.0.2**.
 
-1. Abra `chrome://extensions` ou `edge://extensions`.
-2. Ative o modo do desenvolvedor.
-3. Escolha **Carregar sem compactação**.
-4. Selecione a pasta `c1nc0-extension`.
-5. Abra uma página jornalística para testar a sugestão automática.
-6. O ícone da extensão também permite analisar manualmente a página atual.
+## Detecção no site
 
-## Aplicação Web
+A versão 1.0.2 responde a `C1NC0_EXTENSION_PING` e também anuncia
+`C1NC0_EXTENSION_PONG` ao carregar. Isso reduz falhas de detecção por ordem de carregamento.
 
-A extensão está configurada para abrir:
-
-`https://residencia-ia-2r6h.vercel.app/`
-
-O backend aceita `url`, `analisar=1` e `origem=extensao` na query string.
-
-
-## Piloto/MVP
-
-Para a validação atual, recomenda-se notebook ou computador desktop com Chrome/Edge. A extensão v1.0.1 também permite que o site oficial detecte localmente que ela está instalada, ocultando etapas de instalação já concluídas. Dúvidas podem ser encaminhadas pelo botão **C1NC0 Ajuda**.
+Se o site não detectar uma extensão recém-instalada, recarregue a aba do C1NC0 e use
+**Verificar extensão**. Mesmo sem detecção, copiar e colar a URL continua funcionando.

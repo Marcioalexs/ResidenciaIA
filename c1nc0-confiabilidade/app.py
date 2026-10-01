@@ -5,7 +5,10 @@ from flask import Flask, jsonify, redirect, render_template, request, url_for
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
 from ml.model_service import analisar_com_modelos, modelos_disponiveis
-from services.laboratorio_service import diagnosticar_dataset
+from services.laboratorio_service import (
+    analisar_dataset,
+    executar_experimento,
+)
 from services.feedback_service import (
     registrar_analise,
     registrar_feedback,
@@ -14,6 +17,7 @@ from services.feedback_service import (
 
 
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 80 * 1024 * 1024  # 80 MB; dataset completo deve ser treinado localmente.
 
 
 def indicios_observaveis(dados):
@@ -350,24 +354,43 @@ def resultados_piloto_legacy():
     return redirect(url_for("resultados_piloto"), code=302)
 
 
+
 @app.route("/laboratorio", methods=["GET", "POST"])
 def laboratorio():
-    """Etapa B: diagnóstico de dataset e preparação de experimento."""
+    """Etapa B: diagnóstico e experimentação reproduzível com datasets CSV."""
     diagnostico = None
-    erro = None
+    experimento = None
+    erro_laboratorio = None
+
     if request.method == "POST":
-        upload = request.files.get("dataset")
-        if not upload or not upload.filename:
-            erro = "Selecione um arquivo CSV."
-        elif not upload.filename.lower().endswith(".csv"):
-            erro = "Nesta etapa, envie um arquivo CSV."
+        arquivo = request.files.get("dataset")
+        acao = (request.form.get("acao") or "diagnosticar").strip().lower()
+
+        if not arquivo or not arquivo.filename:
+            erro_laboratorio = "Selecione um arquivo CSV."
         else:
             try:
-                diagnostico = diagnosticar_dataset(upload)
+                conteudo = arquivo.read()
+                diagnostico = analisar_dataset(conteudo, arquivo.filename)
+
+                if acao == "treinar":
+                    experimento = executar_experimento(
+                        conteudo,
+                        arquivo.filename,
+                        modelo=(request.form.get("modelo") or "multinomial"),
+                        test_size=float(request.form.get("test_size") or 0.20),
+                        random_state=int(request.form.get("random_state") or 42),
+                    )
             except Exception as exc:
-                app.logger.exception("Falha ao diagnosticar dataset no Laboratório.")
-                erro = str(exc)
-    return render_template("laboratorio.html", diagnostico=diagnostico, erro=erro)
+                app.logger.exception("Falha no Laboratório C1NC0.")
+                erro_laboratorio = str(exc)
+
+    return render_template(
+        "laboratorio.html",
+        diagnostico=diagnostico,
+        experimento=experimento,
+        erro_laboratorio=erro_laboratorio,
+    )
 
 
 @app.get("/health")

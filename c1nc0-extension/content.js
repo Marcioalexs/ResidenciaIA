@@ -9,6 +9,13 @@
     window.postMessage({ type: "C1NC0_EXTENSION_PONG", version: chrome.runtime.getManifest().version }, "*");
   });
 
+  // Anuncia também de forma proativa. Isso evita a condição de corrida em que
+  // o site envia o PING antes de o content script terminar de carregar.
+  window.postMessage({
+    type: "C1NC0_EXTENSION_PONG",
+    version: chrome.runtime.getManifest().version
+  }, "*");
+
   function jsonLdTypes() {
     const types = [];
     document.querySelectorAll('script[type="application/ld+json"]').forEach((node) => {

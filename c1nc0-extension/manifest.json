@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "C1NC0 — Pensamento Crítico",
-  "version": "1.0.1",
-  "description": "Identifica páginas com características jornalísticas e oferece acesso ao Painel C1NC0.",
+  "version": "1.0.2",
+  "description": "Extensão opcional do C1NC0: identifica páginas jornalísticas e agiliza o envio da URL ao Painel de Pensamento Crítico.",
   "permissions": [
     "activeTab",
     "tabs"

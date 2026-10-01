@@ -17,8 +17,8 @@
 <div class="top-actions">
 <button type="button" class="secondary" id="open-pilot-guide">Como participar do piloto?</button>
 <a class="link-button" href="/resultados-piloto">Ver resultados do piloto</a>
-<a class="link-button" href="/laboratorio">Etapa B — Laboratório de Modelos</a>
-<a class="link-button extension-install" href="/static/downloads/c1nc0-extension-piloto-v1.zip" download>Baixar extensão</a>
+<a class="link-button extension-install" href="/static/downloads/c1nc0-extension-piloto-v1.zip" download>Extensão opcional</a>
+<a class="link-button" href="/laboratorio">Etapa B — Laboratório</a>
 <a class="link-button" href="https://wa.me/5519992360856?text=Ol%C3%A1%21%20Estou%20participando%20do%20piloto%20do%20C1NC0%20e%20preciso%20de%20ajuda." target="_blank" rel="noopener">C1NC0 Ajuda</a>
 </div>
 
@@ -138,20 +138,22 @@
 <h2 id="pilot-title">Bem-vindo ao piloto C1NC0</h2>
 <p class="descricao">Este piloto avalia se o C1NC0 ajuda pessoas a examinar notícias com mais cuidado. A ferramenta organiza indícios observáveis, compara duas abordagens experimentais de Machine Learning e orienta leitura lateral. <strong>Ela não determina se uma notícia é verdadeira ou falsa.</strong></p>
 
-<div class="device-note"><strong>Equipamento recomendado:</strong> para este piloto/MVP, utilize preferencialmente <strong>notebook ou computador desktop</strong> com Google Chrome ou Microsoft Edge. Celulares e tablets podem abrir a aplicação web, mas não oferecem a experiência completa de instalação manual da extensão usada nesta fase.</div>
+<div class="device-note"><strong>Use no celular, notebook ou computador.</strong> A forma mais simples é <strong>copiar o link da notícia, colar no campo do C1NC0 e tocar/clicar em Analisar</strong>. No Chrome/Edge do computador, a extensão é <strong>opcional</strong> e apenas facilita o envio da página atual.</div>
 
-<div class="extension-ok" id="extension-ok"><strong>✓ Extensão C1NC0 detectada neste navegador.</strong><br>As etapas de download e instalação foram ocultadas. Se precisar reinstalar, use “Ver instruções de instalação” abaixo.</div>
+<div class="extension-ok" id="extension-ok"><strong>✓ Extensão C1NC0 detectada neste navegador.</strong><br>Você pode usá-la para enviar a página atual, mas também pode sempre copiar e colar o link manualmente.</div>
+<div class="pilot-note" id="extension-not-detected"><strong>Extensão não detectada? Sem problema.</strong> Ela é opcional. Continue copiando e colando o link da notícia. Se você já instalou a extensão e quiser usá-la, recarregue esta página e clique em “Verificar extensão”.</div>
 
 <div class="pilot-steps">
-<div class="pilot-step extension-install"><strong>Baixe a extensão.</strong> Use o botão abaixo para obter <code>c1nc0-extension-piloto-v1.zip</code>. Descompacte-o em uma pasta que você não pretende apagar durante o piloto.</div>
-<div class="pilot-step extension-install"><strong>Instale no Chrome/Edge em modo de desenvolvedor.</strong> Abra <code>chrome://extensions</code> (ou <code>edge://extensions</code>), ative <em>Modo do desenvolvedor</em>, escolha <em>Carregar sem compactação</em> e selecione a pasta descompactada <code>c1nc0-extension</code>.</div>
-<div class="pilot-step"><strong>Navegue normalmente por notícias.</strong> Quando a extensão identificar características jornalísticas, ela poderá sugerir o Painel C1NC0. Você também pode clicar no ícone da extensão e analisar a página atual manualmente.</div>
+<div class="pilot-step"><strong>Escolha uma notícia.</strong> No celular ou computador, abra a notícia no navegador e copie o endereço/link da página.</div>
+<div class="pilot-step"><strong>Cole a URL no C1NC0.</strong> Volte ao painel, cole o link no campo “URL da notícia” e toque/clique em <strong>Analisar</strong>. <strong>Não é necessário instalar a extensão.</strong></div>
+<div class="pilot-step extension-install"><strong>Opcional: instale a extensão no Chrome/Edge do computador.</strong> Baixe <code>c1nc0-extension-piloto-v1.zip</code>, descompacte, abra <code>chrome://extensions</code> (ou <code>edge://extensions</code>), ative <em>Modo do desenvolvedor</em> e use <em>Carregar sem compactação</em>. Ela apenas agiliza o envio da página atual.</div>
 <div class="pilot-step"><strong>Observe antes de interpretar.</strong> Leia “O que observamos”, “O que NÃO sabemos” e “O que checar?”. Faça a leitura lateral indicada pelo painel e consulte fontes independentes.</div>
 <div class="pilot-step"><strong>Compare os modelos como experimentos.</strong> O GaussianNB observa 19 features estruturais/linguísticas; o MultinomialNB observa título + texto via TF-IDF. Associação com uma classe do dataset <strong>não é probabilidade de veracidade</strong>. Concordância entre modelos não prova um fato; divergência não significa necessariamente erro.</div>
 <div class="pilot-step"><strong>Finalize com seu julgamento e feedback.</strong> Faça pelo menos <strong>3 análises de notícias</strong> durante a validação e registre o feedback no sistema. O questionário leva menos de 1 minuto.</div>
 </div>
 
-<button type="button" class="secondary" id="show-install-help" style="display:none">Ver instruções de instalação</button>
+<button type="button" class="secondary" id="check-extension">Verificar extensão</button>
+<button type="button" class="secondary" id="show-install-help" style="display:none">Ver instruções da extensão</button>
 <div class="interpretation"><strong>Regra principal de interpretação:</strong> indícios → incertezas → o que checar → leitura lateral → fontes independentes → julgamento humano.</div>
 <div class="pilot-note"><strong>Precisa de ajuda?</strong> Use o botão <strong>C1NC0 Ajuda</strong> para falar pelo WhatsApp. Ajustes, sugestões e observações da validação também podem ser registrados diretamente no grupo de WhatsApp do C1NC0.</div>
 <div class="pilot-note"><strong>Privacidade do feedback:</strong> o formulário do piloto não solicita nome, e-mail nem a URL analisada. Os resultados agregados podem ser acompanhados publicamente.</div>
@@ -174,25 +176,34 @@
  const close=document.getElementById("close-pilot-guide");
  const dont=document.getElementById("pilot-dont-show");
  const extensionOk=document.getElementById("extension-ok");
+ const extensionNotDetected=document.getElementById("extension-not-detected");
  const showInstall=document.getElementById("show-install-help");
+ const checkExtension=document.getElementById("check-extension");
  const key="c1nc0_pilot_guide_hidden_v1";
  let extensionDetected=false;
  function setExtensionState(installed){
    extensionDetected=installed;
    extensionOk.style.display=installed?"block":"none";
+   extensionNotDetected.style.display=installed?"none":"block";
    document.querySelectorAll(".extension-install").forEach(el=>el.style.display=installed?"none":"block");
    showInstall.style.display=installed?"inline-block":"none";
  }
- function show(){overlay.style.display="flex"; window.postMessage({type:"C1NC0_EXTENSION_PING"},"*");}
+ function pingExtension(){
+   window.postMessage({type:"C1NC0_EXTENSION_PING"},"*");
+ }
+ function show(){overlay.style.display="flex"; pingExtension(); setTimeout(pingExtension,300); setTimeout(pingExtension,900);}
  function hide(){if(dont.checked){localStorage.setItem(key,"1");} overlay.style.display="none";}
  open.addEventListener("click",show);
  close.addEventListener("click",hide);
  showInstall.addEventListener("click",()=>{document.querySelectorAll(".extension-install").forEach(el=>el.style.display="block");showInstall.style.display="none";});
+ checkExtension.addEventListener("click",()=>{extensionDetected=false;checkExtension.textContent="Verificando...";pingExtension();setTimeout(pingExtension,400);setTimeout(()=>{checkExtension.textContent=extensionDetected?"✓ Extensão detectada":"Verificar extensão";setExtensionState(extensionDetected);},1100);});
  overlay.addEventListener("click",function(e){if(e.target===overlay)hide();});
  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&overlay.style.display==="flex")hide();});
  window.addEventListener("message",function(e){if(e.source===window&&e.data&&e.data.type==="C1NC0_EXTENSION_PONG"){setExtensionState(true);}});
- window.postMessage({type:"C1NC0_EXTENSION_PING"},"*");
- setTimeout(()=>{if(!extensionDetected)setExtensionState(false);},700);
+ pingExtension();
+ setTimeout(pingExtension,350);
+ setTimeout(pingExtension,1000);
+ setTimeout(()=>{if(!extensionDetected)setExtensionState(false);},1500);
  if(localStorage.getItem(key)!=="1"){show();}
 })();
 </script>
