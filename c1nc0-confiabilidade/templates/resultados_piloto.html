@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C1NC0 — Resultados do Piloto</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f5f7fa;color:#243043;margin:0}.container{max-width:1000px;margin:32px auto;padding:20px}h1,h2{color:#153b68}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:#fff;border-radius:12px;padding:20px;margin-top:16px;box-shadow:0 2px 10px #00000012}.metric strong{font-size:32px;color:#153b68}.small{color:#657184;font-size:13px}.bar{height:12px;background:#e7ecf2;border-radius:8px;overflow:hidden}.fill{height:100%;background:#285d91}.erro{background:#ffeaea;border-left:5px solid #c33;padding:15px}@media(max-width:700px){.grid{display:block}.metric{margin-top:10px}}
+</style></head><body><div class="container">
+<h1>C1NC0 — Resultados do Piloto</h1>
+{% if erro %}<div class="erro">{{erro}}</div>{% elif resumo %}
+<p class="small">Versão: {{resumo.versao_app}}</p>
+<div class="grid">
+<div class="card metric"><strong>{{resumo.sessoes}}</strong><br>Sessões</div>
+<div class="card metric"><strong>{{resumo.analises}}</strong><br>Análises</div>
+<div class="card metric"><strong>{{resumo.feedbacks}}</strong><br>Feedbacks ({{resumo.taxa_feedback}}%)</div>
+</div>
+<div class="card"><h2>Origem</h2><p>Extensão: <strong>{{resumo.origem.extensao}}</strong> · Site: <strong>{{resumo.origem.site}}</strong></p></div>
+<div class="card"><h2>Modelos</h2><p>Comparar: <strong>{{resumo.modos.comparar}}</strong> · Gaussian: <strong>{{resumo.modos.gaussian}}</strong> · Multinomial: <strong>{{resumo.modos.multinomial}}</strong></p>
+<p>Nas {{resumo.comparacoes.total}} comparações: mesma associação = <strong>{{resumo.comparacoes.concordantes}}</strong>; divergência = <strong>{{resumo.comparacoes.divergentes}}</strong>.</p></div>
+<div class="card"><h2>Guiding Constraint / experiência</h2>
+<p>Análise mais cuidadosa: <strong>{{resumo.guiding.ajudou_analise_media or '—'}} / 5</strong></p>
+<p>Clareza de que indício ≠ verdade: <strong>{{resumo.guiding.clareza_limites_media or '—'}} / 5</strong></p>
+<p>Clareza da comparação entre modelos: <strong>{{resumo.guiding.clareza_comparacao_media or '—'}} / 5</strong></p>
+<p>Estimularia busca por outras fontes: <strong>{{resumo.guiding.buscaria_outras_fontes_sim_pct if resumo.guiding.buscaria_outras_fontes_sim_pct is not none else '—'}}%</strong></p>
+<p>Usaria novamente: <strong>{{resumo.guiding.usaria_novamente_sim_pct if resumo.guiding.usaria_novamente_sim_pct is not none else '—'}}%</strong></p>
+</div>
+{% endif %}
+</div></body></html>

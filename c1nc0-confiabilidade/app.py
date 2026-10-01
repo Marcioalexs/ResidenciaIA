@@ -1,8 +1,16 @@
-from flask import Flask, render_template, request
+import hmac
+import os
+
+from flask import Flask, jsonify, render_template, request, Response
 
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
 from ml.model_service import analisar_com_modelos, modelos_disponiveis
+from services.feedback_service import (
+    registrar_analise,
+    registrar_feedback,
+    obter_resultados_piloto,
+)
 
 
 app = Flask(__name__)
@@ -184,20 +192,33 @@ def roteiro_checagem():
     ]
 
 
+
+VALID_MODES = {"gaussian", "multinomial", "comparar"}
+
+
+def _modo_modelo():
+    modo = (
+        request.form.get("modo_modelo")
+        or request.args.get("modo_modelo")
+        or "comparar"
+    ).strip().lower()
+    return modo if modo in VALID_MODES else "comparar"
+
+
 @app.route("/", methods=["GET", "POST"])
 def pagina_inicial():
     resultado = None
 
-    # A URL pode chegar pelo formulário (POST) ou pela extensão (GET).
     url = (
         request.form.get("url", "")
         if request.method == "POST"
         else request.args.get("url", "")
     ).strip()
 
-    # No acesso vindo da extensão, analisar=1 inicia a análise automaticamente.
+    modo_modelo = _modo_modelo()
     analisar = request.method == "POST" or request.args.get("analisar") == "1"
     origem_extensao = request.args.get("origem") == "extensao"
+    origem = "extensao" if origem_extensao else "site"
 
     if analisar and url:
         dados = coletar_noticia(url)
@@ -211,10 +232,7 @@ def pagina_inicial():
         }
 
         if dados.get("status") == "OK":
-            texto_modelo = (
-                f"{dados.get('titulo', '')} "
-                f"{dados.get('texto', '')}"
-            ).strip()
+            texto_modelo = f"{dados.get('titulo', '')} {dados.get('texto', '')}".strip()
 
             if len(texto_modelo) < 100:
                 resultado["ml"] = {
@@ -224,18 +242,19 @@ def pagina_inicial():
                         "para executar a análise experimental."
                     ),
                 }
-
             elif modelos_disponiveis():
                 features = calcular_features_url(dados)
-                resultado["ml"] = analisar_com_modelos(dados, features)
-
+                resultado["ml"] = analisar_com_modelos(
+                    dados,
+                    features,
+                    modo=modo_modelo,
+                )
             else:
                 resultado["ml"] = {
                     "disponivel": False,
                     "erro": (
-                        "Modelos treinados ainda não foram "
-                        "publicados. Execute ml/train_models.py "
-                        "e versione os artefatos da pasta models."
+                        "Modelos treinados ainda não foram publicados. "
+                        "Execute ml/train_models.py e versione os artefatos da pasta models."
                     ),
                 }
 
@@ -244,6 +263,102 @@ def pagina_inicial():
         resultado=resultado,
         url=url,
         origem_extensao=origem_extensao,
+        origem=origem,
+        modo_modelo=modo_modelo,
+    )
+
+
+def _json_payload():
+    return request.get_json(silent=True) or {}
+
+
+@app.post("/api/analises")
+def api_analises():
+    payload = _json_payload()
+    obrigatorios = ("session_id", "origem", "modo_modelo")
+
+    if any(not payload.get(campo) for campo in obrigatorios):
+        return jsonify({"ok": False, "erro": "Campos obrigatórios ausentes."}), 400
+
+    if payload["origem"] not in {"site", "extensao"}:
+        return jsonify({"ok": False, "erro": "Origem inválida."}), 400
+
+    if payload["modo_modelo"] not in VALID_MODES:
+        return jsonify({"ok": False, "erro": "Modo de modelo inválido."}), 400
+
+    try:
+        registro = registrar_analise(payload)
+        return jsonify({"ok": True, "id": registro.get("id")})
+    except Exception as exc:
+        app.logger.exception("Falha ao registrar análise no Supabase.")
+        return jsonify({"ok": False, "erro": "Não foi possível registrar a análise."}), 503
+
+
+@app.post("/api/feedback")
+def api_feedback():
+    payload = _json_payload()
+    obrigatorios = (
+        "session_id",
+        "origem",
+        "modo_modelo",
+        "ajudou_analise",
+        "buscaria_outras_fontes",
+        "clareza_limites",
+        "mudou_avaliacao",
+        "parte_mais_util",
+        "usaria_novamente",
+    )
+
+    if any(payload.get(campo) in (None, "") for campo in obrigatorios):
+        return jsonify({"ok": False, "erro": "Preencha os campos obrigatórios."}), 400
+
+    if payload["origem"] not in {"site", "extensao"}:
+        return jsonify({"ok": False, "erro": "Origem inválida."}), 400
+
+    if payload["modo_modelo"] not in VALID_MODES:
+        return jsonify({"ok": False, "erro": "Modo de modelo inválido."}), 400
+
+    try:
+        registro = registrar_feedback(payload)
+        return jsonify({"ok": True, "id": registro.get("id")})
+    except Exception:
+        app.logger.exception("Falha ao registrar feedback no Supabase.")
+        return jsonify({"ok": False, "erro": "Não foi possível salvar o feedback."}), 503
+
+
+def _admin_autorizado():
+    senha_esperada = os.getenv("C1NC0_ADMIN_PASSWORD", "")
+    if not senha_esperada:
+        return False
+
+    auth = request.authorization
+    if not auth:
+        return False
+
+    return hmac.compare_digest(auth.password or "", senha_esperada)
+
+
+@app.get("/admin/resultados-piloto")
+def resultados_piloto():
+    if not _admin_autorizado():
+        return Response(
+            "Autenticação necessária.",
+            401,
+            {"WWW-Authenticate": 'Basic realm="C1NC0 Piloto"'},
+        )
+
+    try:
+        resumo = obter_resultados_piloto()
+        erro = None
+    except Exception:
+        app.logger.exception("Falha ao carregar dashboard do piloto.")
+        resumo = None
+        erro = "Não foi possível carregar os dados do piloto."
+
+    return render_template(
+        "resultados_piloto.html",
+        resumo=resumo,
+        erro=erro,
     )
 
 
@@ -252,13 +367,9 @@ def health():
     return {
         "status": "ok",
         "models_ready": modelos_disponiveis(),
-        "version": "C1NC0-Pensamento-Critico-V2",
+        "version": os.getenv("C1NC0_APP_VERSION", "piloto-2026-10-03"),
     }
 
 
 if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True,
-    )
+    app.run(host="0.0.0.0", port=5000, debug=True)

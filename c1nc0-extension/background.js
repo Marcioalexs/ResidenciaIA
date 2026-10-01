@@ -5,6 +5,7 @@ function buildAnalysisUrl(pageUrl) {
   target.searchParams.set("url", pageUrl);
   target.searchParams.set("analisar", "1");
   target.searchParams.set("origem", "extensao");
+  target.searchParams.set("modo_modelo", "comparar");
   return target.toString();
 }
 

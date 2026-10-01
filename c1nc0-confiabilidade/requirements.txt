@@ -7,3 +7,6 @@ pandas==3.0.6
 scikit-learn==1.9.1
 joblib==1.6.0
 spacy==3.8.16
+supabase==2.31.0
+python-dotenv==1.2.3
+https://github.com/explosion/spacy-models/releases/download/pt_core_news_sm-3.8.0/pt_core_news_sm-3.8.0-py3-none-any.whl

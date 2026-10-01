@@ -11,18 +11,57 @@ from .feature_extractor import FEATURES_META, NOMES_FEATURES
 ROOT = Path(__file__).resolve().parents[1]
 MODELS = ROOT / "models"
 
+DATASET_INFO = {
+    "nome": "DATASET_TERCEIROGENITO_V1_URL_UNIFORME_PT",
+    "registros": 18217,
+    "classes": {
+        "true": 13513,
+        "fake": 4704,
+    },
+    "percentuais": {
+        "true": 74.18,
+        "fake": 25.82,
+    },
+    "origens": {
+        "DatasetFinal": 9974,
+        "FakeRecogna": 4695,
+        "Fake.Br Corpus": 3539,
+        "Fake News Net": 9,
+    },
+    "status_coleta_ok": 18217,
+    "representacoes": {
+        "gaussian": "19 features estruturais/linguísticas",
+        "multinomial": "título + texto com TF-IDF de unigramas e bigramas (até 100.000 características)",
+    },
+    "avaliacao": "divisão estratificada 80/20; random_state=42",
+    "limitacao": (
+        "O dataset é desbalanceado e a auditoria metodológica identificou duplicatas e "
+        "sobreposição de conteúdos entre treino e teste. As métricas atuais são experimentais "
+        "e precisam de validação adicional com agrupamento de conteúdos relacionados e URLs externas."
+    ),
+}
+
 
 def modelos_disponiveis():
-    return all((MODELS / n).exists() for n in ("gaussian_nb_pipeline.joblib", "tfidf_vectorizer.joblib", "multinomial_nb.joblib"))
+    return all(
+        (MODELS / n).exists()
+        for n in (
+            "gaussian_nb_pipeline.joblib",
+            "tfidf_vectorizer.joblib",
+            "multinomial_nb.joblib",
+        )
+    )
 
 
 def carregar_modelos():
     if not modelos_disponiveis():
         return None
+
     metadata = {}
     meta_path = MODELS / "model_metadata.json"
     if meta_path.exists():
         metadata = json.loads(meta_path.read_text(encoding="utf-8"))
+
     return {
         "meta": joblib.load(MODELS / "gaussian_nb_pipeline.joblib"),
         "vectorizer": joblib.load(MODELS / "tfidf_vectorizer.joblib"),
@@ -36,7 +75,12 @@ def _formatar_valor(feature, valor):
         return "N/A"
     if feature in {"percentual_erros_ortograficos", "coerencia_titulos_pct"}:
         return f"{float(valor):.2f}%"
-    if feature in {"comprimento_medio_sentenca", "comprimento_medio_palavra", "emotividade", "diversidade_lexical"}:
+    if feature in {
+        "comprimento_medio_sentenca",
+        "comprimento_medio_palavra",
+        "emotividade",
+        "diversidade_lexical",
+    }:
         return f"{float(valor):.2f}"
     return str(int(round(float(valor))))
 
@@ -45,55 +89,129 @@ def calcular_evidencias_features(pipeline, features_url):
     imputer = pipeline.named_steps["imputer"]
     scaler = pipeline.named_steps["scaler"]
     nb = pipeline.named_steps["nb"]
+
     df_url = pd.DataFrame([features_url], columns=FEATURES_META)
     originais = df_url.iloc[0].copy()
+
     x_imp = imputer.transform(df_url)
     x_scaled = scaler.transform(x_imp)
+
     classes = [str(c).lower() for c in nb.classes_]
-    idx_true, idx_fake = classes.index("true"), classes.index("fake")
+    idx_true = classes.index("true")
+    idx_fake = classes.index("fake")
+
     linhas = []
+
     for i, feature in enumerate(FEATURES_META):
         x = x_scaled[0, i]
+
         var_true = max(nb.var_[idx_true, i], 1e-12)
         var_fake = max(nb.var_[idx_fake, i], 1e-12)
-        lt = -0.5 * (np.log(2 * np.pi * var_true) + ((x - nb.theta_[idx_true, i]) ** 2) / var_true)
-        lf = -0.5 * (np.log(2 * np.pi * var_fake) + ((x - nb.theta_[idx_fake, i]) ** 2) / var_fake)
+
+        lt = -0.5 * (
+            np.log(2 * np.pi * var_true)
+            + ((x - nb.theta_[idx_true, i]) ** 2) / var_true
+        )
+        lf = -0.5 * (
+            np.log(2 * np.pi * var_fake)
+            + ((x - nb.theta_[idx_fake, i]) ** 2) / var_fake
+        )
+
         evidencia = float(lt - lf)
         classe = "TRUE" if evidencia > 0 else "FAKE" if evidencia < 0 else "NEUTRA"
+
         valor = originais[feature]
         imputada = bool(pd.isna(valor))
-        linhas.append({
-            "feature": feature, "nome": NOMES_FEATURES.get(feature, feature),
-            "valor": None if imputada else float(valor), "valor_formatado": _formatar_valor(feature, valor),
-            "evidencia": evidencia, "classe_evidencia": classe, "foi_imputada": imputada,
-        })
+
+        linhas.append(
+            {
+                "feature": feature,
+                "nome": NOMES_FEATURES.get(feature, feature),
+                "valor": None if imputada else float(valor),
+                "valor_formatado": _formatar_valor(feature, valor),
+                "evidencia": evidencia,
+                "classe_evidencia": classe,
+                "foi_imputada": imputada,
+            }
+        )
+
     return linhas
 
 
-def analisar_com_modelos(dados, features_url):
-    modelos = carregar_modelos()
-    if modelos is None:
-        return {"disponivel": False, "erro": "Artefatos treinados não encontrados em /models."}
+def _resultado_gaussian(modelos, features_url):
+    pipeline = modelos["meta"]
+    evidencias = calcular_evidencias_features(pipeline, features_url)
 
-    evidencias = calcular_evidencias_features(modelos["meta"], features_url)
     validas = [e for e in evidencias if not e["foi_imputada"]]
     true_like = sum(e["classe_evidencia"] == "TRUE" for e in validas)
     fake_like = sum(e["classe_evidencia"] == "FAKE" for e in validas)
     neutras = sum(e["classe_evidencia"] == "NEUTRA" for e in validas)
+
     direcionadas = true_like + fake_like
     pct_true = true_like / direcionadas * 100 if direcionadas else 0
     pct_fake = fake_like / direcionadas * 100 if direcionadas else 0
 
-    conteudo = f"{dados.get('titulo', '')} {dados.get('texto', '')}".strip()
-    x_texto = modelos["vectorizer"].transform([conteudo])
-    classe_experimental = str(modelos["texto"].predict(x_texto)[0])
+    df_url = pd.DataFrame([features_url], columns=FEATURES_META)
+    classe = str(pipeline.predict(df_url)[0]).lower()
 
     return {
-        "disponivel": True,
+        "id": "gaussian_nb_v1",
+        "nome": "Gaussian Naive Bayes",
+        "representacao": "19 features estruturais/linguísticas",
+        "classe_associada": classe,
         "evidencias": evidencias,
-        "true_like": true_like, "fake_like": fake_like, "neutras": neutras,
-        "percentual_true": round(pct_true, 2), "percentual_fake": round(pct_fake, 2),
-        # Mantida para rastreabilidade científica; a interface NÃO a exibe como veredito.
-        "classe_textual_experimental": classe_experimental,
-        "metadata": modelos["metadata"],
+        "true_like": true_like,
+        "fake_like": fake_like,
+        "neutras": neutras,
+        "percentual_true": round(pct_true, 2),
+        "percentual_fake": round(pct_fake, 2),
     }
+
+
+def _resultado_multinomial(modelos, dados):
+    conteudo = f"{dados.get('titulo', '')} {dados.get('texto', '')}".strip()
+    x_texto = modelos["vectorizer"].transform([conteudo])
+    classe = str(modelos["texto"].predict(x_texto)[0]).lower()
+
+    return {
+        "id": "multinomial_nb_v1",
+        "nome": "Multinomial Naive Bayes",
+        "representacao": "Título + texto com TF-IDF",
+        "classe_associada": classe,
+    }
+
+
+def analisar_com_modelos(dados, features_url, modo="comparar"):
+    modelos = carregar_modelos()
+    if modelos is None:
+        return {
+            "disponivel": False,
+            "erro": "Artefatos treinados não encontrados em /models.",
+        }
+
+    if modo not in {"gaussian", "multinomial", "comparar"}:
+        modo = "comparar"
+
+    resultado = {
+        "disponivel": True,
+        "modo": modo,
+        "gaussian": None,
+        "multinomial": None,
+        "modelos_concordaram": None,
+        "metadata": modelos["metadata"],
+        "dataset": DATASET_INFO,
+    }
+
+    if modo in {"gaussian", "comparar"}:
+        resultado["gaussian"] = _resultado_gaussian(modelos, features_url)
+
+    if modo in {"multinomial", "comparar"}:
+        resultado["multinomial"] = _resultado_multinomial(modelos, dados)
+
+    if modo == "comparar":
+        resultado["modelos_concordaram"] = (
+            resultado["gaussian"]["classe_associada"]
+            == resultado["multinomial"]["classe_associada"]
+        )
+
+    return resultado

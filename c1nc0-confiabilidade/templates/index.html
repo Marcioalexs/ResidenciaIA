@@ -1,860 +1,194 @@
 <!doctype html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="utf-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
-    <title>
-        C1NC0 — Painel de Pensamento Crítico
-    </title>
-
-    <style>
-        :root {
-            --azul: #153b68;
-            --azul-secundario: #285d91;
-            --fundo: #f5f7fa;
-            --texto: #243043;
-            --muted: #657184;
-            --borda: #dfe5ec;
-            --claro: #edf2f8;
-            --amarelo: #fff6d8;
-            --verde-claro: #edf8f1;
-            --verde: #43805a;
-            --laranja: #b07828;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: var(--fundo);
-            color: var(--texto);
-            margin: 0;
-        }
-
-        .container {
-            max-width: 1080px;
-            margin: 34px auto;
-            padding: 20px;
-        }
-
-        h1,
-        h2,
-        h3 {
-            color: var(--azul);
-        }
-
-        h1 {
-            margin-bottom: 8px;
-        }
-
-        .descricao {
-            line-height: 1.6;
-            color: #4f5b6a;
-            max-width: 900px;
-        }
-
-        form {
-            display: flex;
-            gap: 10px;
-            margin: 28px 0;
-        }
-
-        input[type="url"] {
-            flex: 1;
-            padding: 14px;
-            border: 1px solid #ccd3dd;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-
-        button {
-            padding: 14px 24px;
-            border: 0;
-            border-radius: 8px;
-            background: var(--azul);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .card {
-            background: #fff;
-            padding: 22px;
-            margin-top: 18px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px #00000012;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .observamos {
-            border-top: 5px solid var(--verde);
-        }
-
-        .nao-sabemos {
-            border-top: 5px solid var(--laranja);
-        }
-
-        .section-kicker {
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--muted);
-        }
-
-        .indicio,
-        .limite {
-            padding: 12px 0;
-            border-bottom: 1px solid #eee;
-            line-height: 1.45;
-        }
-
-        .small {
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .flow {
-            text-align: center;
-            color: var(--azul);
-            font-weight: 700;
-            padding: 14px 8px 0;
-        }
-
-        .checklist {
-            display: grid;
-            gap: 12px;
-            margin-top: 18px;
-        }
-
-        .check {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 12px;
-            padding: 14px;
-            border: 1px solid var(--borda);
-            border-radius: 10px;
-            background: #fff;
-            cursor: pointer;
-        }
-
-        .check input {
-            width: 20px;
-            height: 20px;
-            margin-top: 3px;
-        }
-
-        .check strong {
-            color: var(--azul);
-        }
-
-        .check p {
-            margin: 5px 0 0;
-            line-height: 1.5;
-        }
-
-        .human {
-            background: var(--verde-claro);
-            border-left: 5px solid var(--verde);
-        }
-
-        .avaliacao label {
-            display: block;
-            padding: 11px 0;
-            border-bottom: 1px solid #e6ece8;
-            line-height: 1.4;
-            cursor: pointer;
-        }
-
-        .avaliacao input {
-            margin-right: 8px;
-        }
-
-        details {
-            margin-top: 18px;
-            background: #fff;
-            border: 1px solid var(--borda);
-            border-radius: 12px;
-            padding: 0 20px 20px;
-        }
-
-        summary {
-            cursor: pointer;
-            padding: 18px 0;
-            font-weight: 700;
-            color: var(--azul);
-        }
-
-        .badge-exp {
-            display: inline-block;
-            background: #f1e9ff;
-            color: #604080;
-            padding: 4px 9px;
-            border-radius: 12px;
-            font-size: 12px;
-            margin-left: 6px;
-        }
-
-        .bar {
-            height: 14px;
-            background: #e9edf2;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .fill {
-            height: 100%;
-            background: var(--azul-secundario);
-        }
-
-        .feature {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 8px;
-            padding: 9px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 12px;
-            background: var(--claro);
-            font-size: 12px;
-        }
-
-        .aviso {
-            padding: 15px;
-            background: var(--amarelo);
-            border-left: 5px solid #d5a000;
-            margin-top: 18px;
-            line-height: 1.5;
-        }
-
-        .erro {
-            padding: 15px;
-            background: #ffeaea;
-            border-left: 5px solid #c33;
-            margin-top: 18px;
-        }
-
-        @media (max-width: 700px) {
-            form,
-            .grid {
-                display: block;
-            }
-
-            button {
-                width: 100%;
-                margin-top: 10px;
-            }
-
-            .feature {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                margin: 10px auto;
-            }
-
-            .nao-sabemos {
-                margin-top: 18px;
-            }
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C1NC0 — Painel de Pensamento Crítico</title>
+<style>
+:root{--azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;--borda:#dfe5ec;--amarelo:#fff6d8;--verde:#43805a;--verdebg:#edf8f1;--laranja:#b07828;--roxo:#604080}
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:var(--fundo);color:var(--texto);margin:0}.container{max-width:1080px;margin:34px auto;padding:20px}h1,h2,h3{color:var(--azul)}h1{margin-bottom:8px}.descricao{line-height:1.6;color:#4f5b6a}.form-url{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0 10px}.form-url input[type=url]{padding:14px;border:1px solid #ccd3dd;border-radius:8px;font-size:16px}.model-choice{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:16px;margin:10px 0 24px}.model-choice label{display:block;padding:9px 4px;line-height:1.45}.model-choice small{color:var(--muted)}button{padding:14px 24px;border:0;border-radius:8px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;padding:22px;margin-top:18px;border-radius:12px;box-shadow:0 2px 10px #00000012}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.observamos{border-top:5px solid var(--verde)}.nao-sabemos{border-top:5px solid var(--laranja)}.section-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:var(--muted)}.indicio,.limite{padding:12px 0;border-bottom:1px solid #eee;line-height:1.45}.small{font-size:13px;color:var(--muted);line-height:1.5}.checklist{display:grid;gap:12px;margin-top:18px}.check{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border:1px solid var(--borda);border-radius:10px;background:#fff}.check input{width:20px;height:20px}.human{background:var(--verdebg);border-left:5px solid var(--verde)}.aviso{padding:15px;background:var(--amarelo);border-left:5px solid #d5a000;margin-top:18px;line-height:1.5}.erro{padding:15px;background:#ffeaea;border-left:5px solid #c33;margin-top:18px}.badge{display:inline-block;padding:4px 9px;border-radius:12px;background:#f1e9ff;color:var(--roxo);font-size:12px}.model-card{border-top:4px solid var(--azul2)}.feature{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #eee}.dataset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#f7f9fc;padding:14px;border-radius:10px}.metric strong{font-size:22px;color:var(--azul)}.feedback-overlay{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.feedback-box{background:#fff;width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:24px}.feedback-box fieldset{border:0;padding:0;margin:18px 0}.feedback-box label{display:block;margin:8px 0}.feedback-box textarea{width:100%;min-height:90px;padding:10px}.feedback-actions{display:flex;gap:10px}.secondary{background:#e8edf3;color:var(--azul)}.status{font-size:14px;margin-top:10px}.feedback-cta{text-align:center}.comparison{border-left:5px solid var(--azul2)}details{margin-top:18px;background:#fff;border:1px solid var(--borda);border-radius:12px;padding:0 20px 20px}summary{cursor:pointer;padding:18px 0;font-weight:700;color:var(--azul)}
+@media(max-width:700px){.container{margin:10px auto}.form-url,.grid,.dataset-grid{display:block}.form-url button{width:100%}.nao-sabemos,.metric{margin-top:12px}.feature{grid-template-columns:1fr}.feedback-actions{display:block}.feedback-actions button{width:100%;margin-top:8px}}
+</style>
 </head>
-
 <body>
-
 <div class="container">
-
-    <h1>
-        C1NC0 — Painel de Pensamento Crítico
-    </h1>
-
-    <p class="descricao">
-        Ferramenta experimental de apoio à avaliação de
-        confiabilidade. O C1NC0 organiza
-        <strong>o que foi possível observar</strong>,
-        explicita
-        <strong>o que a análise não permite saber</strong>
-        e orienta uma
-        <strong>leitura lateral</strong>.
-        A decisão final permanece com a pessoa que está
-        avaliando o conteúdo.
-    </p>
-
-    <form method="post">
-
-        <input
-            type="url"
-            name="url"
-            placeholder="Cole aqui a URL da notícia"
-            value="{{ url or '' }}"
-            required
-        >
-
-        <button type="submit">
-            Analisar
-        </button>
-
-    </form>
-
-    {% if origem_extensao %}
-        <div class="aviso">
-            <strong>Análise iniciada pela extensão C1NC0.</strong>
-            A extensão enviou somente a URL que você escolheu analisar.
-            O painel continua sendo um apoio ao pensamento crítico e não um veredito automático.
-        </div>
-    {% endif %}
-
-
-    {% if resultado %}
-
-        {% if resultado.dados.status == 'OK' %}
-
-
-            <!-- ==================================================
-                 NOTÍCIA ANALISADA
-                 ================================================== -->
-
-            <div class="card">
-
-                <span class="section-kicker">
-                    Conteúdo analisado
-                </span>
-
-                <h2>
-                    Notícia analisada
-                </h2>
-
-                <p>
-                    <strong>
-                        {{
-                            resultado.dados.titulo
-                            or 'Título não identificado'
-                        }}
-                    </strong>
-                </p>
-
-                <p class="small">
-
-                    {{ resultado.dados.dominio }}
-
-                    · Autor:
-                    {{
-                        resultado.dados.autor
-                        or 'não identificado'
-                    }}
-
-                    · Data:
-                    {{
-                        resultado.dados.data
-                        or 'não identificada'
-                    }}
-
-                    ·
-                    {{ resultado.dados.texto|length }}
-                    caracteres extraídos
-
-                </p>
-
-            </div>
-
-
-            <!-- ==================================================
-                 OBSERVAMOS × NÃO SABEMOS
-                 ================================================== -->
-
-            <div class="grid">
-
-                <div class="card observamos">
-
-                    <span class="section-kicker">
-                        Evidências disponíveis
-                    </span>
-
-                    <h2>
-                        O que observamos
-                    </h2>
-
-                    <p class="small">
-                        Elementos que a aplicação conseguiu
-                        localizar ou calcular na página analisada.
-                    </p>
-
-                    {% for i in resultado.indicios %}
-
-                        <div class="indicio">
-
-                            <strong>
-                                {{ '✓' if i.ok else '○' }}
-                                {{ i.nome }}
-                            </strong>
-
-                            <br>
-
-                            {{ i.texto }}
-
-                        </div>
-
-                    {% endfor %}
-
-                </div>
-
-
-                <div class="card nao-sabemos">
-
-                    <span class="section-kicker">
-                        Limites da análise
-                    </span>
-
-                    <h2>
-                        O que NÃO sabemos
-                    </h2>
-
-                    <p class="small">
-                        Estes pontos não podem ser concluídos
-                        automaticamente a partir da análise
-                        desta página.
-                    </p>
-
-                    {% for i in resultado.limites %}
-
-                        <div class="limite">
-
-                            <strong>
-                                ? {{ i.nome }}
-                            </strong>
-
-                            <br>
-
-                            {{ i.texto }}
-
-                        </div>
-
-                    {% endfor %}
-
-                </div>
-
-            </div>
-
-
-            <div class="flow">
-                O que observamos + o que não sabemos
-                ↓
-            </div>
-
-
-            <!-- ==================================================
-                 LEITURA LATERAL
-                 ================================================== -->
-
-            <div class="card">
-
-                <span class="section-kicker">
-                    Próxima etapa
-                </span>
-
-                <h2>
-                    O que checar?
-                </h2>
-
-                <p class="descricao">
-
-                    <strong>
-                        Faça leitura lateral:
-                    </strong>
-
-                    não permaneça apenas nesta página.
-
-                    Abra novas abas, procure a origem das
-                    informações e compare fontes independentes.
-
-                </p>
-
-
-                <div class="checklist">
-
-                    {% for c in resultado.checagens %}
-
-                        <label class="check">
-
-                            <input
-                                type="checkbox"
-                                class="check-item"
-                            >
-
-                            <span>
-
-                                <strong>
-                                    {{ loop.index }}.
-                                    {{ c.titulo }}
-                                </strong>
-
-                                <p>
-                                    {{ c.texto }}
-                                </p>
-
-                            </span>
-
-                        </label>
-
-                    {% endfor %}
-
-                </div>
-
-
-                <p class="small">
-                    As marcações são um roteiro visual para
-                    sua checagem e não alteram a análise do
-                    modelo.
-                </p>
-
-            </div>
-
-
-            <div class="flow">
-                Leitura lateral
-                →
-                fontes independentes
-                →
-            </div>
-
-
-            <!-- ==================================================
-                 JULGAMENTO HUMANO
-                 ================================================== -->
-
-            <div class="card human">
-
-                <span class="section-kicker">
-                    A decisão permanece humana
-                </span>
-
-                <h2>
-                    Sua avaliação neste momento
-                </h2>
-
-                <p>
-                    Depois de observar os indícios e realizar
-                    as verificações acima, como você avaliaria
-                    o próximo passo?
-                </p>
-
-
-                <div class="avaliacao">
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="avaliacao_usuario"
-                        >
-
-                        Tenho elementos suficientes para confiar,
-                        considerando as verificações que realizei.
-                    </label>
-
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="avaliacao_usuario"
-                        >
-
-                        Ainda tenho dúvidas.
-                    </label>
-
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="avaliacao_usuario"
-                        >
-
-                        Preciso verificar outras fontes.
-                    </label>
-
-
-                    <label>
-                        <input
-                            type="radio"
-                            name="avaliacao_usuario"
-                        >
-
-                        Encontrei evidências que contradizem
-                        o conteúdo.
-                    </label>
-
-                </div>
-
-
-                <p>
-                    <strong>
-                        O C1NC0 apoia sua análise;
-                        não substitui seu julgamento nem a
-                        verificação das afirmações.
-                    </strong>
-                </p>
-
-
-                <p class="small">
-                    Nesta V2, sua escolha não é enviada nem
-                    armazenada. Ela funciona apenas como uma
-                    etapa reflexiva do protótipo.
-                </p>
-
-            </div>
-
-
-            <!-- ==================================================
-                 CAMADA EXPERIMENTAL DE MACHINE LEARNING
-                 ================================================== -->
-
-            <details>
-
-                <summary>
-
-                    Análise experimental de Machine Learning
-
-                    <span class="badge-exp">
-                        Naive Bayes V1
-                    </span>
-
-                </summary>
-
-
-                {% if resultado.ml and resultado.ml.disponivel %}
-
-                    <h2>
-                        Distribuição relativa das evidências
-                    </h2>
-
-                    <p class="small">
-                        Esta seção pertence à camada experimental
-                        do projeto e não deve ser interpretada
-                        como um veredito sobre a notícia.
-                    </p>
-
-
-                    <div class="grid">
-
-                        <div>
-
-                            <strong>
-                                Mais próximas do padrão TRUE
-                                do dataset
-                            </strong>
-
-                            <p>
-                                {{ resultado.ml.percentual_true }}%
-                                (
-                                {{ resultado.ml.true_like }}
-                                features
-                                )
-                            </p>
-
-                            <div class="bar">
-
-                                <div
-                                    class="fill"
-                                    style="
-                                        width:
-                                        {{ resultado.ml.percentual_true }}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-
-                        <div>
-
-                            <strong>
-                                Mais próximas do padrão FAKE
-                                do dataset
-                            </strong>
-
-                            <p>
-                                {{ resultado.ml.percentual_fake }}%
-                                (
-                                {{ resultado.ml.fake_like }}
-                                features
-                                )
-                            </p>
-
-                            <div class="bar">
-
-                                <div
-                                    class="fill"
-                                    style="
-                                        width:
-                                        {{ resultado.ml.percentual_fake }}%;
-                                    "
-                                ></div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="aviso">
-
-                        <strong>
-                            Como interpretar:
-                        </strong>
-
-                        estes percentuais representam a proporção
-                        de features que apresentam maior
-                        verossimilhança relativa para cada classe
-                        do dataset.
-
-                        <strong>
-                            Não são predict_proba(),
-                            não são probabilidade calibrada de
-                            veracidade e não constituem veredito.
-                        </strong>
-
-                    </div>
-
-
-                    <h3>
-                        19 features e evidências experimentais
-                    </h3>
-
-
-                    {% for f in resultado.ml.evidencias %}
-
-                        <div class="feature">
-
-                            <span>
-
-                                <strong>
-                                    {{ f.nome }}
-                                </strong>
-
-                                {% if f.foi_imputada %}
-
-                                    <span class="tag">
-                                        imputada
-                                    </span>
-
-                                {% endif %}
-
-                            </span>
-
-
-                            <span>
-                                {{ f.valor_formatado }}
-                            </span>
-
-
-                            <span>
-
-                                {{ f.classe_evidencia }}
-
-                                (
-                                {{
-                                    '%+.2f'
-                                    |format(f.evidencia)
-                                }}
-                                )
-
-                            </span>
-
-                        </div>
-
-                    {% endfor %}
-
-
-                {% elif resultado.ml %}
-
-                    <div class="aviso">
-
-                        <strong>
-                            Análise ML indisponível:
-                        </strong>
-
-                        {{ resultado.ml.erro }}
-
-                    </div>
-
-                {% endif %}
-
-            </details>
-
-
-        {% else %}
-
-
-            <!-- ==================================================
-                 ERRO DE COLETA
-                 ================================================== -->
-
-            <div class="erro">
-
-                <h2>
-                    Coleta não concluída
-                </h2>
-
-                <p>
-                    <strong>Status:</strong>
-                    {{ resultado.dados.status }}
-                </p>
-
-
-                {% if resultado.dados.http_status %}
-
-                    <p>
-                        <strong>HTTP:</strong>
-                        {{ resultado.dados.http_status }}
-                    </p>
-
-                {% endif %}
-
-
-                {% if resultado.dados.erro %}
-
-                    <p>
-                        {{ resultado.dados.erro }}
-                    </p>
-
-                {% endif %}
-
-
-                <p>
-                    Uma falha na coleta
-                    <strong>
-                        não significa baixa confiabilidade
-                    </strong>
-                    da notícia.
-                </p>
-
-            </div>
-
-
-        {% endif %}
-
-    {% endif %}
-
+<h1>C1NC0 — Painel de Pensamento Crítico</h1>
+<p class="descricao">Ferramenta experimental de apoio à avaliação de confiabilidade. O C1NC0 organiza <strong>o que foi possível observar</strong>, explicita <strong>o que a análise não permite saber</strong> e orienta uma <strong>leitura lateral</strong>. A decisão final permanece com a pessoa que está avaliando o conteúdo.</p>
+
+<form method="post" id="analysis-form">
+<div class="form-url">
+<input type="url" name="url" placeholder="Cole aqui a URL da notícia" value="{{ url or '' }}" required>
+<button type="submit">Analisar</button>
+</div>
+<div class="model-choice">
+<strong>Análise experimental de Machine Learning</strong>
+<label><input type="radio" name="modo_modelo" value="comparar" {% if modo_modelo == 'comparar' %}checked{% endif %}> <strong>Comparar os dois modelos</strong><br><small>Mostra lado a lado as perspectivas estrutural e textual. Recomendado para o piloto.</small></label>
+<label><input type="radio" name="modo_modelo" value="gaussian" {% if modo_modelo == 'gaussian' %}checked{% endif %}> Estrutural — Gaussian Naive Bayes <small>(19 features)</small></label>
+<label><input type="radio" name="modo_modelo" value="multinomial" {% if modo_modelo == 'multinomial' %}checked{% endif %}> Textual — Multinomial Naive Bayes <small>(título + texto / TF-IDF)</small></label>
+</div>
+</form>
+
+{% if origem_extensao %}
+<div class="aviso"><strong>Análise iniciada pela extensão C1NC0.</strong> A extensão enviou somente a URL que você escolheu analisar. O painel é apoio ao pensamento crítico, não um veredito automático.</div>
+{% endif %}
+
+{% if resultado %}
+{% if resultado.dados.status == 'OK' %}
+<div class="card">
+<span class="section-kicker">Conteúdo analisado</span>
+<h2>{{ resultado.dados.titulo or 'Título não identificado' }}</h2>
+<p class="small">{{ resultado.dados.dominio }} · Autor: {{ resultado.dados.autor or 'não identificado' }} · Data: {{ resultado.dados.data or 'não identificada' }} · {{ resultado.dados.texto|length }} caracteres extraídos</p>
 </div>
 
+<div class="grid">
+<div class="card observamos"><span class="section-kicker">Evidências disponíveis</span><h2>O que observamos</h2>
+{% for i in resultado.indicios %}<div class="indicio"><strong>{{ '✓' if i.ok else '○' }} {{ i.nome }}</strong><br>{{ i.texto }}</div>{% endfor %}
+</div>
+<div class="card nao-sabemos"><span class="section-kicker">Limites da análise</span><h2>O que NÃO sabemos</h2>
+{% for i in resultado.limites %}<div class="limite"><strong>? {{ i.nome }}</strong><br>{{ i.texto }}</div>{% endfor %}
+</div>
+</div>
+
+<div class="card">
+<span class="section-kicker">Próxima etapa</span><h2>O que checar?</h2>
+<p class="descricao"><strong>Faça leitura lateral:</strong> não permaneça apenas nesta página. Abra novas abas, procure a origem das informações e compare fontes independentes.</p>
+<div class="checklist">{% for c in resultado.checagens %}<label class="check"><input type="checkbox"><span><strong>{{ loop.index }}. {{ c.titulo }}</strong><br>{{ c.texto }}</span></label>{% endfor %}</div>
+</div>
+
+{% if resultado.ml and resultado.ml.disponivel %}
+<div class="card">
+<span class="section-kicker">Contexto do experimento</span><h2>Dataset usado no treinamento</h2>
+<div class="dataset-grid">
+<div class="metric"><strong>{{ resultado.ml.dataset.registros }}</strong><br>notícias no dataset</div>
+<div class="metric"><strong>{{ resultado.ml.dataset.classes.true }}</strong><br>classe TRUE ({{ resultado.ml.dataset.percentuais.true }}%)</div>
+<div class="metric"><strong>{{ resultado.ml.dataset.classes.fake }}</strong><br>classe FAKE ({{ resultado.ml.dataset.percentuais.fake }}%)</div>
+</div>
+<p><strong>Origens:</strong> DatasetFinal (9.974), FakeRecogna (4.695), Fake.Br Corpus (3.539) e Fake News Net (9).</p>
+<p><strong>Avaliação usada no treino:</strong> {{ resultado.ml.dataset.avaliacao }}.</p>
+<p class="small"><strong>Importante:</strong> {{ resultado.ml.dataset.limitacao }}</p>
+</div>
+
+<div class="grid">
+{% if resultado.ml.gaussian %}
+<div class="card model-card">
+<span class="badge">Modelo estrutural</span><h2>Gaussian Naive Bayes</h2>
+<p><strong>Representação:</strong> {{ resultado.ml.gaussian.representacao }}</p>
+<p>Associação experimental predominante com a classe do dataset: <strong>{{ resultado.ml.gaussian.classe_associada|upper }}</strong>.</p>
+<p>Entre as features direcionadas: {{ resultado.ml.gaussian.percentual_true }}% favoreceram relativamente TRUE e {{ resultado.ml.gaussian.percentual_fake }}% favoreceram relativamente FAKE.</p>
+<p class="small">Esses percentuais são distribuição relativa das evidências por feature; não são predict_proba() nem probabilidade de veracidade.</p>
+</div>
+{% endif %}
+{% if resultado.ml.multinomial %}
+<div class="card model-card">
+<span class="badge">Modelo textual</span><h2>Multinomial Naive Bayes</h2>
+<p><strong>Representação:</strong> {{ resultado.ml.multinomial.representacao }}</p>
+<p>Associação experimental predominante com a classe do dataset: <strong>{{ resultado.ml.multinomial.classe_associada|upper }}</strong>.</p>
+<p class="small">O modelo reconhece padrões textuais aprendidos no dataset. Ele não consulta fontes externas e não verifica fatos.</p>
+</div>
+{% endif %}
+</div>
+
+{% if resultado.ml.modo == 'comparar' %}
+<div class="card comparison"><span class="section-kicker">Comparação experimental</span><h2>Como os modelos se comportaram?</h2>
+{% if resultado.ml.modelos_concordaram %}
+<p><strong>Os dois modelos apresentaram maior associação com a mesma classe do dataset.</strong></p>
+{% else %}
+<p><strong>Os modelos apresentaram associações diferentes em relação às classes do dataset.</strong></p>
+{% endif %}
+<p>Isso não é um veredito. O GaussianNB observa features estruturais/linguísticas; o MultinomialNB observa padrões de título + texto via TF-IDF. Concordância não prova veracidade e divergência não significa erro.</p>
+</div>
+{% endif %}
+
+{% if resultado.ml.gaussian %}
+<details><summary>Ver as 19 features do GaussianNB</summary>
+{% for f in resultado.ml.gaussian.evidencias %}<div class="feature"><span><strong>{{ f.nome }}</strong>{% if f.foi_imputada %} <span class="badge">imputada</span>{% endif %}</span><span>{{ f.valor_formatado }}</span><span>{{ f.classe_evidencia }} ({{ '%+.2f'|format(f.evidencia) }})</span></div>{% endfor %}
+</details>
+{% endif %}
+{% elif resultado.ml %}
+<div class="aviso"><strong>Análise ML indisponível:</strong> {{ resultado.ml.erro }}</div>
+{% endif %}
+
+<div class="card human">
+<span class="section-kicker">Etapa indispensável</span><h2>Julgamento humano</h2>
+<p>Use o painel como ponto de partida. Consulte fontes independentes, procure a fonte original e considere o contexto antes de formar sua conclusão.</p>
+</div>
+
+<div class="card feedback-cta">
+<h2>Ajude-nos a avaliar o C1NC0</h2>
+<p>Seu feedback leva menos de 1 minuto e será usado na avaliação do piloto.</p>
+<button type="button" id="open-feedback">Avaliar experiência</button>
+<p class="small" id="feedback-register-status"></p>
+</div>
+
+{% else %}
+<div class="erro"><h2>Coleta não concluída</h2><p>Status: {{ resultado.dados.status }}</p><p>{{ resultado.dados.erro or '' }}</p><p>Uma falha de coleta não significa baixa confiabilidade.</p></div>
+{% endif %}
+{% endif %}
+</div>
+
+{% if resultado and resultado.dados.status == 'OK' %}
+<div class="feedback-overlay" id="feedback-overlay">
+<div class="feedback-box">
+<h2>Avaliação do C1NC0</h2>
+<p class="small">Não solicitamos nome, e-mail nem a URL analisada neste formulário.</p>
+<form id="feedback-form">
+<fieldset><strong>1. O C1NC0 ajudou você a analisar o conteúdo com mais cuidado?</strong>
+{% for n in range(1,6) %}<label><input type="radio" name="ajudou_analise" value="{{n}}" required> {{n}}</label>{% endfor %}</fieldset>
+<fieldset><strong>2. O painel estimulou você a buscar outras fontes?</strong>
+<label><input type="radio" name="buscaria_outras_fontes" value="sim" required> Sim</label><label><input type="radio" name="buscaria_outras_fontes" value="talvez"> Talvez</label><label><input type="radio" name="buscaria_outras_fontes" value="nao"> Não</label></fieldset>
+<fieldset><strong>3. Ficou claro que os indícios apresentados não determinam se a notícia é verdadeira ou falsa?</strong>
+{% for n in range(1,6) %}<label><input type="radio" name="clareza_limites" value="{{n}}" required> {{n}}</label>{% endfor %}</fieldset>
+{% if modo_modelo == 'comparar' %}<fieldset><strong>4. A comparação ajudou você a entender que modelos diferentes podem analisar aspectos diferentes do mesmo conteúdo?</strong>
+{% for n in range(1,6) %}<label><input type="radio" name="clareza_comparacao_modelos" value="{{n}}" required> {{n}}</label>{% endfor %}</fieldset>{% endif %}
+<fieldset><strong>5. Depois de usar o C1NC0, sua avaliação inicial do conteúdo mudou?</strong>
+<label><input type="radio" name="mudou_avaliacao" value="sim" required> Sim</label><label><input type="radio" name="mudou_avaliacao" value="nao"> Não</label><label><input type="radio" name="mudou_avaliacao" value="ainda_duvidas"> Ainda tenho dúvidas</label></fieldset>
+<fieldset><strong>6. Qual parte foi mais útil?</strong>
+<label><input type="radio" name="parte_mais_util" value="observamos" required> O que observamos</label><label><input type="radio" name="parte_mais_util" value="nao_sabemos"> O que não sabemos</label><label><input type="radio" name="parte_mais_util" value="o_que_checar"> O que checar</label><label><input type="radio" name="parte_mais_util" value="leitura_lateral"> Leitura lateral</label><label><input type="radio" name="parte_mais_util" value="ml"> Análise experimental de ML</label></fieldset>
+<fieldset><strong>7. Você utilizaria o C1NC0 novamente?</strong>
+<label><input type="radio" name="usaria_novamente" value="sim" required> Sim</label><label><input type="radio" name="usaria_novamente" value="talvez"> Talvez</label><label><input type="radio" name="usaria_novamente" value="nao"> Não</label></fieldset>
+<label><strong>Comentário opcional</strong><textarea name="comentario" maxlength="2000"></textarea></label>
+<div class="feedback-actions"><button type="submit">Enviar avaliação</button><button type="button" class="secondary" id="close-feedback">Agora não</button></div>
+<p class="status" id="feedback-status"></p>
+</form>
+</div></div>
+
+<script>
+const ORIGEM={{ origem|tojson }};
+const MODO={{ modo_modelo|tojson }};
+const CONCORDARAM={{ (resultado.ml.modelos_concordaram if resultado.ml and resultado.ml.disponivel else none)|tojson }};
+let analysisId=null;
+let sessionId=localStorage.getItem("c1nc0_session_id");
+if(!sessionId){sessionId=crypto.randomUUID();localStorage.setItem("c1nc0_session_id",sessionId);}
+
+async function registrarAnalise(){
+ try{
+  const r=await fetch("/api/analises",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sessionId,origem:ORIGEM,modo_modelo:MODO,modelos_concordaram:CONCORDARAM})});
+  const d=await r.json(); if(d.ok){analysisId=d.id;} else{throw new Error(d.erro||"Falha");}
+ }catch(e){document.getElementById("feedback-register-status").textContent="A análise funciona normalmente, mas o registro do piloto não pôde ser salvo agora.";}
+}
+registrarAnalise();
+
+const overlay=document.getElementById("feedback-overlay");
+document.getElementById("open-feedback").onclick=()=>overlay.style.display="flex";
+document.getElementById("close-feedback").onclick=()=>overlay.style.display="none";
+
+document.getElementById("feedback-form").addEventListener("submit",async(e)=>{
+ e.preventDefault();
+ const fd=new FormData(e.target);
+ const payload={session_id:sessionId,analise_id:analysisId,origem:ORIGEM,modo_modelo:MODO,modelos_concordaram:CONCORDARAM};
+ for(const [k,v] of fd.entries()) payload[k]=v;
+ ["ajudou_analise","clareza_limites","clareza_comparacao_modelos"].forEach(k=>{if(payload[k])payload[k]=Number(payload[k]);});
+ const status=document.getElementById("feedback-status"); status.textContent="Enviando...";
+ try{
+  const r=await fetch("/api/feedback",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+  const d=await r.json(); if(!d.ok)throw new Error(d.erro||"Falha");
+  status.textContent="Obrigado! Sua avaliação foi registrada.";
+  setTimeout(()=>overlay.style.display="none",1200);
+  document.getElementById("open-feedback").disabled=true;
+  document.getElementById("open-feedback").textContent="Avaliação enviada";
+ }catch(err){status.textContent="Não foi possível salvar agora. Tente novamente em alguns instantes.";}
+});
+</script>
+{% endif %}
 </body>
 </html>

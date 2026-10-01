@@ -1,6 +1,5 @@
 import re
 from functools import lru_cache
-from pathlib import Path
 
 import numpy as np
 import spacy
@@ -28,28 +27,9 @@ NOMES_FEATURES = {
     "coerencia_titulos_pct": "Coerência título/conteúdo",
 }
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SPACY_MODEL_PATH = BASE_DIR / "models" / "pt_core_news_sm"
-
-
 @lru_cache(maxsize=1)
 def _nlp():
-    """
-    Carrega o modelo de português empacotado junto com a aplicação.
-
-    No Vercel, o modelo pt_core_news_sm não é instalado como dependência
-    separada. Ele deve existir em:
-        c1nc0-confiabilidade/models/pt_core_news_sm
-    """
-    if not SPACY_MODEL_PATH.exists():
-        raise RuntimeError(
-            "Modelo spaCy não encontrado em "
-            f"'{SPACY_MODEL_PATH}'. "
-            "Exporte o pt_core_news_sm para models/pt_core_news_sm "
-            "antes de executar/publicar a aplicação."
-        )
-
-    return spacy.load(SPACY_MODEL_PATH)
+    return spacy.load("pt_core_news_sm")
 
 
 def calcular_features_url(dados):
