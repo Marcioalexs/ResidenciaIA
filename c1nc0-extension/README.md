@@ -26,3 +26,8 @@ A extensão está configurada para abrir:
 `https://residencia-ia-2r6h.vercel.app/`
 
 O backend aceita `url`, `analisar=1` e `origem=extensao` na query string.
+
+
+## Piloto/MVP
+
+Para a validação atual, recomenda-se notebook ou computador desktop com Chrome/Edge. A extensão v1.0.1 também permite que o site oficial detecte localmente que ela está instalada, ocultando etapas de instalação já concluídas. Dúvidas podem ser encaminhadas pelo botão **C1NC0 Ajuda**.

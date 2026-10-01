@@ -2,6 +2,13 @@
   const MIN_SCORE = 5;
   const DISMISS_KEY = `c1nc0-dismissed:${location.href}`;
 
+  // Permite que a aplicação C1NC0 detecte localmente que a extensão está ativa.
+  // Nenhum dado de navegação é enviado nessa verificação.
+  window.addEventListener("message", (event) => {
+    if (event.source !== window || event.data?.type !== "C1NC0_EXTENSION_PING") return;
+    window.postMessage({ type: "C1NC0_EXTENSION_PONG", version: chrome.runtime.getManifest().version }, "*");
+  });
+
   function jsonLdTypes() {
     const types = [];
     document.querySelectorAll('script[type="application/ld+json"]').forEach((node) => {

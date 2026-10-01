@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "C1NC0 — Pensamento Crítico",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Identifica páginas com características jornalísticas e oferece acesso ao Painel C1NC0.",
-  "permissions": ["activeTab", "tabs"],
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
   "background": {
     "service_worker": "background.js"
   },
@@ -13,9 +16,16 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content.js"],
-      "css": ["content.css"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
       "run_at": "document_idle"
     }
   ]
