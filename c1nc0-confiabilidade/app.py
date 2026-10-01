@@ -5,6 +5,7 @@ from flask import Flask, jsonify, redirect, render_template, request, url_for
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
 from ml.model_service import analisar_com_modelos, modelos_disponiveis
+from services.laboratorio_service import diagnosticar_dataset
 from services.feedback_service import (
     registrar_analise,
     registrar_feedback,
@@ -347,6 +348,26 @@ def resultados_piloto():
 def resultados_piloto_legacy():
     """Mantém links antigos funcionando após tornar o painel público."""
     return redirect(url_for("resultados_piloto"), code=302)
+
+
+@app.route("/laboratorio", methods=["GET", "POST"])
+def laboratorio():
+    """Etapa B: diagnóstico de dataset e preparação de experimento."""
+    diagnostico = None
+    erro = None
+    if request.method == "POST":
+        upload = request.files.get("dataset")
+        if not upload or not upload.filename:
+            erro = "Selecione um arquivo CSV."
+        elif not upload.filename.lower().endswith(".csv"):
+            erro = "Nesta etapa, envie um arquivo CSV."
+        else:
+            try:
+                diagnostico = diagnosticar_dataset(upload)
+            except Exception as exc:
+                app.logger.exception("Falha ao diagnosticar dataset no Laboratório.")
+                erro = str(exc)
+    return render_template("laboratorio.html", diagnostico=diagnostico, erro=erro)
 
 
 @app.get("/health")
