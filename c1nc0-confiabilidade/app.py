@@ -1,7 +1,6 @@
-import hmac
 import os
 
-from flask import Flask, jsonify, render_template, request, Response
+from flask import Flask, jsonify, redirect, render_template, request, url_for
 
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
@@ -326,27 +325,9 @@ def api_feedback():
         return jsonify({"ok": False, "erro": "Não foi possível salvar o feedback."}), 503
 
 
-def _admin_autorizado():
-    senha_esperada = os.getenv("C1NC0_ADMIN_PASSWORD", "")
-    if not senha_esperada:
-        return False
-
-    auth = request.authorization
-    if not auth:
-        return False
-
-    return hmac.compare_digest(auth.password or "", senha_esperada)
-
-
-@app.get("/admin/resultados-piloto")
+@app.get("/resultados-piloto")
 def resultados_piloto():
-    if not _admin_autorizado():
-        return Response(
-            "Autenticação necessária.",
-            401,
-            {"WWW-Authenticate": 'Basic realm="C1NC0 Piloto"'},
-        )
-
+    """Painel público, somente leitura, com resultados agregados do piloto."""
     try:
         resumo = obter_resultados_piloto()
         erro = None
@@ -360,6 +341,12 @@ def resultados_piloto():
         resumo=resumo,
         erro=erro,
     )
+
+
+@app.get("/admin/resultados-piloto")
+def resultados_piloto_legacy():
+    """Mantém links antigos funcionando após tornar o painel público."""
+    return redirect(url_for("resultados_piloto"), code=302)
 
 
 @app.get("/health")

@@ -7,13 +7,18 @@
 <style>
 :root{--azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;--borda:#dfe5ec;--amarelo:#fff6d8;--verde:#43805a;--verdebg:#edf8f1;--laranja:#b07828;--roxo:#604080}
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;background:var(--fundo);color:var(--texto);margin:0}.container{max-width:1080px;margin:34px auto;padding:20px}h1,h2,h3{color:var(--azul)}h1{margin-bottom:8px}.descricao{line-height:1.6;color:#4f5b6a}.form-url{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0 10px}.form-url input[type=url]{padding:14px;border:1px solid #ccd3dd;border-radius:8px;font-size:16px}.model-choice{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:16px;margin:10px 0 24px}.model-choice label{display:block;padding:9px 4px;line-height:1.45}.model-choice small{color:var(--muted)}button{padding:14px 24px;border:0;border-radius:8px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;padding:22px;margin-top:18px;border-radius:12px;box-shadow:0 2px 10px #00000012}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.observamos{border-top:5px solid var(--verde)}.nao-sabemos{border-top:5px solid var(--laranja)}.section-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:var(--muted)}.indicio,.limite{padding:12px 0;border-bottom:1px solid #eee;line-height:1.45}.small{font-size:13px;color:var(--muted);line-height:1.5}.checklist{display:grid;gap:12px;margin-top:18px}.check{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border:1px solid var(--borda);border-radius:10px;background:#fff}.check input{width:20px;height:20px}.human{background:var(--verdebg);border-left:5px solid var(--verde)}.aviso{padding:15px;background:var(--amarelo);border-left:5px solid #d5a000;margin-top:18px;line-height:1.5}.erro{padding:15px;background:#ffeaea;border-left:5px solid #c33;margin-top:18px}.badge{display:inline-block;padding:4px 9px;border-radius:12px;background:#f1e9ff;color:var(--roxo);font-size:12px}.model-card{border-top:4px solid var(--azul2)}.feature{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #eee}.dataset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#f7f9fc;padding:14px;border-radius:10px}.metric strong{font-size:22px;color:var(--azul)}.feedback-overlay{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.feedback-box{background:#fff;width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:24px}.feedback-box fieldset{border:0;padding:0;margin:18px 0}.feedback-box label{display:block;margin:8px 0}.feedback-box textarea{width:100%;min-height:90px;padding:10px}.feedback-actions{display:flex;gap:10px}.secondary{background:#e8edf3;color:var(--azul)}.status{font-size:14px;margin-top:10px}.feedback-cta{text-align:center}.comparison{border-left:5px solid var(--azul2)}details{margin-top:18px;background:#fff;border:1px solid var(--borda);border-radius:12px;padding:0 20px 20px}summary{cursor:pointer;padding:18px 0;font-weight:700;color:var(--azul)}
-@media(max-width:700px){.container{margin:10px auto}.form-url,.grid,.dataset-grid{display:block}.form-url button{width:100%}.nao-sabemos,.metric{margin-top:12px}.feature{grid-template-columns:1fr}.feedback-actions{display:block}.feedback-actions button{width:100%;margin-top:8px}}
+.top-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px}.link-button{display:inline-block;padding:11px 16px;border-radius:8px;background:#e8edf3;color:var(--azul);font-weight:700;text-decoration:none}.link-button.primary{background:var(--azul);color:#fff}.pilot-overlay{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:16px;z-index:10000}.pilot-box{background:#fff;width:min(820px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:26px}.pilot-steps{counter-reset:passo;display:grid;gap:12px;margin:18px 0}.pilot-step{position:relative;padding:14px 14px 14px 52px;background:#f7f9fc;border:1px solid var(--borda);border-radius:10px;line-height:1.5}.pilot-step:before{counter-increment:passo;content:counter(passo);position:absolute;left:14px;top:14px;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:var(--azul);color:#fff;font-weight:700}.pilot-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.pilot-actions a,.pilot-actions button{flex:1;text-align:center;text-decoration:none}.dont-show{display:flex;gap:8px;align-items:center;margin-top:18px;color:var(--muted);font-size:14px}.interpretation{background:var(--amarelo);border-left:5px solid #d5a000;padding:14px;margin:16px 0;line-height:1.55}.pilot-note{background:var(--verdebg);border-left:5px solid var(--verde);padding:14px;line-height:1.55}@media(max-width:700px){.container{margin:10px auto}.form-url,.grid,.dataset-grid{display:block}.form-url button{width:100%}.nao-sabemos,.metric{margin-top:12px}.feature{grid-template-columns:1fr}.feedback-actions{display:block}.feedback-actions button{width:100%;margin-top:8px}}
 </style>
 </head>
 <body>
 <div class="container">
 <h1>C1NC0 — Painel de Pensamento Crítico</h1>
 <p class="descricao">Ferramenta experimental de apoio à avaliação de confiabilidade. O C1NC0 organiza <strong>o que foi possível observar</strong>, explicita <strong>o que a análise não permite saber</strong> e orienta uma <strong>leitura lateral</strong>. A decisão final permanece com a pessoa que está avaliando o conteúdo.</p>
+<div class="top-actions">
+<button type="button" class="secondary" id="open-pilot-guide">Como participar do piloto?</button>
+<a class="link-button" href="/resultados-piloto">Ver resultados do piloto</a>
+<a class="link-button" href="/static/downloads/c1nc0-extension-piloto-v1.zip" download>Baixar extensão</a>
+</div>
 
 <form method="post" id="analysis-form">
 <div class="form-url">
@@ -125,6 +130,49 @@
 {% endif %}
 {% endif %}
 </div>
+
+<div class="pilot-overlay" id="pilot-overlay" role="dialog" aria-modal="true" aria-labelledby="pilot-title">
+<div class="pilot-box">
+<h2 id="pilot-title">Bem-vindo ao piloto C1NC0</h2>
+<p class="descricao">Este piloto avalia se o C1NC0 ajuda pessoas a examinar notícias com mais cuidado. A ferramenta organiza indícios observáveis, compara duas abordagens experimentais de Machine Learning e orienta leitura lateral. <strong>Ela não determina se uma notícia é verdadeira ou falsa.</strong></p>
+
+<div class="pilot-steps">
+<div class="pilot-step"><strong>Baixe a extensão.</strong> Use o botão abaixo para obter o pacote <code>c1nc0-extension-piloto-v1.zip</code>. Descompacte-o em uma pasta que você não pretende apagar durante o piloto.</div>
+<div class="pilot-step"><strong>Instale no Chrome/Edge em modo de desenvolvedor.</strong> Abra <code>chrome://extensions</code> (ou <code>edge://extensions</code>), ative <em>Modo do desenvolvedor</em>, escolha <em>Carregar sem compactação</em> e selecione a pasta descompactada <code>c1nc0-extension</code>.</div>
+<div class="pilot-step"><strong>Navegue normalmente por notícias.</strong> Quando a extensão identificar características jornalísticas, ela poderá sugerir o Painel C1NC0. Você também pode clicar no ícone da extensão e analisar a página atual manualmente.</div>
+<div class="pilot-step"><strong>Observe antes de interpretar.</strong> Leia “O que observamos”, “O que NÃO sabemos” e “O que checar?”. Faça a leitura lateral indicada pelo painel e consulte fontes independentes.</div>
+<div class="pilot-step"><strong>Compare os modelos como experimentos.</strong> O GaussianNB observa 19 features estruturais/linguísticas; o MultinomialNB observa título + texto via TF-IDF. Associação com uma classe do dataset <strong>não é probabilidade de veracidade</strong>. Concordância entre modelos não prova um fato; divergência não significa necessariamente erro.</div>
+<div class="pilot-step"><strong>Finalize com seu julgamento e feedback.</strong> Depois da análise, clique em <em>Avaliar experiência</em>. O questionário leva menos de 1 minuto e é essencial para avaliarmos o piloto.</div>
+</div>
+
+<div class="interpretation"><strong>Regra principal de interpretação:</strong> indícios → incertezas → o que checar → leitura lateral → fontes independentes → julgamento humano.</div>
+<div class="pilot-note"><strong>Privacidade do feedback:</strong> o formulário do piloto não solicita nome, e-mail nem a URL analisada. Os resultados agregados podem ser acompanhados publicamente.</div>
+
+<label class="dont-show"><input type="checkbox" id="pilot-dont-show"> Não mostrar automaticamente novamente neste navegador</label>
+<div class="pilot-actions">
+<a class="link-button primary" href="/static/downloads/c1nc0-extension-piloto-v1.zip" download>Baixar extensão</a>
+<a class="link-button" href="/resultados-piloto">Ver resultados</a>
+<button type="button" id="close-pilot-guide">Começar o piloto</button>
+</div>
+</div>
+</div>
+
+<script>
+(function(){
+ const overlay=document.getElementById("pilot-overlay");
+ const open=document.getElementById("open-pilot-guide");
+ const close=document.getElementById("close-pilot-guide");
+ const dont=document.getElementById("pilot-dont-show");
+ const key="c1nc0_pilot_guide_hidden_v1";
+ function show(){overlay.style.display="flex";}
+ function hide(){if(dont.checked){localStorage.setItem(key,"1");} overlay.style.display="none";}
+ open.addEventListener("click",show);
+ close.addEventListener("click",hide);
+ overlay.addEventListener("click",function(e){if(e.target===overlay)hide();});
+ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&overlay.style.display==="flex")hide();});
+ if(localStorage.getItem(key)!=="1"){show();}
+})();
+</script>
 
 {% if resultado and resultado.dados.status == 'OK' %}
 <div class="feedback-overlay" id="feedback-overlay">
