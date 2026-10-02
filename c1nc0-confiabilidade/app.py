@@ -201,12 +201,8 @@ VALID_MODES = {"gaussian", "multinomial", "comparar"}
 
 
 def _modo_modelo():
-    modo = (
-        request.form.get("modo_modelo")
-        or request.args.get("modo_modelo")
-        or "comparar"
-    ).strip().lower()
-    return modo if modo in VALID_MODES else "comparar"
+    """Modo fixo da experiência pública: sempre comparar as duas abordagens."""
+    return "comparar"
 
 
 @app.route("/", methods=["GET", "POST"])
