@@ -6,7 +6,7 @@
 <title>C1NC0 — Painel de Pensamento Crítico</title>
 <style>
 :root{--azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;--borda:#dfe5ec;--amarelo:#fff6d8;--verde:#43805a;--verdebg:#edf8f1;--laranja:#b07828;--roxo:#604080}
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:var(--fundo);color:var(--texto);margin:0}.container{max-width:1080px;margin:34px auto;padding:20px}h1,h2,h3{color:var(--azul)}h1{margin-bottom:8px}.descricao{line-height:1.6;color:#4f5b6a}.form-url{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0 10px}.form-url input[type=url]{padding:14px;border:1px solid #ccd3dd;border-radius:8px;font-size:16px}.model-choice{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:16px;margin:10px 0 24px}.model-choice label{display:block;padding:9px 4px;line-height:1.45}.model-choice small{color:var(--muted)}button{padding:14px 24px;border:0;border-radius:8px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;padding:22px;margin-top:18px;border-radius:12px;box-shadow:0 2px 10px #00000012}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.observamos{border-top:5px solid var(--verde)}.nao-sabemos{border-top:5px solid var(--laranja)}.section-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:var(--muted)}.indicio,.limite{padding:12px 0;border-bottom:1px solid #eee;line-height:1.45}.small{font-size:13px;color:var(--muted);line-height:1.5}.checklist{display:grid;gap:12px;margin-top:18px}.check{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border:1px solid var(--borda);border-radius:10px;background:#fff}.check input{width:20px;height:20px}.human{background:var(--verdebg);border-left:5px solid var(--verde)}.aviso{padding:15px;background:var(--amarelo);border-left:5px solid #d5a000;margin-top:18px;line-height:1.5}.erro{padding:15px;background:#ffeaea;border-left:5px solid #c33;margin-top:18px}.badge{display:inline-block;padding:4px 9px;border-radius:12px;background:#f1e9ff;color:var(--roxo);font-size:12px}.model-card{border-top:4px solid var(--azul2)}.feature{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #eee}.dataset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#f7f9fc;padding:14px;border-radius:10px}.metric strong{font-size:22px;color:var(--azul)}.feedback-overlay{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.feedback-box{background:#fff;width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:24px}.feedback-box fieldset{border:0;padding:0;margin:18px 0}.feedback-box label{display:block;margin:8px 0}.feedback-box textarea{width:100%;min-height:90px;padding:10px}.feedback-actions{display:flex;gap:10px}.secondary{background:#e8edf3;color:var(--azul)}.status{font-size:14px;margin-top:10px}.feedback-cta{text-align:center}.comparison{border-left:5px solid var(--azul2)}details{margin-top:18px;background:#fff;border:1px solid var(--borda);border-radius:12px;padding:0 20px 20px}summary{cursor:pointer;padding:18px 0;font-weight:700;color:var(--azul)}
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;background:var(--fundo);color:var(--texto);margin:0}.container{max-width:1080px;margin:34px auto;padding:20px}h1,h2,h3{color:var(--azul)}h1{margin-bottom:8px}.descricao{line-height:1.6;color:#4f5b6a}.form-url{display:grid;grid-template-columns:1fr auto;gap:10px;margin:22px 0 10px}.form-url input[type=url]{padding:14px;border:1px solid #ccd3dd;border-radius:8px;font-size:16px}.model-choice{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:16px;margin:10px 0 24px}.model-choice label{display:block;padding:9px 4px;line-height:1.45}.model-choice small{color:var(--muted)}button{padding:14px 24px;border:0;border-radius:8px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;padding:22px;margin-top:18px;border-radius:12px;box-shadow:0 2px 10px #00000012}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.observamos{border-top:5px solid var(--verde)}.nao-sabemos{border-top:5px solid var(--laranja)}.section-kicker{text-transform:uppercase;letter-spacing:.08em;font-size:12px;font-weight:700;color:var(--muted)}.indicio,.limite{padding:12px 0;border-bottom:1px solid #eee;line-height:1.45}.small{font-size:13px;color:var(--muted);line-height:1.5}.checklist{display:grid;gap:12px;margin-top:18px}.check{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border:1px solid var(--borda);border-radius:10px;background:#fff}.check input{width:20px;height:20px}.human{background:var(--verdebg);border-left:5px solid var(--verde)}.aviso{padding:15px;background:var(--amarelo);border-left:5px solid #d5a000;margin-top:18px;line-height:1.5}.erro{padding:15px;background:#ffeaea;border-left:5px solid #c33;margin-top:18px}.badge{display:inline-block;padding:4px 9px;border-radius:12px;background:#f1e9ff;color:var(--roxo);font-size:12px}.model-card{border-top:4px solid var(--azul2)}.feature{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #eee}.dataset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#f7f9fc;padding:14px;border-radius:10px}.metric strong{font-size:22px;color:var(--azul)}.feedback-overlay{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:16px;z-index:9999}.feedback-box{background:#fff;width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:24px}.feedback-box fieldset{border:0;padding:0;margin:18px 0}.feedback-box label{display:block;margin:8px 0}.feedback-box textarea{width:100%;min-height:90px;padding:10px}.feedback-actions{display:flex;gap:10px}.secondary{background:#e8edf3;color:var(--azul)}.status{font-size:14px;margin-top:10px}.feedback-cta{text-align:center}.comparison{border-left:5px solid var(--azul2)}details{margin-top:18px;background:#fff;border:1px solid var(--borda);border-radius:12px;padding:0 20px 20px}.advanced-details{border-left:5px solid var(--azul2)}.advanced-inner{box-shadow:none;border:1px solid var(--borda)}.nested-details{background:#f8fafc}summary{cursor:pointer;padding:18px 0;font-weight:700;color:var(--azul)}
 .top-actions{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 20px}.link-button{display:inline-block;padding:11px 16px;border-radius:8px;background:#e8edf3;color:var(--azul);font-weight:700;text-decoration:none}.link-button.primary{background:var(--azul);color:#fff}.pilot-overlay{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:16px;z-index:10000}.pilot-box{background:#fff;width:min(820px,100%);max-height:92vh;overflow:auto;border-radius:14px;padding:26px}.pilot-steps{counter-reset:passo;display:grid;gap:12px;margin:18px 0}.pilot-step{position:relative;padding:14px 14px 14px 52px;background:#f7f9fc;border:1px solid var(--borda);border-radius:10px;line-height:1.5}.pilot-step:before{counter-increment:passo;content:counter(passo);position:absolute;left:14px;top:14px;width:27px;height:27px;border-radius:50%;display:grid;place-items:center;background:var(--azul);color:#fff;font-weight:700}.pilot-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.pilot-actions a,.pilot-actions button{flex:1;text-align:center;text-decoration:none}.dont-show{display:flex;gap:8px;align-items:center;margin-top:18px;color:var(--muted);font-size:14px}.interpretation{background:var(--amarelo);border-left:5px solid #d5a000;padding:14px;margin:16px 0;line-height:1.55}.pilot-note{background:var(--verdebg);border-left:5px solid var(--verde);padding:14px;line-height:1.55}.extension-ok{background:var(--verdebg);border:1px solid #b9dec5;border-radius:10px;padding:14px;margin:14px 0;display:none}.extension-install{display:block}.help-float{position:fixed;right:20px;bottom:20px;z-index:9000;background:#1f7a45;color:#fff;text-decoration:none;padding:12px 16px;border-radius:999px;font-weight:700;box-shadow:0 5px 18px #0003}.device-note{background:#eef4fb;border-left:5px solid var(--azul2);padding:14px;margin:16px 0;line-height:1.55}@media(max-width:700px){.container{margin:10px auto}.form-url,.grid,.dataset-grid{display:block}.form-url button{width:100%}.nao-sabemos,.metric{margin-top:12px}.feature{grid-template-columns:1fr}.feedback-actions{display:block}.feedback-actions button{width:100%;margin-top:8px}}
 </style>
 </head>
@@ -18,7 +18,6 @@
 <button type="button" class="secondary" id="open-pilot-guide">Como participar do piloto?</button>
 <a class="link-button" href="/resultados-piloto">Ver resultados do piloto</a>
 <a class="link-button extension-install" href="/static/downloads/c1nc0-extension-piloto-v1.zip" download>Extensão opcional</a>
-<a class="link-button" href="/laboratorio">Etapa B — Laboratório</a>
 <a class="link-button" href="https://wa.me/5519992360856?text=Ol%C3%A1%21%20Estou%20participando%20do%20piloto%20do%20C1NC0%20e%20preciso%20de%20ajuda." target="_blank" rel="noopener">C1NC0 Ajuda</a>
 </div>
 
@@ -28,10 +27,10 @@
 <button type="submit">Analisar</button>
 </div>
 <div class="model-choice">
-<strong>Análise experimental de Machine Learning</strong>
-<label><input type="radio" name="modo_modelo" value="comparar" {% if modo_modelo == 'comparar' %}checked{% endif %}> <strong>Comparar os dois modelos</strong><br><small>Mostra lado a lado as perspectivas estrutural e textual. Recomendado para o piloto.</small></label>
-<label><input type="radio" name="modo_modelo" value="gaussian" {% if modo_modelo == 'gaussian' %}checked{% endif %}> Estrutural — Gaussian Naive Bayes <small>(19 features)</small></label>
-<label><input type="radio" name="modo_modelo" value="multinomial" {% if modo_modelo == 'multinomial' %}checked{% endif %}> Textual — Multinomial Naive Bayes <small>(título + texto / TF-IDF)</small></label>
+<strong>Como você quer observar esta notícia?</strong>
+<label><input type="radio" name="modo_modelo" value="comparar" {% if modo_modelo == 'comparar' %}checked{% endif %}> <strong>Comparar as duas formas de análise</strong><br><small>Observa tanto características da estrutura quanto padrões do texto. Recomendado para o piloto.</small></label>
+<label><input type="radio" name="modo_modelo" value="gaussian" {% if modo_modelo == 'gaussian' %}checked{% endif %}> <strong>Observar a estrutura da notícia</strong><br><small>Considera características observáveis da página e do conteúdo.</small></label>
+<label><input type="radio" name="modo_modelo" value="multinomial" {% if modo_modelo == 'multinomial' %}checked{% endif %}> <strong>Observar o texto da notícia</strong><br><small>Considera padrões de linguagem encontrados no título e no texto.</small></label>
 </div>
 </form>
 
@@ -41,7 +40,7 @@
 
 {% if resultado %}
 {% if resultado.dados.status == 'OK' %}
-<div class="card">
+<div id="resultado-inicio" class="card">
 <span class="section-kicker">Conteúdo analisado</span>
 <h2>{{ resultado.dados.titulo or 'Título não identificado' }}</h2>
 <p class="small">{{ resultado.dados.dominio }} · Autor: {{ resultado.dados.autor or 'não identificado' }} · Data: {{ resultado.dados.data or 'não identificada' }} · {{ resultado.dados.texto|length }} caracteres extraídos</p>
@@ -63,56 +62,64 @@
 </div>
 
 {% if resultado.ml and resultado.ml.disponivel %}
-<div class="card">
-<span class="section-kicker">Contexto do experimento</span><h2>Dataset usado no treinamento</h2>
+<details class="advanced-details">
+<summary>Informações técnicas avançadas</summary>
+<p class="small">Esta seção é opcional e reúne detalhes do experimento para quem deseja conhecer a parte técnica do C1NC0.</p>
+
+<div class="card advanced-inner">
+<span class="section-kicker">Contexto técnico</span><h2>Dados usados no treinamento</h2>
 <div class="dataset-grid">
-<div class="metric"><strong>{{ resultado.ml.dataset.registros }}</strong><br>notícias no dataset</div>
-<div class="metric"><strong>{{ resultado.ml.dataset.classes.true }}</strong><br>classe TRUE ({{ resultado.ml.dataset.percentuais.true }}%)</div>
-<div class="metric"><strong>{{ resultado.ml.dataset.classes.fake }}</strong><br>classe FAKE ({{ resultado.ml.dataset.percentuais.fake }}%)</div>
+<div class="metric"><strong>{{ resultado.ml.dataset.registros }}</strong><br>notícias no conjunto de treinamento</div>
+<div class="metric"><strong>{{ resultado.ml.dataset.classes.true }}</strong><br>grupo TRUE ({{ resultado.ml.dataset.percentuais.true }}%)</div>
+<div class="metric"><strong>{{ resultado.ml.dataset.classes.fake }}</strong><br>grupo FAKE ({{ resultado.ml.dataset.percentuais.fake }}%)</div>
 </div>
 <p><strong>Origens:</strong> DatasetFinal (9.974), FakeRecogna (4.695), Fake.Br Corpus (3.539) e Fake News Net (9).</p>
-<p><strong>Avaliação usada no treino:</strong> {{ resultado.ml.dataset.avaliacao }}.</p>
-<p class="small"><strong>Importante:</strong> {{ resultado.ml.dataset.limitacao }}</p>
+<p><strong>Configuração da avaliação:</strong> {{ resultado.ml.dataset.avaliacao }}.</p>
+<p class="small"><strong>Limitação conhecida:</strong> {{ resultado.ml.dataset.limitacao }}</p>
 </div>
 
 <div class="grid">
 {% if resultado.ml.gaussian %}
 <div class="card model-card">
-<span class="badge">Modelo estrutural</span><h2>Gaussian Naive Bayes</h2>
+<span class="badge">Abordagem estrutural</span><h2>Gaussian Naive Bayes</h2>
 <p><strong>Representação:</strong> {{ resultado.ml.gaussian.representacao }}</p>
-<p>Associação experimental predominante com a classe do dataset: <strong>{{ resultado.ml.gaussian.classe_associada|upper }}</strong>.</p>
-<p>Entre as features direcionadas: {{ resultado.ml.gaussian.percentual_true }}% favoreceram relativamente TRUE e {{ resultado.ml.gaussian.percentual_fake }}% favoreceram relativamente FAKE.</p>
-<p class="small">Esses percentuais são distribuição relativa das evidências por feature; não são predict_proba() nem probabilidade de veracidade.</p>
+<p>Maior associação experimental com o grupo do conjunto de treinamento: <strong>{{ resultado.ml.gaussian.classe_associada|upper }}</strong>.</p>
+<p>Entre as características direcionadas: {{ resultado.ml.gaussian.percentual_true }}% favoreceram relativamente TRUE e {{ resultado.ml.gaussian.percentual_fake }}% favoreceram relativamente FAKE.</p>
+<p class="small">Esses percentuais descrevem a distribuição relativa dos indícios por característica. Não representam probabilidade de a notícia ser verdadeira ou falsa.</p>
 </div>
 {% endif %}
 {% if resultado.ml.multinomial %}
 <div class="card model-card">
-<span class="badge">Modelo textual</span><h2>Multinomial Naive Bayes</h2>
+<span class="badge">Abordagem textual</span><h2>Multinomial Naive Bayes</h2>
 <p><strong>Representação:</strong> {{ resultado.ml.multinomial.representacao }}</p>
-<p>Associação experimental predominante com a classe do dataset: <strong>{{ resultado.ml.multinomial.classe_associada|upper }}</strong>.</p>
-<p class="small">O modelo reconhece padrões textuais aprendidos no dataset. Ele não consulta fontes externas e não verifica fatos.</p>
+<p>Maior associação experimental com o grupo do conjunto de treinamento: <strong>{{ resultado.ml.multinomial.classe_associada|upper }}</strong>.</p>
+<p class="small">O modelo reconhece padrões textuais aprendidos no conjunto de treinamento. Ele não consulta fontes externas e não verifica fatos.</p>
 </div>
 {% endif %}
 </div>
 
 {% if resultado.ml.modo == 'comparar' %}
-<div class="card comparison"><span class="section-kicker">Comparação experimental</span><h2>Como os modelos se comportaram?</h2>
+<div class="card comparison"><span class="section-kicker">Comparação técnica</span><h2>Como as duas abordagens se comportaram?</h2>
 {% if resultado.ml.modelos_concordaram %}
-<p><strong>Os dois modelos apresentaram maior associação com a mesma classe do dataset.</strong></p>
+<p><strong>As duas abordagens apresentaram maior associação com o mesmo grupo do conjunto de treinamento.</strong></p>
 {% else %}
-<p><strong>Os modelos apresentaram associações diferentes em relação às classes do dataset.</strong></p>
+<p><strong>As duas abordagens apresentaram associações diferentes em relação aos grupos do conjunto de treinamento.</strong></p>
 {% endif %}
-<p>Isso não é um veredito. O GaussianNB observa features estruturais/linguísticas; o MultinomialNB observa padrões de título + texto via TF-IDF. Concordância não prova veracidade e divergência não significa erro.</p>
+<p>Isso não é um veredito. O GaussianNB observa características estruturais e linguísticas; o MultinomialNB observa padrões de título e texto usando TF-IDF. Concordância não prova veracidade e divergência não significa erro.</p>
 </div>
 {% endif %}
 
 {% if resultado.ml.gaussian %}
-<details><summary>Ver as 19 features do GaussianNB</summary>
-{% for f in resultado.ml.gaussian.evidencias %}<div class="feature"><span><strong>{{ f.nome }}</strong>{% if f.foi_imputada %} <span class="badge">imputada</span>{% endif %}</span><span>{{ f.valor_formatado }}</span><span>{{ f.classe_evidencia }} ({{ '%+.2f'|format(f.evidencia) }})</span></div>{% endfor %}
+<details class="nested-details"><summary>Ver as 19 características usadas na análise estrutural</summary>
+{% for f in resultado.ml.gaussian.evidencias %}<div class="feature"><span><strong>{{ f.nome }}</strong>{% if f.foi_imputada %} <span class="badge">valor estimado</span>{% endif %}</span><span>{{ f.valor_formatado }}</span><span>{{ f.classe_evidencia }} ({{ '%+.2f'|format(f.evidencia) }})</span></div>{% endfor %}
 </details>
 {% endif %}
+</details>
 {% elif resultado.ml %}
-<div class="aviso"><strong>Análise ML indisponível:</strong> {{ resultado.ml.erro }}</div>
+<details class="advanced-details">
+<summary>Informações técnicas avançadas</summary>
+<div class="aviso"><strong>Análise técnica indisponível:</strong> {{ resultado.ml.erro }}</div>
+</details>
 {% endif %}
 
 <div class="card human">
@@ -136,7 +143,7 @@
 <div class="pilot-overlay" id="pilot-overlay" role="dialog" aria-modal="true" aria-labelledby="pilot-title">
 <div class="pilot-box">
 <h2 id="pilot-title">Bem-vindo ao piloto C1NC0</h2>
-<p class="descricao">Este piloto avalia se o C1NC0 ajuda pessoas a examinar notícias com mais cuidado. A ferramenta organiza indícios observáveis, compara duas abordagens experimentais de Machine Learning e orienta leitura lateral. <strong>Ela não determina se uma notícia é verdadeira ou falsa.</strong></p>
+<p class="descricao">Este piloto avalia se o C1NC0 ajuda pessoas a examinar notícias com mais cuidado. A ferramenta organiza indícios observáveis, oferece duas formas complementares de observar o conteúdo e orienta leitura lateral. <strong>Ela não determina se uma notícia é verdadeira ou falsa.</strong></p>
 
 <div class="device-note"><strong>Use no celular, notebook ou computador.</strong> A forma mais simples é <strong>copiar o link da notícia, colar no campo do C1NC0 e tocar/clicar em Analisar</strong>. No Chrome/Edge do computador, a extensão é <strong>opcional</strong> e apenas facilita o envio da página atual.</div>
 
@@ -148,7 +155,7 @@
 <div class="pilot-step"><strong>Cole a URL no C1NC0.</strong> Volte ao painel, cole o link no campo “URL da notícia” e toque/clique em <strong>Analisar</strong>. <strong>Não é necessário instalar a extensão.</strong></div>
 <div class="pilot-step extension-install"><strong>Opcional: instale a extensão no Chrome/Edge do computador.</strong> Baixe <code>c1nc0-extension-piloto-v1.zip</code>, descompacte, abra <code>chrome://extensions</code> (ou <code>edge://extensions</code>), ative <em>Modo do desenvolvedor</em> e use <em>Carregar sem compactação</em>. Ela apenas agiliza o envio da página atual.</div>
 <div class="pilot-step"><strong>Observe antes de interpretar.</strong> Leia “O que observamos”, “O que NÃO sabemos” e “O que checar?”. Faça a leitura lateral indicada pelo painel e consulte fontes independentes.</div>
-<div class="pilot-step"><strong>Compare os modelos como experimentos.</strong> O GaussianNB observa 19 features estruturais/linguísticas; o MultinomialNB observa título + texto via TF-IDF. Associação com uma classe do dataset <strong>não é probabilidade de veracidade</strong>. Concordância entre modelos não prova um fato; divergência não significa necessariamente erro.</div>
+<div class="pilot-step"><strong>Use as duas formas de análise como apoio.</strong> Uma observa características da estrutura da notícia e a outra observa padrões do texto. Nenhuma delas determina se o conteúdo é verdadeiro ou falso. Os detalhes técnicos ficam disponíveis apenas na opção <strong>Informações técnicas avançadas</strong>.</div>
 <div class="pilot-step"><strong>Finalize com seu julgamento e feedback.</strong> Faça pelo menos <strong>3 análises de notícias</strong> durante a validação e registre o feedback no sistema. O questionário leva menos de 1 minuto.</div>
 </div>
 
@@ -204,9 +211,19 @@
  setTimeout(pingExtension,350);
  setTimeout(pingExtension,1000);
  setTimeout(()=>{if(!extensionDetected)setExtensionState(false);},1500);
- if(localStorage.getItem(key)!=="1"){show();}
+ const hasResult={{ (resultado is not none)|tojson }};
+ if(!hasResult && localStorage.getItem(key)!=="1"){show();}
 })();
 </script>
+
+{% if resultado %}
+<script>
+window.addEventListener("DOMContentLoaded",function(){
+ const alvo=document.getElementById("resultado-inicio");
+ if(alvo){setTimeout(()=>alvo.scrollIntoView({behavior:"smooth",block:"start"}),120);}
+});
+</script>
+{% endif %}
 
 {% if resultado and resultado.dados.status == 'OK' %}
 <div class="feedback-overlay" id="feedback-overlay">
@@ -220,12 +237,12 @@
 <label><input type="radio" name="buscaria_outras_fontes" value="sim" required> Sim</label><label><input type="radio" name="buscaria_outras_fontes" value="talvez"> Talvez</label><label><input type="radio" name="buscaria_outras_fontes" value="nao"> Não</label></fieldset>
 <fieldset><strong>3. Ficou claro que os indícios apresentados não determinam se a notícia é verdadeira ou falsa?</strong>
 {% for n in range(1,6) %}<label><input type="radio" name="clareza_limites" value="{{n}}" required> {{n}}</label>{% endfor %}</fieldset>
-{% if modo_modelo == 'comparar' %}<fieldset><strong>4. A comparação ajudou você a entender que modelos diferentes podem analisar aspectos diferentes do mesmo conteúdo?</strong>
+{% if modo_modelo == 'comparar' %}<fieldset><strong>4. A comparação ajudou você a perceber que formas diferentes de análise podem observar aspectos diferentes do mesmo conteúdo?</strong>
 {% for n in range(1,6) %}<label><input type="radio" name="clareza_comparacao_modelos" value="{{n}}" required> {{n}}</label>{% endfor %}</fieldset>{% endif %}
 <fieldset><strong>5. Depois de usar o C1NC0, sua avaliação inicial do conteúdo mudou?</strong>
 <label><input type="radio" name="mudou_avaliacao" value="sim" required> Sim</label><label><input type="radio" name="mudou_avaliacao" value="nao"> Não</label><label><input type="radio" name="mudou_avaliacao" value="ainda_duvidas"> Ainda tenho dúvidas</label></fieldset>
 <fieldset><strong>6. Qual parte foi mais útil?</strong>
-<label><input type="radio" name="parte_mais_util" value="observamos" required> O que observamos</label><label><input type="radio" name="parte_mais_util" value="nao_sabemos"> O que não sabemos</label><label><input type="radio" name="parte_mais_util" value="o_que_checar"> O que checar</label><label><input type="radio" name="parte_mais_util" value="leitura_lateral"> Leitura lateral</label><label><input type="radio" name="parte_mais_util" value="ml"> Análise experimental de ML</label></fieldset>
+<label><input type="radio" name="parte_mais_util" value="observamos" required> O que observamos</label><label><input type="radio" name="parte_mais_util" value="nao_sabemos"> O que não sabemos</label><label><input type="radio" name="parte_mais_util" value="o_que_checar"> O que checar</label><label><input type="radio" name="parte_mais_util" value="leitura_lateral"> Leitura lateral</label><label><input type="radio" name="parte_mais_util" value="ml"> As duas formas de análise</label></fieldset>
 <fieldset><strong>7. Você utilizaria o C1NC0 novamente?</strong>
 <label><input type="radio" name="usaria_novamente" value="sim" required> Sim</label><label><input type="radio" name="usaria_novamente" value="talvez"> Talvez</label><label><input type="radio" name="usaria_novamente" value="nao"> Não</label></fieldset>
 <label><strong>Comentário opcional</strong><textarea name="comentario" maxlength="2000"></textarea></label>
