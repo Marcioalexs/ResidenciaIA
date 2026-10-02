@@ -68,19 +68,19 @@ def indicios_observaveis(dados):
             ),
         },
         {
-            "nome": "Procedência estruturada",
+            "nome": "Dados de identificação da página",
             "ok": bool(dados.get("json_ld")),
             "texto": (
-                "JSON-LD encontrado."
+                "A página fornece dados estruturados de identificação."
                 if dados.get("json_ld")
-                else "JSON-LD não localizado."
+                else "Não foram localizados dados estruturados de identificação da página."
             ),
         },
         {
-            "nome": "Coerência de títulos",
+            "nome": "Coerência entre os títulos",
             "ok": dados.get("coerencia_h1_og") is not None,
             "texto": (
-                f"Similaridade H1 × og:title: "
+                f"Semelhança entre o título visível e o título informado pela página: "
                 f"{dados.get('coerencia_h1_og')}%."
                 if dados.get("coerencia_h1_og") is not None
                 else (
