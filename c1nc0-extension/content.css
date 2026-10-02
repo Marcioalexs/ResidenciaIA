@@ -1,0 +1,31 @@
+#c1nc0-suggestion {
+  all: initial;
+  box-sizing: border-box;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 2147483647;
+  width: min(390px, calc(100vw - 32px));
+  padding: 18px;
+  border: 1px solid #dfe5ec;
+  border-top: 5px solid #153b68;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #243043;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, .22);
+  font-family: Arial, sans-serif;
+  line-height: 1.45;
+}
+
+#c1nc0-suggestion *, #c1nc0-suggestion *::before, #c1nc0-suggestion *::after {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+#c1nc0-suggestion strong { display: block; color: #153b68; font-size: 17px; }
+#c1nc0-suggestion p { margin: 10px 0; color: #3f4c5d; font-size: 14px; }
+#c1nc0-suggestion .c1nc0-detail { color: #657184; font-size: 12px; }
+#c1nc0-suggestion .c1nc0-actions { display: flex; gap: 8px; margin-top: 14px; }
+#c1nc0-suggestion button { border: 0; border-radius: 8px; padding: 10px 12px; cursor: pointer; font-size: 13px; font-weight: 700; }
+#c1nc0-suggestion .c1nc0-primary { background: #153b68; color: #fff; }
+#c1nc0-suggestion .c1nc0-secondary { background: #edf2f8; color: #243043; }

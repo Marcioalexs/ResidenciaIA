@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C1NC0 — Laboratório de Modelos</title>
+<style>
+:root{--azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;--borda:#dfe5ec;--verde:#43805a;--amarelo:#fff6d8;--vermelho:#a33}
+*{box-sizing:border-box}body{margin:0;background:var(--fundo);font-family:Arial,sans-serif;color:var(--texto)}.container{max-width:1120px;margin:30px auto;padding:20px}h1,h2,h3{color:var(--azul)}.top{display:flex;justify-content:space-between;gap:15px;align-items:center}.top a,.btn{display:inline-block;text-decoration:none;border:0;border-radius:8px;padding:12px 18px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:20px;margin-top:18px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#f7f9fc;border-radius:10px;padding:14px}.metric strong{display:block;font-size:25px;color:var(--azul)}.small{font-size:13px;color:var(--muted);line-height:1.5}.notice{background:var(--amarelo);border-left:5px solid #d5a000;padding:14px;line-height:1.5}.ok{color:var(--verde)}.pending{color:#9a6b19}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-weight:700}input,select{width:100%;margin-top:6px;padding:11px;border:1px solid #ccd3dd;border-radius:7px;background:#fff}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid #eee}.tag{display:inline-block;padding:4px 8px;background:#eef3f9;border-radius:12px;margin:3px;font-size:12px}.error{background:#ffeaea;border-left:5px solid var(--vermelho);padding:14px}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.step{padding:12px;border:1px solid var(--borda);border-radius:10px;background:#fff}.step.active{border-top:4px solid var(--azul2)}@media(max-width:800px){.grid,.metrics,.form-grid,.steps{grid-template-columns:1fr}.top{display:block}.top a{margin-top:10px}}
+</style>
+</head>
+<body><main class="container">
+<div class="top"><div><h1>Laboratório de Modelos C1NC0</h1><p class="small">Etapa B — datasets, experimentos reproduzíveis, métricas e evolução controlada dos modelos.</p></div><a href="/">Voltar ao C1NC0</a></div>
+
+<div class="steps"><div class="step active"><strong>B1</strong><br>Diagnóstico do dataset</div><div class="step"><strong>B2</strong><br>Qualidade e agrupamento</div><div class="step"><strong>B3–B6</strong><br>Configuração, treino e métricas</div><div class="step"><strong>B7</strong><br>Modelo candidato</div></div>
+
+<div class="notice"><strong>Separação importante:</strong> o Laboratório é experimental. Um classificador usa os rótulos do dataset para comparação científica; o produto público continua apresentando indícios, incertezas e perguntas de leitura crítica, sem transformar a classe prevista em veredito.</div>
+
+<section class="card"><h2>B1 — Diagnosticar dataset</h2><p>Envie um CSV para verificar estrutura, classes, ausentes e duplicatas antes de configurar qualquer treinamento.</p>
+<form method="post" enctype="multipart/form-data"><input type="file" name="dataset" accept=".csv,text/csv" required><p class="small">No Vercel use amostras pequenas para diagnóstico. Para o dataset completo (~100 mil notícias), execute esta etapa localmente; o treinamento pesado não será feito na função web do piloto.</p><button class="btn" type="submit">Analisar dataset</button></form>
+{% if erro %}<p class="error">{{ erro }}</p>{% endif %}
+</section>
+
+{% if diagnostico %}
+<section class="card"><h2>Diagnóstico — {{ diagnostico.arquivo }}</h2><div class="metrics">
+<div class="metric"><strong>{{ diagnostico.registros }}</strong>registros</div><div class="metric"><strong>{{ diagnostico.qtd_colunas }}</strong>colunas</div><div class="metric"><strong>{{ diagnostico.total_ausentes }}</strong>valores ausentes</div><div class="metric"><strong>{{ diagnostico.duplicatas_linha }}</strong>linhas duplicadas</div></div>
+<div class="grid"><div><h3>Colunas reconhecidas</h3><p>Classe: <b>{{ diagnostico.label_col or 'não reconhecida' }}</b><br>Título: <b>{{ diagnostico.titulo_col or 'não reconhecido' }}</b><br>Texto: <b>{{ diagnostico.texto_col or 'não reconhecido' }}</b><br>URL: <b>{{ diagnostico.url_col or 'não reconhecida' }}</b></p></div><div><h3>Repetições</h3><p>Títulos envolvidos em repetição: <b>{{ diagnostico.duplicatas_titulo if diagnostico.duplicatas_titulo is not none else 'N/A' }}</b><br>Textos envolvidos em repetição: <b>{{ diagnostico.duplicatas_texto if diagnostico.duplicatas_texto is not none else 'N/A' }}</b></p></div></div>
+<h3>Distribuição das classes</h3>{% if diagnostico.classes %}<table class="table"><tr><th>Classe</th><th>Quantidade</th><th>%</th></tr>{% for c in diagnostico.classes %}<tr><td>{{ c.classe }}</td><td>{{ c.qtd }}</td><td>{{ c.pct }}%</td></tr>{% endfor %}</table>{% else %}<p class="small">Não foi possível calcular sem uma coluna de classe reconhecida.</p>{% endif %}
+<h3>Colunas do arquivo</h3><div>{% for c in diagnostico.colunas %}<span class="tag">{{ c }}</span>{% endfor %}</div>
+{% if diagnostico.ausentes %}<h3>Ausentes (até 20 colunas)</h3><table class="table"><tr><th>Coluna</th><th>Quantidade</th><th>%</th></tr>{% for a in diagnostico.ausentes %}<tr><td>{{a.coluna}}</td><td>{{a.qtd}}</td><td>{{a.pct}}%</td></tr>{% endfor %}</table>{% endif %}
+{% if diagnostico.alertas %}<h3>Alertas metodológicos</h3><ul>{% for a in diagnostico.alertas %}<li>{{a}}</li>{% endfor %}</ul>{% endif %}
+</section>
+
+<section class="card"><h2>B3 — Preparar experimento</h2><p class="small">Nesta primeira entrega a configuração é registrada visualmente; o treinamento/catálogo será conectado no próximo incremento.</p><div class="form-grid">
+<label>Nome do experimento<input value="Experimento C1NC0 — {{ diagnostico.arquivo }}"></label>
+<label>Representação<select><option>Título + texto / TF-IDF</option><option>19 features estruturais/linguísticas</option><option>Título</option><option>Texto</option></select></label>
+<label>Modelo<select><option>Multinomial Naive Bayes</option><option>Gaussian Naive Bayes</option><option>Logistic Regression</option></select></label>
+<label>Split<select><option>80% treino / 20% teste — agrupado</option><option>80% treino / 20% teste — estratificado (baseline)</option></select></label>
+<label>Random state<input type="number" value="42"></label><label>Status<input value="Rascunho — ainda não treinado" disabled></label></div></section>
+{% endif %}
+
+<section class="card"><h2>Guiding Constraints — rastreabilidade</h2><table class="table"><tr><th>Status</th><th>Constraint</th><th>Evidência / próximo passo</th></tr>
+<tr><td class="ok">✓</td><td>Algoritmo de classificação</td><td>Naive Bayes já avaliado.</td></tr><tr><td class="ok">✓</td><td>Aprendizado supervisionado</td><td>GaussianNB e MultinomialNB; Laboratório ampliará comparação.</td></tr><tr><td class="pending">○</td><td>Aprendizado não supervisionado</td><td>K-Means em incremento posterior, interpretado sem tratá-lo como verdade/target.</td></tr><tr><td class="pending">◐</td><td>Limpeza / robustez</td><td>B1 diagnostica duplicatas; B2 fará agrupamento de conteúdos relacionados antes do split.</td></tr><tr><td class="ok">✓</td><td>Métricas</td><td>Accuracy, precision, recall, F1 e matriz de confusão; B6 padronizará a comparação.</td></tr><tr><td class="ok">✓</td><td>Python</td><td>Pipeline e aplicação implementados em Python.</td></tr><tr><td class="pending">◐</td><td>Visualizações</td><td>Existentes no notebook; serão incorporadas ao Laboratório.</td></tr></table></section>
+</main></body></html>

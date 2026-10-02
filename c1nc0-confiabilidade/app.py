@@ -1,1144 +1,406 @@
-# ============================================================
-# C1NC0 - Protótipo de apoio à avaliação de confiabilidade
-#
-# Objetivo:
-# Receber uma URL de notícia e coletar indícios observáveis
-# relacionados a:
-#
-# - origem
-# - data
-# - links
-# - imagem
-# - coerência
-#
-# O programa NÃO determina se a notícia é verdadeira ou falsa.
-# ============================================================
+import os
+
+from flask import Flask, jsonify, redirect, render_template, request, url_for
+
+from ml.article_extractor import coletar_noticia
+from ml.feature_extractor import calcular_features_url
+from ml.model_service import analisar_com_modelos, modelos_disponiveis
+from services.laboratorio_service import (
+    analisar_dataset,
+    executar_experimento,
+)
+from services.feedback_service import (
+    registrar_analise,
+    registrar_feedback,
+    obter_resultados_piloto,
+)
 
 
-# ------------------------------------------------------------
-# IMPORTAÇÕES
-# ------------------------------------------------------------
-
-# Flask cria a aplicação Web.
-from flask import Flask, render_template, request
-
-# Requests realiza as requisições HTTP aos sites.
-import requests
-
-# BeautifulSoup interpreta o HTML recebido.
-from bs4 import BeautifulSoup
-
-# urlparse permite separar domínio, caminho etc.
-# urljoin transforma URLs relativas em absolutas.
-from urllib.parse import urlparse, urljoin
-
-# Biblioteca nativa para interpretar JSON-LD.
-import json
-
-# Usada para comparar textos.
-from difflib import SequenceMatcher
-
-# Usada para validar endereços IP.
-import ipaddress
-
-# Usada para resolver nomes de domínio.
-import socket
-
-
-# ------------------------------------------------------------
-# CRIAÇÃO DA APLICAÇÃO FLASK
-# ------------------------------------------------------------
-
-# Cria o objeto principal da aplicação.
 app = Flask(__name__)
+app.config["MAX_CONTENT_LENGTH"] = 80 * 1024 * 1024  # 80 MB; dataset completo deve ser treinado localmente.
 
 
-# ------------------------------------------------------------
-# CONFIGURAÇÕES DO CRAWLER / SCRAPER
-# ------------------------------------------------------------
-
-# Define como nosso programa se identifica ao acessar sites.
-USER_AGENT = (
-    "C1NC0-Residencia-IA/0.1 "
-    "(projeto educacional)"
-)
-
-# Headers enviados nas requisições.
-HEADERS = {
-    "User-Agent": USER_AGENT,
-    "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8"
-}
-
-# Tempo máximo de espera por uma página.
-TIMEOUT = 12
-
-
-# ------------------------------------------------------------
-# PESOS DO SCORE HEURÍSTICO
-# ------------------------------------------------------------
-
-# Esses pesos são apenas uma HIPÓTESE INICIAL.
-#
-# Eles ainda precisam ser discutidos, testados e validados.
-#
-# Não representam probabilidade de verdade.
-
-PESOS = {
-    "origem": 20,
-    "data": 15,
-    "links": 20,
-    "imagem": 15,
-    "coerencia": 20,
-    "dados_estruturados": 10
-}
-
-
-# ============================================================
-# FUNÇÕES AUXILIARES
-# ============================================================
-
-
-# ------------------------------------------------------------
-# OBTER DOMÍNIO
-# ------------------------------------------------------------
-
-def obter_dominio(url):
-
-    # Divide a URL.
-    partes = urlparse(url)
-
-    # Recupera apenas o domínio.
-    dominio = partes.netloc.lower()
-
-    # Remove eventual porta.
-    dominio = dominio.split(":")[0]
-
-    # Remove www. apenas para facilitar comparações.
-    if dominio.startswith("www."):
-        dominio = dominio[4:]
-
-    return dominio
-
-
-# ------------------------------------------------------------
-# VALIDAR URL
-# ------------------------------------------------------------
-
-def validar_url_publica(url):
-
+def indicios_observaveis(dados):
     """
-    Impede o servidor público de acessar endereços locais
-    ou redes privadas.
+    Organiza os elementos que a aplicação conseguiu observar
+    diretamente na página analisada.
 
-    Isso é importante porque o usuário digita a URL.
+    Estes elementos são indícios e não representam um veredito
+    sobre a veracidade da notícia.
     """
-
-    try:
-
-        # Interpreta a URL.
-        parsed = urlparse(url)
-
-        # Aceitamos somente HTTP e HTTPS.
-        if parsed.scheme not in ("http", "https"):
-            return False
-
-        # É obrigatório existir hostname.
-        if not parsed.hostname:
-            return False
-
-        # Resolve o hostname para IP.
-        ip_texto = socket.gethostbyname(parsed.hostname)
-
-        # Converte para objeto IP.
-        ip = ipaddress.ip_address(ip_texto)
-
-        # Bloqueia IP privado.
-        if ip.is_private:
-            return False
-
-        # Bloqueia localhost.
-        if ip.is_loopback:
-            return False
-
-        # Bloqueia IP reservado.
-        if ip.is_reserved:
-            return False
-
-        # Bloqueia link-local.
-        if ip.is_link_local:
-            return False
-
-        return True
-
-    except Exception:
-
-        return False
-
-
-# ------------------------------------------------------------
-# OBTER META TAG
-# ------------------------------------------------------------
-
-def obter_meta(soup, chave):
-
-    # Primeiro tenta:
-    #
-    # <meta property="og:title">
-
-    elemento = soup.find(
-        "meta",
-        attrs={"property": chave}
-    )
-
-    # Caso não encontre, tenta:
-    #
-    # <meta name="author">
-
-    if elemento is None:
-
-        elemento = soup.find(
-            "meta",
-            attrs={"name": chave}
-        )
-
-    # Se encontrou...
-    if elemento:
-
-        # Recupera o atributo content.
-        valor = elemento.get("content")
-
-        if valor:
-
-            return valor.strip()
-
-    return None
-
-
-# ------------------------------------------------------------
-# EXTRAIR JSON-LD
-# ------------------------------------------------------------
-
-def extrair_json_ld(soup):
-
-    # Lista dos objetos encontrados.
-    objetos = []
-
-    # Procura:
-    #
-    # <script type="application/ld+json">
-
-    scripts = soup.find_all(
-        "script",
-        type="application/ld+json"
-    )
-
-    # Percorre cada bloco.
-    for script in scripts:
-
-        # Obtém conteúdo.
-        texto = script.string
-
-        # Ignora vazio.
-        if not texto:
-            continue
-
-        try:
-
-            # Converte JSON para objeto Python.
-            dados = json.loads(texto)
-
-            # Alguns sites têm lista.
-            if isinstance(dados, list):
-
-                objetos.extend(dados)
-
-            # Outros têm objeto único.
-            elif isinstance(dados, dict):
-
-                objetos.append(dados)
-
-        except (json.JSONDecodeError, TypeError):
-
-            # JSON inválido não interrompe o crawler.
-            continue
-
-    return objetos
-
-
-# ------------------------------------------------------------
-# PERCORRER JSON RECURSIVAMENTE
-# ------------------------------------------------------------
-
-def percorrer_json(objeto):
-
-    # Caso seja dicionário.
-    if isinstance(objeto, dict):
-
-        # Entrega o próprio dicionário.
-        yield objeto
-
-        # Percorre seus valores internos.
-        for valor in objeto.values():
-
-            yield from percorrer_json(valor)
-
-    # Caso seja uma lista.
-    elif isinstance(objeto, list):
-
-        for item in objeto:
-
-            yield from percorrer_json(item)
-
-
-# ------------------------------------------------------------
-# PROCURAR CAMPO NO JSON-LD
-# ------------------------------------------------------------
-
-def procurar_json_ld(objetos, campo):
-
-    # Percorre os objetos principais.
-    for objeto_principal in objetos:
-
-        # Percorre estruturas internas.
-        for objeto in percorrer_json(objeto_principal):
-
-            # Verifica se o campo existe.
-            if campo in objeto:
-
-                return objeto[campo]
-
-    return None
-
-
-# ------------------------------------------------------------
-# NORMALIZAR AUTOR
-# ------------------------------------------------------------
-
-def normalizar_autor(valor):
-
-    # Nada informado.
-    if valor is None:
-
-        return None
-
-    # Autor como string.
-    if isinstance(valor, str):
-
-        return valor.strip()
-
-    # Autor como objeto JSON.
-    if isinstance(valor, dict):
-
-        nome = valor.get("name")
-
-        if nome:
-
-            return str(nome).strip()
-
-    # Lista de autores.
-    if isinstance(valor, list):
-
-        nomes = []
-
-        for item in valor:
-
-            nome = normalizar_autor(item)
-
-            if nome:
-
-                nomes.append(nome)
-
-        if nomes:
-
-            return "; ".join(nomes)
-
-    return None
-
-
-# ------------------------------------------------------------
-# NORMALIZAR IMAGEM
-# ------------------------------------------------------------
-
-def normalizar_imagem(valor):
-
-    if valor is None:
-
-        return None
-
-    # Imagem como string.
-    if isinstance(valor, str):
-
-        return valor.strip()
-
-    # Imagem como objeto.
-    if isinstance(valor, dict):
-
-        return (
-            valor.get("url")
-            or valor.get("contentUrl")
-        )
-
-    # Lista de imagens.
-    if isinstance(valor, list) and valor:
-
-        return normalizar_imagem(valor[0])
-
-    return None
-
-
-# ------------------------------------------------------------
-# EXTRAIR LINKS EXTERNOS
-# ------------------------------------------------------------
-
-def extrair_links_externos(soup, url_base):
-
-    # Descobre domínio da notícia.
-    dominio_original = obter_dominio(url_base)
-
-    # Set evita duplicatas.
-    links = set()
-
-    # Procura todos os <a href="">
-    for tag in soup.find_all("a", href=True):
-
-        href = tag.get("href")
-
-        if not href:
-
-            continue
-
-        # Ignora tipos de links que não interessam.
-        if href.startswith(
-            (
-                "javascript:",
-                "mailto:",
-                "tel:",
-                "#"
-            )
-        ):
-
-            continue
-
-        # Resolve URL relativa.
-        url_completa = urljoin(
-            url_base,
-            href
-        )
-
-        dominio_link = obter_dominio(
-            url_completa
-        )
-
-        # Só queremos domínios diferentes.
-        if (
-            dominio_link
-            and dominio_link != dominio_original
-        ):
-
-            links.add(url_completa)
-
-    return sorted(links)
-
-
-# ------------------------------------------------------------
-# SIMILARIDADE ENTRE TÍTULOS
-# ------------------------------------------------------------
-
-def calcular_similaridade(texto1, texto2):
-
-    # Se algum estiver ausente...
-    if not texto1 or not texto2:
-
-        return None
-
-    # Normaliza caixa.
-    texto1 = texto1.lower().strip()
-
-    texto2 = texto2.lower().strip()
-
-    # SequenceMatcher devolve valor 0..1.
-    similaridade = SequenceMatcher(
-        None,
-        texto1,
-        texto2
-    ).ratio()
-
-    # Transformamos em porcentagem.
-    return round(similaridade * 100, 1)
-
-
-# ============================================================
-# COLETA DA NOTÍCIA
-# ============================================================
-
-def coletar_noticia(url):
-
-    # Estrutura inicial.
-    dados = {
-        "url": url,
-        "url_final": None,
-        "dominio": None,
-        "http_status": None,
-        "titulo_html": None,
-        "titulo_h1": None,
-        "titulo_og": None,
-        "autor": None,
-        "data": None,
-        "canonical": None,
-        "imagem": None,
-        "links_externos": [],
-        "qtd_links_externos": 0,
-        "json_ld": False,
-        "coerencia": None,
-        "status": None,
-        "erro": None
-    }
-
-    # Valida a URL antes do acesso.
-    if not validar_url_publica(url):
-
-        dados["status"] = "URL_INVALIDA"
-
-        dados["erro"] = (
-            "URL inválida ou endereço não permitido."
-        )
-
-        return dados
-
-    try:
-
-        # Faz a requisição.
-        response = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=TIMEOUT,
-            allow_redirects=True
-        )
-
-        # Guarda código HTTP.
-        dados["http_status"] = (
-            response.status_code
-        )
-
-        # Guarda URL final.
-        dados["url_final"] = response.url
-
-        # Guarda domínio.
-        dados["dominio"] = obter_dominio(
-            response.url
-        )
-
-        # Se servidor respondeu erro...
-        if response.status_code >= 400:
-
-            dados["status"] = (
-                f"HTTP_{response.status_code}"
-            )
-
-            return dados
-
-        # Interpreta HTML.
-        soup = BeautifulSoup(
-            response.text,
-            "lxml"
-        )
-
-
-        # ====================================================
-        # TÍTULO HTML
-        # ====================================================
-
-        if soup.title:
-
-            dados["titulo_html"] = (
-                soup.title.get_text(
-                    " ",
-                    strip=True
+    return [
+        {
+            "nome": "Origem e autoria",
+            "ok": bool(dados.get("dominio")),
+            "texto": (
+                f"Domínio identificado: "
+                f"{dados.get('dominio') or 'não identificado'}. "
+                f"Autor: {dados.get('autor') or 'não identificado'}."
+            ),
+        },
+        {
+            "nome": "Data",
+            "ok": bool(dados.get("data")),
+            "texto": (
+                f"Data recuperada: "
+                f"{dados.get('data') or 'não encontrada'}."
+            ),
+        },
+        {
+            "nome": "Links e referências externas",
+            "ok": dados.get("qtd_links_externos", 0) > 0,
+            "texto": (
+                f"{dados.get('qtd_links_externos', 0)} links externos "
+                f"em {dados.get('qtd_dominios_externos', 0)} "
+                f"domínios externos."
+            ),
+        },
+        {
+            "nome": "Imagem principal",
+            "ok": bool(dados.get("imagem")),
+            "texto": (
+                "Imagem principal declarada nos metadados."
+                if dados.get("imagem")
+                else (
+                    "Imagem principal não localizada "
+                    "nos metadados analisados."
                 )
-            )
-
-
-        # ====================================================
-        # H1
-        # ====================================================
-
-        h1 = soup.find("h1")
-
-        if h1:
-
-            dados["titulo_h1"] = (
-                h1.get_text(
-                    " ",
-                    strip=True
+            ),
+        },
+        {
+            "nome": "Procedência estruturada",
+            "ok": bool(dados.get("json_ld")),
+            "texto": (
+                "JSON-LD encontrado."
+                if dados.get("json_ld")
+                else "JSON-LD não localizado."
+            ),
+        },
+        {
+            "nome": "Coerência de títulos",
+            "ok": dados.get("coerencia_h1_og") is not None,
+            "texto": (
+                f"Similaridade H1 × og:title: "
+                f"{dados.get('coerencia_h1_og')}%."
+                if dados.get("coerencia_h1_og") is not None
+                else (
+                    "Não havia dados suficientes para comparar "
+                    "H1 e og:title."
                 )
-            )
+            ),
+        },
+    ]
+
+
+def limites_da_analise():
+    """
+    Explicita aquilo que o C1NC0 não consegue concluir apenas
+    a partir dos elementos coletados e dos modelos experimentais.
+    """
+    return [
+        {
+            "nome": "Veracidade factual",
+            "texto": (
+                "O painel não confirma se as afirmações da notícia "
+                "são verdadeiras ou falsas."
+            ),
+        },
+        {
+            "nome": "Intenção do autor",
+            "texto": (
+                "Características do texto não permitem determinar "
+                "automaticamente a intenção de quem publicou."
+            ),
+        },
+        {
+            "nome": "Contexto completo",
+            "texto": (
+                "Uma página isolada pode não conter todos os fatos, "
+                "documentos e acontecimentos necessários para "
+                "interpretar a informação."
+            ),
+        },
+        {
+            "nome": "Possíveis omissões",
+            "texto": (
+                "A ausência de determinada informação não permite "
+                "concluir automaticamente por que ela foi omitida."
+            ),
+        },
+        {
+            "nome": "Independência das fontes",
+            "texto": (
+                "A existência de links externos não garante que "
+                "as fontes sejam independentes nem que confirmem "
+                "as afirmações apresentadas."
+            ),
+        },
+    ]
+
+
+def roteiro_checagem():
+    """
+    Roteiro de leitura lateral para estimular a investigação
+    do usuário antes de formar seu julgamento.
+    """
+    return [
+        {
+            "titulo": "Quem publicou?",
+            "texto": (
+                "Identifique autor, veículo ou organização. "
+                "Procure informações sobre quem é responsável "
+                "pelo conteúdo e sobre a origem da publicação."
+            ),
+        },
+        {
+            "titulo": "Qual é a fonte original?",
+            "texto": (
+                "Se houver pesquisa, documento, entrevista, dado "
+                "ou comunicado citado, tente chegar à fonte primária."
+            ),
+        },
+        {
+            "titulo": (
+                "Outras fontes independentes relatam o mesmo fato?"
+            ),
+            "texto": (
+                "Faça leitura lateral: abra novas abas e procure "
+                "cobertura independente. Evite considerar simples "
+                "republicações do mesmo conteúdo como confirmações "
+                "independentes."
+            ),
+        },
+        {
+            "titulo": "A data e o contexto fazem sentido?",
+            "texto": (
+                "Verifique se conteúdo antigo, imagem anterior ou "
+                "informação originalmente correta está sendo "
+                "reutilizada fora de contexto."
+            ),
+        },
+        {
+            "titulo": "Os links sustentam as afirmações?",
+            "texto": (
+                "Abra as referências apresentadas e confira se elas "
+                "realmente apoiam as principais alegações do texto."
+            ),
+        },
+        {
+            "titulo": "Título e conteúdo dizem a mesma coisa?",
+            "texto": (
+                "Compare o título com o conteúdo completo e observe "
+                "possíveis exageros, simplificações ou conclusões "
+                "não sustentadas pelo texto."
+            ),
+        },
+    ]
 
 
-        # ====================================================
-        # OPEN GRAPH TITLE
-        # ====================================================
 
-        dados["titulo_og"] = obter_meta(
-            soup,
-            "og:title"
-        )
+VALID_MODES = {"gaussian", "multinomial", "comparar"}
 
 
-        # ====================================================
-        # JSON-LD
-        # ====================================================
+def _modo_modelo():
+    modo = (
+        request.form.get("modo_modelo")
+        or request.args.get("modo_modelo")
+        or "comparar"
+    ).strip().lower()
+    return modo if modo in VALID_MODES else "comparar"
 
-        json_ld = extrair_json_ld(soup)
 
-        dados["json_ld"] = bool(json_ld)
-
-
-        # ====================================================
-        # AUTOR
-        # ====================================================
-
-        # Primeiro tenta meta tag.
-        autor = obter_meta(
-            soup,
-            "author"
-        )
-
-        # Depois tenta JSON-LD.
-        if not autor:
-
-            autor = normalizar_autor(
-                procurar_json_ld(
-                    json_ld,
-                    "author"
-                )
-            )
-
-        dados["autor"] = autor
-
-
-        # ====================================================
-        # DATA
-        # ====================================================
-
-        data = obter_meta(
-            soup,
-            "article:published_time"
-        )
-
-        if not data:
-
-            data = procurar_json_ld(
-                json_ld,
-                "datePublished"
-            )
-
-        # Terceira tentativa: <time>
-        if not data:
-
-            tag_time = soup.find("time")
-
-            if tag_time:
-
-                data = (
-                    tag_time.get("datetime")
-                    or tag_time.get_text(
-                        " ",
-                        strip=True
-                    )
-                )
-
-        dados["data"] = data
-
-
-        # ====================================================
-        # CANONICAL
-        # ====================================================
-
-        canonical = soup.find(
-            "link",
-            rel="canonical"
-        )
-
-        if canonical:
-
-            dados["canonical"] = (
-                canonical.get("href")
-            )
-
-
-        # ====================================================
-        # IMAGEM
-        # ====================================================
-
-        imagem = obter_meta(
-            soup,
-            "og:image"
-        )
-
-        if not imagem:
-
-            imagem = normalizar_imagem(
-                procurar_json_ld(
-                    json_ld,
-                    "image"
-                )
-            )
-
-        dados["imagem"] = imagem
-
-
-        # ====================================================
-        # LINKS EXTERNOS
-        # ====================================================
-
-        links = extrair_links_externos(
-            soup,
-            response.url
-        )
-
-        dados["links_externos"] = links
-
-        dados["qtd_links_externos"] = len(
-            links
-        )
-
-
-        # ====================================================
-        # COERÊNCIA
-        # ====================================================
-
-        # Nesta versão, usamos a concordância entre:
-        #
-        # H1 da página
-        # e
-        # og:title
-        #
-        # como um primeiro indicador experimental.
-
-        dados["coerencia"] = (
-            calcular_similaridade(
-                dados["titulo_h1"],
-                dados["titulo_og"]
-            )
-        )
-
-
-        # Se chegamos até aqui...
-        dados["status"] = "OK"
-
-        return dados
-
-
-    # --------------------------------------------------------
-    # TIMEOUT
-    # --------------------------------------------------------
-
-    except requests.exceptions.Timeout:
-
-        dados["status"] = "TIMEOUT"
-
-        dados["erro"] = (
-            "O site demorou mais que o limite permitido."
-        )
-
-
-    # --------------------------------------------------------
-    # ERRO DE REDE
-    # --------------------------------------------------------
-
-    except requests.exceptions.RequestException as erro:
-
-        dados["status"] = "ERRO_REQUEST"
-
-        dados["erro"] = str(erro)
-
-
-    # --------------------------------------------------------
-    # OUTRO ERRO
-    # --------------------------------------------------------
-
-    except Exception as erro:
-
-        dados["status"] = "ERRO_PROCESSAMENTO"
-
-        dados["erro"] = str(erro)
-
-
-    return dados
-
-
-# ============================================================
-# FEATURE ENGINEERING + SCORE
-# ============================================================
-
-def calcular_score(dados):
-
-    # Caso a coleta não tenha terminado...
-    if dados["status"] != "OK":
-
-        return {
-            "score": None,
-            "faixa": "Coleta inconclusiva",
-            "indicios": [],
-            "explicacao": (
-                "Não foi possível calcular o score porque "
-                "a coleta da página não foi concluída."
-            )
-        }
-
-
-    # Lista que alimentará nosso painel.
-    indicios = []
-
-    # Score inicial.
-    score = 0
-
-
-    # ========================================================
-    # 1. ORIGEM
-    # ========================================================
-
-    # Consideramos como sinais iniciais:
-    #
-    # domínio identificável
-    # +
-    # autor
-
-    origem_ok = bool(
-        dados["dominio"]
-        and dados["autor"]
-    )
-
-    if origem_ok:
-
-        score += PESOS["origem"]
-
-        mensagem = (
-            f"Domínio identificado ({dados['dominio']}) "
-            f"e autor encontrado ({dados['autor']})."
-        )
-
-    elif dados["dominio"]:
-
-        score += PESOS["origem"] * 0.5
-
-        mensagem = (
-            f"Domínio identificado ({dados['dominio']}), "
-            "mas autor não encontrado."
-        )
-
-    else:
-
-        mensagem = (
-            "Não foi possível identificar adequadamente "
-            "a origem."
-        )
-
-    indicios.append({
-        "nome": "Origem",
-        "ok": origem_ok,
-        "texto": mensagem
-    })
-
-
-    # ========================================================
-    # 2. DATA
-    # ========================================================
-
-    data_ok = bool(
-        dados["data"]
-    )
-
-    if data_ok:
-
-        score += PESOS["data"]
-
-        mensagem = (
-            f"Data encontrada: {dados['data']}."
-        )
-
-    else:
-
-        mensagem = (
-            "Data de publicação não encontrada."
-        )
-
-    indicios.append({
-        "nome": "Data",
-        "ok": data_ok,
-        "texto": mensagem
-    })
-
-
-    # ========================================================
-    # 3. LINKS
-    # ========================================================
-
-    quantidade_links = (
-        dados["qtd_links_externos"]
-    )
-
-    if quantidade_links >= 3:
-
-        score += PESOS["links"]
-
-        links_ok = True
-
-    elif quantidade_links > 0:
-
-        score += PESOS["links"] * 0.5
-
-        links_ok = True
-
-    else:
-
-        links_ok = False
-
-    indicios.append({
-        "nome": "Links",
-        "ok": links_ok,
-        "texto": (
-            f"Foram encontrados "
-            f"{quantidade_links} links externos."
-        )
-    })
-
-
-    # ========================================================
-    # 4. IMAGEM
-    # ========================================================
-
-    imagem_ok = bool(
-        dados["imagem"]
-    )
-
-    if imagem_ok:
-
-        score += PESOS["imagem"]
-
-        mensagem = (
-            "A página declara uma imagem principal "
-            "em seus metadados."
-        )
-
-    else:
-
-        mensagem = (
-            "Não foi encontrada imagem principal "
-            "nos metadados analisados."
-        )
-
-    indicios.append({
-        "nome": "Imagem",
-        "ok": imagem_ok,
-        "texto": mensagem
-    })
-
-
-    # ========================================================
-    # 5. COERÊNCIA
-    # ========================================================
-
-    coerencia = dados["coerencia"]
-
-    if coerencia is None:
-
-        coerencia_ok = False
-
-        mensagem = (
-            "Não havia informações suficientes "
-            "para comparar os títulos."
-        )
-
-    elif coerencia >= 85:
-
-        coerencia_ok = True
-
-        score += PESOS["coerencia"]
-
-        mensagem = (
-            f"H1 e og:title apresentam "
-            f"{coerencia}% de similaridade."
-        )
-
-    elif coerencia >= 60:
-
-        coerencia_ok = True
-
-        score += PESOS["coerencia"] * 0.5
-
-        mensagem = (
-            f"H1 e og:title apresentam "
-            f"{coerencia}% de similaridade."
-        )
-
-    else:
-
-        coerencia_ok = False
-
-        mensagem = (
-            f"H1 e og:title apresentam apenas "
-            f"{coerencia}% de similaridade."
-        )
-
-    indicios.append({
-        "nome": "Coerência",
-        "ok": coerencia_ok,
-        "texto": mensagem
-    })
-
-
-    # ========================================================
-    # 6. DADOS ESTRUTURADOS
-    # ========================================================
-
-    json_ok = dados["json_ld"]
-
-    if json_ok:
-
-        score += PESOS[
-            "dados_estruturados"
-        ]
-
-        mensagem = (
-            "A página contém JSON-LD/dados estruturados."
-        )
-
-    else:
-
-        mensagem = (
-            "Não foi localizado JSON-LD."
-        )
-
-    indicios.append({
-        "nome": "Dados estruturados",
-        "ok": json_ok,
-        "texto": mensagem
-    })
-
-
-    # ========================================================
-    # ARREDONDAMENTO
-    # ========================================================
-
-    score = round(
-        score,
-        1
-    )
-
-
-    # ========================================================
-    # FAIXA NÃO BINÁRIA
-    # ========================================================
-
-    if score < 40:
-
-        faixa = (
-            "Evidência insuficiente"
-        )
-
-    elif score < 70:
-
-        faixa = (
-            "Evidência parcial"
-        )
-
-    else:
-
-        faixa = (
-            "Evidência mais robusta"
-        )
-
-
-    # ========================================================
-    # EXPLICAÇÃO
-    # ========================================================
-
-    explicacao = (
-        "O resultado representa somente a presença de "
-        "indícios observáveis de transparência e "
-        "procedência encontrados automaticamente. "
-        "Ele não determina se a informação é verdadeira "
-        "ou falsa e não representa probabilidade de "
-        "veracidade."
-    )
-
-
-    return {
-        "score": score,
-        "faixa": faixa,
-        "indicios": indicios,
-        "explicacao": explicacao
-    }
-
-
-# ============================================================
-# PÁGINA WEB
-# ============================================================
-
-@app.route(
-    "/",
-    methods=["GET", "POST"]
-)
+@app.route("/", methods=["GET", "POST"])
 def pagina_inicial():
-
-    # Resultado começa vazio.
     resultado = None
 
-    # URL começa vazia.
-    url = ""
+    url = (
+        request.form.get("url", "")
+        if request.method == "POST"
+        else request.args.get("url", "")
+    ).strip()
 
-    # Verifica se o usuário clicou em "Analisar".
-    if request.method == "POST":
+    modo_modelo = _modo_modelo()
+    analisar = request.method == "POST" or request.args.get("analisar") == "1"
+    origem_extensao = request.args.get("origem") == "extensao"
+    origem = "extensao" if origem_extensao else "site"
 
-        # Recupera a URL digitada.
-        url = request.form.get(
-            "url",
-            ""
-        ).strip()
+    if analisar and url:
+        dados = coletar_noticia(url)
 
-        # Só executa se houver URL.
-        if url:
+        resultado = {
+            "dados": dados,
+            "indicios": indicios_observaveis(dados),
+            "limites": limites_da_analise(),
+            "checagens": roteiro_checagem(),
+            "ml": None,
+        }
 
-            # Faz a coleta da página.
-            dados = coletar_noticia(
-                url
-            )
+        if dados.get("status") == "OK":
+            texto_modelo = f"{dados.get('titulo', '')} {dados.get('texto', '')}".strip()
 
-            # Calcula os indícios e o score.
-            analise = calcular_score(
-                dados
-            )
+            if len(texto_modelo) < 100:
+                resultado["ml"] = {
+                    "disponivel": False,
+                    "erro": (
+                        "Não foi possível extrair texto suficiente "
+                        "para executar a análise experimental."
+                    ),
+                }
+            elif modelos_disponiveis():
+                features = calcular_features_url(dados)
+                resultado["ml"] = analisar_com_modelos(
+                    dados,
+                    features,
+                    modo=modo_modelo,
+                )
+            else:
+                resultado["ml"] = {
+                    "disponivel": False,
+                    "erro": (
+                        "Modelos treinados ainda não foram publicados. "
+                        "Execute ml/train_models.py e versione os artefatos da pasta models."
+                    ),
+                }
 
-            # Junta os resultados.
-            resultado = {
-                "dados": dados,
-                "analise": analise
-            }
-
-    # Abre templates/index.html.
     return render_template(
         "index.html",
         resultado=resultado,
-        url=url
+        url=url,
+        origem_extensao=origem_extensao,
+        origem=origem,
+        modo_modelo=modo_modelo,
     )
 
-# ============================================================
-# EXECUÇÃO LOCAL
-# ============================================================
 
-# Esta parte é usada quando executamos:
-#
-# python app.py
-#
-# Localmente.
-#
-# No Vercel, o próprio runtime carrega o objeto app.
+def _json_payload():
+    return request.get_json(silent=True) or {}
+
+
+@app.post("/api/analises")
+def api_analises():
+    payload = _json_payload()
+    obrigatorios = ("session_id", "origem", "modo_modelo")
+
+    if any(not payload.get(campo) for campo in obrigatorios):
+        return jsonify({"ok": False, "erro": "Campos obrigatórios ausentes."}), 400
+
+    if payload["origem"] not in {"site", "extensao"}:
+        return jsonify({"ok": False, "erro": "Origem inválida."}), 400
+
+    if payload["modo_modelo"] not in VALID_MODES:
+        return jsonify({"ok": False, "erro": "Modo de modelo inválido."}), 400
+
+    try:
+        registro = registrar_analise(payload)
+        return jsonify({"ok": True, "id": registro.get("id")})
+    except Exception as exc:
+        app.logger.exception("Falha ao registrar análise no Supabase.")
+        return jsonify({"ok": False, "erro": "Não foi possível registrar a análise."}), 503
+
+
+@app.post("/api/feedback")
+def api_feedback():
+    payload = _json_payload()
+    obrigatorios = (
+        "session_id",
+        "origem",
+        "modo_modelo",
+        "ajudou_analise",
+        "buscaria_outras_fontes",
+        "clareza_limites",
+        "mudou_avaliacao",
+        "parte_mais_util",
+        "usaria_novamente",
+    )
+
+    if any(payload.get(campo) in (None, "") for campo in obrigatorios):
+        return jsonify({"ok": False, "erro": "Preencha os campos obrigatórios."}), 400
+
+    if payload["origem"] not in {"site", "extensao"}:
+        return jsonify({"ok": False, "erro": "Origem inválida."}), 400
+
+    if payload["modo_modelo"] not in VALID_MODES:
+        return jsonify({"ok": False, "erro": "Modo de modelo inválido."}), 400
+
+    try:
+        registro = registrar_feedback(payload)
+        return jsonify({"ok": True, "id": registro.get("id")})
+    except Exception:
+        app.logger.exception("Falha ao registrar feedback no Supabase.")
+        return jsonify({"ok": False, "erro": "Não foi possível salvar o feedback."}), 503
+
+
+@app.get("/resultados-piloto")
+def resultados_piloto():
+    """Painel público, somente leitura, com resultados agregados do piloto."""
+    try:
+        resumo = obter_resultados_piloto()
+        erro = None
+    except Exception:
+        app.logger.exception("Falha ao carregar dashboard do piloto.")
+        resumo = None
+        erro = "Não foi possível carregar os dados do piloto."
+
+    return render_template(
+        "resultados_piloto.html",
+        resumo=resumo,
+        erro=erro,
+    )
+
+
+@app.get("/admin/resultados-piloto")
+def resultados_piloto_legacy():
+    """Mantém links antigos funcionando após tornar o painel público."""
+    return redirect(url_for("resultados_piloto"), code=302)
+
+
+
+@app.route("/laboratorio", methods=["GET", "POST"])
+def laboratorio():
+    """Etapa B: diagnóstico e experimentação reproduzível com datasets CSV."""
+    diagnostico = None
+    experimento = None
+    erro_laboratorio = None
+
+    if request.method == "POST":
+        arquivo = request.files.get("dataset")
+        acao = (request.form.get("acao") or "diagnosticar").strip().lower()
+
+        if not arquivo or not arquivo.filename:
+            erro_laboratorio = "Selecione um arquivo CSV."
+        else:
+            try:
+                conteudo = arquivo.read()
+                diagnostico = analisar_dataset(conteudo, arquivo.filename)
+
+                if acao == "treinar":
+                    experimento = executar_experimento(
+                        conteudo,
+                        arquivo.filename,
+                        modelo=(request.form.get("modelo") or "multinomial"),
+                        test_size=float(request.form.get("test_size") or 0.20),
+                        random_state=int(request.form.get("random_state") or 42),
+                    )
+            except Exception as exc:
+                app.logger.exception("Falha no Laboratório C1NC0.")
+                erro_laboratorio = str(exc)
+
+    return render_template(
+        "laboratorio.html",
+        diagnostico=diagnostico,
+        experimento=experimento,
+        erro_laboratorio=erro_laboratorio,
+    )
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok",
+        "models_ready": modelos_disponiveis(),
+        "version": os.getenv("C1NC0_APP_VERSION", "piloto-2026-10-03"),
+    }
+
 
 if __name__ == "__main__":
-
-    app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True
-    )
+    app.run(host="0.0.0.0", port=5000, debug=True)
