@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-05T00:03:56Z",
+  "classe_foco": "fake",
+  "split": {
+    "metodo": "StratifiedGroupKFold — primeiro fold usado como holdout",
+    "planejado": "80% treino / 20% teste",
+    "treino": 7526,
+    "teste": 1882,
+    "grupos_treino": 7515,
+    "grupos_teste": 1879,
+    "sobreposicao_grupos": 0,
+    "random_state": 42
+  },
+  "explicacoes_metricas": {
+    "accuracy": "De todas as notícias avaliadas, qual fração recebeu a mesma classe que o rótulo do dataset. Pode parecer alta mesmo quando uma classe é muito mais frequente que a outra.",
+    "precision": "Entre as notícias que o modelo marcou como FAKE, quantas realmente estavam rotuladas como FAKE no dataset.",
+    "recall": "Entre todas as notícias rotuladas como FAKE no dataset, quantas o modelo conseguiu encontrar.",
+    "f1": "Combina Precision e Recall em uma única medida. É útil quando queremos equilibrar falsos alarmes e casos perdidos.",
+    "balanced_accuracy": "Calcula o acerto médio entre as classes, dando o mesmo peso a cada uma. É especialmente útil quando o dataset é desbalanceado."
+  },
+  "modelos": [
+    {
+      "id": "gaussian-meta",
+      "modelo": "GaussianNB",
+      "representacao": "19 features estruturais/linguísticas",
+      "metricas": {
+        "accuracy": 0.78746,
+        "precision": 0.811277,
+        "recall": 0.749203,
+        "f1": 0.779006,
+        "balanced_accuracy": 0.78746
+      },
+      "classe_foco": "fake",
+      "tempo_segundos": 0.172,
+      "status": "ok"
+    },
+    {
+      "id": "multinomial-tfidf",
+      "modelo": "MultinomialNB",
+      "representacao": "título + texto / TF-IDF (100000 features)",
+      "metricas": {
+        "accuracy": 0.989904,
+        "precision": 0.985263,
+        "recall": 0.994687,
+        "f1": 0.989952,
+        "balanced_accuracy": 0.989904
+      },
+      "classe_foco": "fake",
+      "tempo_segundos": 0.092,
+      "status": "ok"
+    },
+    {
+      "id": "logistic-tfidf",
+      "modelo": "LogisticRegression",
+      "representacao": "título + texto / TF-IDF (100000 features)",
+      "metricas": {
+        "accuracy": 0.996812,
+        "precision": 0.99787,
+        "recall": 0.995749,
+        "f1": 0.996809,
+        "balanced_accuracy": 0.996812
+      },
+      "classe_foco": "fake",
+      "tempo_segundos": 0.44,
+      "status": "ok"
+    }
+  ],
+  "melhor_f1_observado": {
+    "modelo_id": "logistic-tfidf",
+    "modelo": "LogisticRegression",
+    "f1": 0.996809
+  },
+  "nota": "A comparação mede aderência aos rótulos do dataset no mesmo split agrupado. Ela não mede veracidade factual fora desse contexto."
+}
