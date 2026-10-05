@@ -1,5 +1,9 @@
 {
-  "version": 2,
-  "builds": [{"src": "app.py", "use": "@vercel/python"}],
-  "routes": [{"src": "/(.*)", "dest": "app.py"}]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "flask",
+  "functions": {
+    "app.py": {
+      "excludeFiles": "{models/pt_core_news_sm/**,notebooks/**,scripts/**,docs/**,resources/**,services/laboratorio_service.py,**/__pycache__/**,**/*.pyc}"
+    }
+  }
 }

@@ -4,7 +4,6 @@ import math
 
 import joblib
 import numpy as np
-import pandas as pd
 
 from .feature_extractor import FEATURES_META, NOMES_FEATURES
 
@@ -70,19 +69,37 @@ def carregar_modelos():
     }
 
 
+def _valor_float(valor):
+    """Converte feature numérica para float; ausentes viram NaN para o imputer."""
+    if valor is None:
+        return np.nan
+    try:
+        numero = float(valor)
+    except (TypeError, ValueError):
+        return np.nan
+    return numero if math.isfinite(numero) else np.nan
+
+
+def _vetor_features(features_url):
+    """Mantém exatamente a ordem usada no treinamento, sem depender de pandas."""
+    valores = [_valor_float(features_url.get(feature)) for feature in FEATURES_META]
+    return np.asarray([valores], dtype=float)
+
+
 def _formatar_valor(feature, valor):
-    if valor is None or (isinstance(valor, float) and math.isnan(valor)):
+    numero = _valor_float(valor)
+    if math.isnan(numero):
         return "N/A"
     if feature in {"percentual_erros_ortograficos", "coerencia_titulos_pct"}:
-        return f"{float(valor):.2f}%"
+        return f"{numero:.2f}%"
     if feature in {
         "comprimento_medio_sentenca",
         "comprimento_medio_palavra",
         "emotividade",
         "diversidade_lexical",
     }:
-        return f"{float(valor):.2f}"
-    return str(int(round(float(valor))))
+        return f"{numero:.2f}"
+    return str(int(round(numero)))
 
 
 def calcular_evidencias_features(pipeline, features_url):
@@ -90,10 +107,8 @@ def calcular_evidencias_features(pipeline, features_url):
     scaler = pipeline.named_steps["scaler"]
     nb = pipeline.named_steps["nb"]
 
-    df_url = pd.DataFrame([features_url], columns=FEATURES_META)
-    originais = df_url.iloc[0].copy()
-
-    x_imp = imputer.transform(df_url)
+    x_raw = _vetor_features(features_url)
+    x_imp = imputer.transform(x_raw)
     x_scaled = scaler.transform(x_imp)
 
     classes = [str(c).lower() for c in nb.classes_]
@@ -120,15 +135,16 @@ def calcular_evidencias_features(pipeline, features_url):
         evidencia = float(lt - lf)
         classe = "TRUE" if evidencia > 0 else "FAKE" if evidencia < 0 else "NEUTRA"
 
-        valor = originais[feature]
-        imputada = bool(pd.isna(valor))
+        valor_original = features_url.get(feature)
+        valor_numerico = _valor_float(valor_original)
+        imputada = bool(math.isnan(valor_numerico))
 
         linhas.append(
             {
                 "feature": feature,
                 "nome": NOMES_FEATURES.get(feature, feature),
-                "valor": None if imputada else float(valor),
-                "valor_formatado": _formatar_valor(feature, valor),
+                "valor": None if imputada else valor_numerico,
+                "valor_formatado": _formatar_valor(feature, valor_original),
                 "evidencia": evidencia,
                 "classe_evidencia": classe,
                 "foi_imputada": imputada,
@@ -151,8 +167,12 @@ def _resultado_gaussian(modelos, features_url):
     pct_true = true_like / direcionadas * 100 if direcionadas else 0
     pct_fake = fake_like / direcionadas * 100 if direcionadas else 0
 
-    df_url = pd.DataFrame([features_url], columns=FEATURES_META)
-    classe = str(pipeline.predict(df_url)[0]).lower()
+    # Executa explicitamente as etapas para não depender de DataFrame/pandas no runtime.
+    imputer = pipeline.named_steps["imputer"]
+    scaler = pipeline.named_steps["scaler"]
+    nb = pipeline.named_steps["nb"]
+    x_raw = _vetor_features(features_url)
+    classe = str(nb.predict(scaler.transform(imputer.transform(x_raw)))[0]).lower()
 
     return {
         "id": "gaussian_nb_v1",

@@ -5,10 +5,7 @@ from flask import Flask, jsonify, redirect, render_template, request, url_for
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
 from ml.model_service import analisar_com_modelos, modelos_disponiveis
-from services.laboratorio_service import (
-    analisar_dataset,
-    carregar_artefatos_etapa_b,
-)
+from services.laboratorio_runtime import carregar_artefatos_etapa_b
 from services.feedback_service import (
     registrar_analise,
     registrar_feedback,
@@ -355,29 +352,12 @@ def resultados_piloto_legacy():
 
 
 
-@app.route("/laboratorio", methods=["GET", "POST"])
+@app.get("/laboratorio")
 def laboratorio():
-    """Etapa B: apresenta artefatos offline e permite diagnóstico leve de CSV."""
-    artefatos = carregar_artefatos_etapa_b()
-    diagnostico_upload = None
-    erro_laboratorio = None
-
-    if request.method == "POST":
-        arquivo = request.files.get("dataset")
-        if not arquivo or not arquivo.filename:
-            erro_laboratorio = "Selecione um arquivo CSV."
-        else:
-            try:
-                diagnostico_upload = analisar_dataset(arquivo.read(), arquivo.filename)
-            except Exception as exc:
-                app.logger.exception("Falha no diagnóstico rápido do Laboratório C1NC0.")
-                erro_laboratorio = str(exc)
-
+    """Etapa B: no web/Vercel, apenas apresenta artefatos gerados offline."""
     return render_template(
         "laboratorio.html",
-        artefatos=artefatos,
-        diagnostico_upload=diagnostico_upload,
-        erro_laboratorio=erro_laboratorio,
+        artefatos=carregar_artefatos_etapa_b(),
     )
 
 
