@@ -1,43 +1,336 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>C1NC0 — Laboratório de Modelos</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C1NC0 — Entenda a IA</title>
 <style>
-:root{--azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;--borda:#dfe5ec;--verde:#43805a;--amarelo:#fff6d8;--vermelho:#a33}
-*{box-sizing:border-box}body{margin:0;background:var(--fundo);font-family:Arial,sans-serif;color:var(--texto)}.container{max-width:1120px;margin:30px auto;padding:20px}h1,h2,h3{color:var(--azul)}.top{display:flex;justify-content:space-between;gap:15px;align-items:center}.top a,.btn{display:inline-block;text-decoration:none;border:0;border-radius:8px;padding:12px 18px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}.card{background:#fff;border:1px solid var(--borda);border-radius:12px;padding:20px;margin-top:18px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#f7f9fc;border-radius:10px;padding:14px}.metric strong{display:block;font-size:25px;color:var(--azul)}.small{font-size:13px;color:var(--muted);line-height:1.5}.notice{background:var(--amarelo);border-left:5px solid #d5a000;padding:14px;line-height:1.5}.ok{color:var(--verde)}.pending{color:#9a6b19}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-weight:700}input,select{width:100%;margin-top:6px;padding:11px;border:1px solid #ccd3dd;border-radius:7px;background:#fff}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:9px;border-bottom:1px solid #eee}.tag{display:inline-block;padding:4px 8px;background:#eef3f9;border-radius:12px;margin:3px;font-size:12px}.error{background:#ffeaea;border-left:5px solid var(--vermelho);padding:14px}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.step{padding:12px;border:1px solid var(--borda);border-radius:10px;background:#fff}.step.active{border-top:4px solid var(--azul2)}@media(max-width:800px){.grid,.metrics,.form-grid,.steps{grid-template-columns:1fr}.top{display:block}.top a{margin-top:10px}}
+:root{
+  --azul:#153b68;--azul2:#285d91;--fundo:#f5f7fa;--texto:#243043;--muted:#657184;
+  --borda:#dfe5ec;--verde:#2f7650;--verde-bg:#eef8f1;--amarelo:#fff6d8;--vermelho:#9a3838;
+  --vermelho-bg:#fff0f0;--roxo:#6652a3;--cinza:#eef2f6;--branco:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--fundo);font-family:Arial,sans-serif;color:var(--texto);line-height:1.5}
+a{color:var(--azul2)}
+.container{max-width:1180px;margin:28px auto;padding:18px}
+h1,h2,h3{color:var(--azul);margin-top:0}
+h1{font-size:30px;margin-bottom:5px}h2{font-size:23px}h3{font-size:17px}
+.top{display:flex;justify-content:space-between;gap:18px;align-items:center}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn,.top-actions a{display:inline-block;text-decoration:none;border:0;border-radius:9px;padding:11px 16px;background:var(--azul);color:#fff;font-weight:700;cursor:pointer}
+.btn.secondary{background:#eef3f9;color:var(--azul);border:1px solid #ccd7e4}
+.card{background:var(--branco);border:1px solid var(--borda);border-radius:14px;padding:22px;margin-top:18px;box-shadow:0 2px 8px rgba(28,47,69,.04)}
+.section-title{display:flex;gap:13px;align-items:flex-start}.badge{flex:0 0 auto;background:var(--azul);color:#fff;border-radius:10px;padding:7px 10px;font-weight:800}
+.small{font-size:13px;color:var(--muted);line-height:1.55}.muted{color:var(--muted)}
+.notice{background:var(--amarelo);border-left:5px solid #d5a000;padding:14px 16px;border-radius:8px;margin-top:16px}
+.success{background:var(--verde-bg);border-left:5px solid var(--verde);padding:14px 16px;border-radius:8px;margin-top:16px}
+.error{background:var(--vermelho-bg);border-left:5px solid var(--vermelho);padding:14px 16px;border-radius:8px;margin-top:16px}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:18px}.step{padding:12px;border:1px solid var(--borda);border-radius:10px;background:#fff}.step strong{color:var(--azul);font-size:17px}.step span{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.metric{background:#f7f9fc;border:1px solid #edf1f5;border-radius:11px;padding:15px}.metric strong{display:block;font-size:25px;color:var(--azul)}.metric span{font-size:12px;color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.subcard{border:1px solid var(--borda);border-radius:11px;padding:15px;background:#fbfcfd}
+.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;min-width:640px}.table th,.table td{text-align:left;padding:10px;border-bottom:1px solid #edf0f3;vertical-align:top}.table th{font-size:12px;color:#526175;text-transform:uppercase;letter-spacing:.03em}.table td.num,.table th.num{text-align:right;white-space:nowrap}
+.tag{display:inline-block;padding:4px 8px;background:#eef3f9;border-radius:14px;margin:3px;font-size:12px}.tag.ok{background:var(--verde-bg);color:var(--verde)}
+.bar-row{display:grid;grid-template-columns:minmax(90px,160px) 1fr 90px;gap:10px;align-items:center;margin:9px 0}.bar-track{height:12px;background:#edf1f5;border-radius:10px;overflow:hidden}.bar-fill{height:100%;background:var(--azul2);border-radius:10px}
+.metric-help{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.metric-help div{background:#f7f9fc;border-radius:10px;padding:12px;font-size:12px}.metric-help strong{display:block;color:var(--azul);font-size:14px;margin-bottom:5px}
+.model-block{border:1px solid var(--borda);border-radius:12px;padding:17px;margin-top:15px}.model-header{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}
+.cm-wrap{display:grid;grid-template-columns:minmax(320px,520px) 1fr;gap:20px;align-items:start}.cm{border-collapse:collapse;width:100%}.cm th,.cm td{border:1px solid #dce3ea;text-align:center;padding:14px}.cm td{font-size:22px;font-weight:800;color:var(--azul)}.cm th{background:#f5f8fb;font-size:12px}.cm .axis{background:#edf3f8;color:#526175}
+.errors{display:grid;grid-template-columns:1fr 1fr;gap:14px}.error-list{border-radius:10px;padding:14px}.error-list.fp{background:#fff8ed}.error-list.fn{background:#fff1f1}.example{background:#fff;border:1px solid #eadfda;border-radius:8px;padding:11px;margin-top:9px}.example p{margin:5px 0}.example .labels{font-size:12px;font-weight:700}
+.no-do{background:var(--vermelho-bg);border:2px solid #e6b6b6;border-radius:12px;padding:18px}.no-do h3{color:var(--vermelho)}.no-do li{margin-bottom:8px}
+.cluster-toolbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.cluster-frame{background:#fbfcfe;border:1px solid var(--borda);border-radius:12px;padding:10px;margin-top:14px;overflow:hidden}#clusterSvg{width:100%;height:auto;display:block}.legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}.legend-item{display:flex;align-items:center;gap:6px;font-size:12px}.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.hidden{display:none!important}.code{background:#162231;color:#f0f3f7;padding:13px;border-radius:9px;overflow:auto;font-family:Consolas,monospace;font-size:12px}
+footer{font-size:12px;color:var(--muted);padding:22px 2px}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}.metrics,.grid-3,.metric-help{grid-template-columns:1fr 1fr}.grid-2,.cm-wrap,.errors{grid-template-columns:1fr}.top{display:block}.top-actions{margin-top:12px}}
+@media(max-width:560px){.container{padding:10px}.steps,.metrics,.grid-3,.metric-help{grid-template-columns:1fr}.bar-row{grid-template-columns:85px 1fr 65px}.card{padding:16px}h1{font-size:25px}}
 </style>
 </head>
-<body><main class="container">
-<div class="top"><div><h1>Laboratório de Modelos C1NC0</h1><p class="small">Etapa B — datasets, experimentos reproduzíveis, métricas e evolução controlada dos modelos.</p></div><a href="/">Voltar ao C1NC0</a></div>
+<body>
+<main class="container">
+  <div class="top">
+    <div>
+      <h1>Entenda a IA — Laboratório C1NC0</h1>
+      <p class="small">Etapa B: conhecer os dados, comparar modelos, investigar erros, auditar limitações e descobrir padrões sem transformar IA em veredito.</p>
+    </div>
+    <div class="top-actions"><a href="/">Voltar ao C1NC0</a></div>
+  </div>
 
-<div class="steps"><div class="step active"><strong>B1</strong><br>Diagnóstico do dataset</div><div class="step"><strong>B2</strong><br>Qualidade e agrupamento</div><div class="step"><strong>B3–B6</strong><br>Configuração, treino e métricas</div><div class="step"><strong>B7</strong><br>Modelo candidato</div></div>
+  <div class="steps">
+    <div class="step"><strong>B1</strong><span>Conheça os dados</span></div>
+    <div class="step"><strong>B2</strong><span>Compare os modelos</span></div>
+    <div class="step"><strong>B3</strong><span>Onde os modelos erram?</span></div>
+    <div class="step"><strong>B4</strong><span>Audite nossa IA</span></div>
+    <div class="step"><strong>B5</strong><span>Descubra padrões</span></div>
+  </div>
 
-<div class="notice"><strong>Separação importante:</strong> o Laboratório é experimental. Um classificador usa os rótulos do dataset para comparação científica; o produto público continua apresentando indícios, incertezas e perguntas de leitura crítica, sem transformar a classe prevista em veredito.</div>
+  <div class="notice"><strong>Como interpretar:</strong> as classes e métricas abaixo medem aderência aos rótulos do dataset. O C1NC0 não usa esses resultados como confirmação automática de que uma notícia é verdadeira ou falsa.</div>
 
-<section class="card"><h2>B1 — Diagnosticar dataset</h2><p>Envie um CSV para verificar estrutura, classes, ausentes e duplicatas antes de configurar qualquer treinamento.</p>
-<form method="post" enctype="multipart/form-data"><input type="file" name="dataset" accept=".csv,text/csv" required><p class="small">No Vercel use amostras pequenas para diagnóstico. Para o dataset completo (~100 mil notícias), execute esta etapa localmente; o treinamento pesado não será feito na função web do piloto.</p><button class="btn" type="submit">Analisar dataset</button></form>
-{% if erro %}<p class="error">{{ erro }}</p>{% endif %}
-</section>
+  {% if artefatos.pronto %}
+    <div class="success"><strong>Artefatos B1–B5 carregados.</strong> Geração: {{ artefatos.manifest.gerado_em }} · Dataset: {{ artefatos.manifest.dataset.arquivo }} · SHA-256: <span class="small">{{ artefatos.manifest.dataset.sha256[:16] }}…</span></div>
+  {% else %}
+    <div class="error">
+      <strong>Os artefatos B1–B5 ainda não foram gerados com o dataset real.</strong>
+      <p>Esta página foi preparada para ler JSONs pré-calculados. Gere-os localmente e versione a pasta <code>static/laboratorio</code> antes do deploy.</p>
+      {% if artefatos.faltando %}<p class="small">Faltando: {{ artefatos.faltando|join(', ') }}</p>{% endif %}
+      {% if artefatos.erros %}<p class="small">Erros: {{ artefatos.erros|join(' | ') }}</p>{% endif %}
+      <div class="code">python .\scripts\gerar_artefatos_etapa_b.py --dataset "C:\caminho\03_Dataset_Final_C1NC0-Tabular.csv"</div>
+    </div>
+  {% endif %}
 
-{% if diagnostico %}
-<section class="card"><h2>Diagnóstico — {{ diagnostico.arquivo }}</h2><div class="metrics">
-<div class="metric"><strong>{{ diagnostico.registros }}</strong>registros</div><div class="metric"><strong>{{ diagnostico.qtd_colunas }}</strong>colunas</div><div class="metric"><strong>{{ diagnostico.total_ausentes }}</strong>valores ausentes</div><div class="metric"><strong>{{ diagnostico.duplicatas_linha }}</strong>linhas duplicadas</div></div>
-<div class="grid"><div><h3>Colunas reconhecidas</h3><p>Classe: <b>{{ diagnostico.label_col or 'não reconhecida' }}</b><br>Título: <b>{{ diagnostico.titulo_col or 'não reconhecido' }}</b><br>Texto: <b>{{ diagnostico.texto_col or 'não reconhecido' }}</b><br>URL: <b>{{ diagnostico.url_col or 'não reconhecida' }}</b></p></div><div><h3>Repetições</h3><p>Títulos envolvidos em repetição: <b>{{ diagnostico.duplicatas_titulo if diagnostico.duplicatas_titulo is not none else 'N/A' }}</b><br>Textos envolvidos em repetição: <b>{{ diagnostico.duplicatas_texto if diagnostico.duplicatas_texto is not none else 'N/A' }}</b></p></div></div>
-<h3>Distribuição das classes</h3>{% if diagnostico.classes %}<table class="table"><tr><th>Classe</th><th>Quantidade</th><th>%</th></tr>{% for c in diagnostico.classes %}<tr><td>{{ c.classe }}</td><td>{{ c.qtd }}</td><td>{{ c.pct }}%</td></tr>{% endfor %}</table>{% else %}<p class="small">Não foi possível calcular sem uma coluna de classe reconhecida.</p>{% endif %}
-<h3>Colunas do arquivo</h3><div>{% for c in diagnostico.colunas %}<span class="tag">{{ c }}</span>{% endfor %}</div>
-{% if diagnostico.ausentes %}<h3>Ausentes (até 20 colunas)</h3><table class="table"><tr><th>Coluna</th><th>Quantidade</th><th>%</th></tr>{% for a in diagnostico.ausentes %}<tr><td>{{a.coluna}}</td><td>{{a.qtd}}</td><td>{{a.pct}}%</td></tr>{% endfor %}</table>{% endif %}
-{% if diagnostico.alertas %}<h3>Alertas metodológicos</h3><ul>{% for a in diagnostico.alertas %}<li>{{a}}</li>{% endfor %}</ul>{% endif %}
-</section>
+  {% set ds = artefatos.get('dataset_summary') %}
+  {% if ds %}
+  <section class="card" id="b1">
+    <div class="section-title"><div class="badge">B1</div><div><h2>Conheça os dados</h2><p class="small">Antes de olhar qualquer acurácia, veja tamanho, equilíbrio, origens, duplicatas e ausências do conjunto analisado.</p></div></div>
+    <div class="metrics">
+      <div class="metric"><strong>{{ '{:,}'.format(ds.registros).replace(',', '.') }}</strong><span>registros</span></div>
+      <div class="metric"><strong>{{ ds.colunas }}</strong><span>colunas</span></div>
+      <div class="metric"><strong>{{ '{:,}'.format(ds.ausentes_total).replace(',', '.') }}</strong><span>valores ausentes</span></div>
+      <div class="metric"><strong>{{ '{:,}'.format(ds.linhas_duplicadas).replace(',', '.') }}</strong><span>linhas exatamente duplicadas</span></div>
+    </div>
 
-<section class="card"><h2>B3 — Preparar experimento</h2><p class="small">Nesta primeira entrega a configuração é registrada visualmente; o treinamento/catálogo será conectado no próximo incremento.</p><div class="form-grid">
-<label>Nome do experimento<input value="Experimento C1NC0 — {{ diagnostico.arquivo }}"></label>
-<label>Representação<select><option>Título + texto / TF-IDF</option><option>19 features estruturais/linguísticas</option><option>Título</option><option>Texto</option></select></label>
-<label>Modelo<select><option>Multinomial Naive Bayes</option><option>Gaussian Naive Bayes</option><option>Logistic Regression</option></select></label>
-<label>Split<select><option>80% treino / 20% teste — agrupado</option><option>80% treino / 20% teste — estratificado (baseline)</option></select></label>
-<label>Random state<input type="number" value="42"></label><label>Status<input value="Rascunho — ainda não treinado" disabled></label></div></section>
+    <div class="grid-2" style="margin-top:18px">
+      <div class="subcard">
+        <h3>Distribuição das classes</h3>
+        {% for item in ds.classes %}
+          <div class="bar-row"><strong>{{ item.classe|upper }}</strong><div class="bar-track"><div class="bar-fill" style="width:{{ item.percentual }}%"></div></div><span>{{ item.percentual }}%</span></div>
+          <p class="small" style="margin-top:-4px">{{ '{:,}'.format(item.quantidade).replace(',', '.') }} registros</p>
+        {% else %}<p class="small">Classe não reconhecida.</p>{% endfor %}
+      </div>
+      <div class="subcard">
+        <h3>Principais características</h3>
+        <p><strong>Títulos preenchidos:</strong> {{ ds.caracteristicas.titulos_preenchidos.percentual }}%</p>
+        <p><strong>Textos preenchidos:</strong> {{ ds.caracteristicas.textos_preenchidos.percentual }}%</p>
+        <p><strong>URLs preenchidas:</strong> {{ ds.caracteristicas.urls_preenchidas.percentual }}%</p>
+        <p><strong>Texto médio:</strong> {{ ds.caracteristicas.media_caracteres_texto if ds.caracteristicas.media_caracteres_texto is not none else 'N/A' }} caracteres</p>
+        <p><strong>Features estruturais/linguísticas:</strong> {{ ds.features_meta_disponiveis|length }}/{{ ds.features_meta_total }}</p>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div>
+        <h3>Origens do dataset</h3>
+        {% if ds.origens_tipo == 'dominio_url' %}<p class="small">Não foi encontrada uma coluna explícita de origem; abaixo são mostrados os domínios das URLs como aproximação.</p>{% endif %}
+        {% if ds.origens %}
+        <div class="table-wrap"><table class="table"><thead><tr><th>Origem</th><th class="num">Registros</th><th class="num">%</th></tr></thead><tbody>
+          {% for item in ds.origens %}<tr><td>{{ item.origem }}</td><td class="num">{{ '{:,}'.format(item.quantidade).replace(',', '.') }}</td><td class="num">{{ item.percentual }}%</td></tr>{% endfor %}
+        </tbody></table></div>
+        {% else %}<p class="small">Não foi localizada uma coluna de origem/fonte no CSV.</p>{% endif %}
+      </div>
+      <div>
+        <h3>Duplicatas e grupos</h3>
+        <p><strong>Linhas duplicadas:</strong> {{ ds.linhas_duplicadas }}</p>
+        <p><strong>Registros em títulos repetidos:</strong> {{ ds.titulos_repetidos_registros }}</p>
+        <p><strong>Registros em textos repetidos:</strong> {{ ds.textos_repetidos_registros }}</p>
+        <p><strong>Grupos de conteúdo:</strong> {{ '{:,}'.format(ds.grupos_conteudo).replace(',', '.') }}</p>
+        <p><strong>Registros em grupos repetidos:</strong> {{ ds.registros_em_grupos_repetidos }}</p>
+        <p><strong>Grupos com rótulos conflitantes:</strong> {{ ds.grupos_com_rotulos_conflitantes }}</p>
+      </div>
+    </div>
+
+    {% if ds.ausentes_por_coluna %}
+      <h3 style="margin-top:20px">Ausentes por coluna — maiores ocorrências</h3>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Coluna</th><th class="num">Ausentes</th><th class="num">%</th></tr></thead><tbody>
+        {% for item in ds.ausentes_por_coluna %}<tr><td>{{ item.coluna }}</td><td class="num">{{ item.quantidade }}</td><td class="num">{{ item.percentual }}%</td></tr>{% endfor %}
+      </tbody></table></div>
+    {% endif %}
+
+    {% if ds.avisos %}<div class="notice"><strong>Alertas metodológicos</strong><ul>{% for aviso in ds.avisos %}<li>{{ aviso }}</li>{% endfor %}</ul></div>{% endif %}
+  </section>
+  {% endif %}
+
+  {% set mc = artefatos.get('model_comparison') %}
+  {% if mc %}
+  <section class="card" id="b2">
+    <div class="section-title"><div class="badge">B2</div><div><h2>Compare os modelos</h2><p class="small">Todos os modelos abaixo são avaliados no mesmo conjunto de teste agrupado. Classe de foco: <strong>{{ mc.classe_foco|upper if mc.classe_foco else 'N/A' }}</strong>.</p></div></div>
+
+    <div class="metric-help">
+      <div><strong>Accuracy</strong>{{ mc.explicacoes_metricas.accuracy }}</div>
+      <div><strong>Precision</strong>{{ mc.explicacoes_metricas.precision }}</div>
+      <div><strong>Recall</strong>{{ mc.explicacoes_metricas.recall }}</div>
+      <div><strong>F1</strong>{{ mc.explicacoes_metricas.f1 }}</div>
+      <div><strong>Balanced Accuracy</strong>{{ mc.explicacoes_metricas.balanced_accuracy }}</div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:18px"><table class="table"><thead><tr><th>Modelo</th><th>Representação</th><th class="num">Accuracy</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th><th class="num">Balanced Acc.</th></tr></thead><tbody>
+      {% for model in mc.modelos %}
+      <tr>
+        <td><strong>{{ model.modelo }}</strong>{% if model.status != 'ok' %}<br><span class="small">{{ model.motivo }}</span>{% endif %}</td>
+        <td>{{ model.representacao }}</td>
+        {% if model.metricas %}
+          <td class="num">{{ '%.2f'|format(model.metricas.accuracy*100) }}%</td>
+          <td class="num">{{ '%.2f'|format(model.metricas.precision*100) }}%</td>
+          <td class="num">{{ '%.2f'|format(model.metricas.recall*100) }}%</td>
+          <td class="num"><strong>{{ '%.2f'|format(model.metricas.f1*100) }}%</strong></td>
+          <td class="num">{{ '%.2f'|format(model.metricas.balanced_accuracy*100) }}%</td>
+        {% else %}<td colspan="5" class="muted">Não calculado</td>{% endif %}
+      </tr>
+      {% endfor %}
+    </tbody></table></div>
+
+    <div class="grid-2" style="margin-top:16px">
+      <div class="subcard"><h3>Validação</h3><p>{{ mc.split.metodo }}</p><p class="small">Treino: {{ mc.split.treino }} · Teste: {{ mc.split.teste }} · Sobreposição de grupos: {{ mc.split.sobreposicao_grupos }} · random_state={{ mc.split.random_state }}</p></div>
+      <div class="subcard"><h3>Leitura responsável</h3><p>{{ mc.nota }}</p></div>
+    </div>
+  </section>
+  {% endif %}
+
+  {% set cm = artefatos.get('confusion_matrix') %}
+  {% set ee = artefatos.get('error_examples') %}
+  {% if cm %}
+  <section class="card" id="b3">
+    <div class="section-title"><div class="badge">B3</div><div><h2>Onde os modelos erram?</h2><p class="small">A matriz de confusão mostra acertos e trocas entre as classes. Os exemplos abaixo vêm do conjunto de teste, não do treinamento.</p></div></div>
+
+    {% for model in cm.modelos %}
+      {% set error_model = namespace(value=None) %}
+      {% if ee %}{% for candidate in ee.modelos %}{% if candidate.modelo_id == model.modelo_id %}{% set error_model.value = candidate %}{% endif %}{% endfor %}{% endif %}
+      <div class="model-block">
+        <div class="model-header"><div><h3>{{ model.modelo }}</h3><p class="small">Linhas = classe real · Colunas = classe prevista.</p></div><span class="tag">foco: {{ model.classe_foco|upper }}</span></div>
+        <div class="cm-wrap">
+          <table class="cm">
+            <tr><th class="axis">Real ↓ / Prevista →</th>{% for label in model.labels %}<th>{{ label|upper }}</th>{% endfor %}</tr>
+            {% for row in model.valores %}<tr><th>{{ model.labels[loop.index0]|upper }}</th>{% for value in row %}<td>{{ value }}</td>{% endfor %}</tr>{% endfor %}
+          </table>
+          <div class="subcard">
+            <p><strong>Falso positivo:</strong> {{ cm.como_ler.falso_positivo }}</p>
+            <p><strong>Falso negativo:</strong> {{ cm.como_ler.falso_negativo }}</p>
+            {% if error_model.value %}<p><strong>Total de erros:</strong> {{ error_model.value.erros_total }}<br><strong>Falsos positivos:</strong> {{ error_model.value.falsos_positivos_total }}<br><strong>Falsos negativos:</strong> {{ error_model.value.falsos_negativos_total }}</p>{% endif %}
+          </div>
+        </div>
+        {% if error_model.value %}
+        <div class="errors" style="margin-top:14px">
+          <div class="error-list fp"><strong>Exemplos de falsos positivos</strong>
+            {% for ex in error_model.value.falsos_positivos %}<div class="example"><div class="labels">Real: {{ ex.classe_real|upper }} → Prevista: {{ ex.classe_prevista|upper }}</div><p><strong>{{ ex.titulo or 'Sem título' }}</strong></p><p class="small">{{ ex.trecho }}</p>{% if ex.url %}<p class="small"><a href="{{ ex.url }}" target="_blank" rel="noopener noreferrer">Abrir URL registrada</a></p>{% endif %}</div>{% else %}<p class="small">Nenhum exemplo neste tipo de erro.</p>{% endfor %}
+          </div>
+          <div class="error-list fn"><strong>Exemplos de falsos negativos</strong>
+            {% for ex in error_model.value.falsos_negativos %}<div class="example"><div class="labels">Real: {{ ex.classe_real|upper }} → Prevista: {{ ex.classe_prevista|upper }}</div><p><strong>{{ ex.titulo or 'Sem título' }}</strong></p><p class="small">{{ ex.trecho }}</p>{% if ex.url %}<p class="small"><a href="{{ ex.url }}" target="_blank" rel="noopener noreferrer">Abrir URL registrada</a></p>{% endif %}</div>{% else %}<p class="small">Nenhum exemplo neste tipo de erro.</p>{% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+    {% if ee %}<p class="small">{{ ee.nota }}</p>{% endif %}
+  </section>
+  {% endif %}
+
+  {% set card = artefatos.get('model_card') %}
+  {% if card %}
+  <section class="card" id="b4">
+    <div class="section-title"><div class="badge">B4</div><div><h2>Audite nossa IA</h2><p class="small">Model Card: o que foi usado, como foi validado, onde estão os limites e o que a solução explicitamente não promete.</p></div></div>
+    <div class="grid-2">
+      <div class="subcard"><h3>Dataset e versão</h3><p><strong>{{ card.dataset.arquivo }}</strong></p><p class="small">SHA-256: {{ card.dataset.sha256 }}<br>Registros lidos: {{ card.dataset.registros_lidos }} · Registros usados: {{ card.dataset.registros_com_texto_e_classe }} · Colunas: {{ card.dataset.colunas }}</p></div>
+      <div class="subcard"><h3>Reprodutibilidade</h3><p class="small">random_state={{ card.reprodutibilidade.random_state }}<br>Python {{ card.reprodutibilidade.python }} · NumPy {{ card.reprodutibilidade.numpy }} · pandas {{ card.reprodutibilidade.pandas }} · scikit-learn {{ card.reprodutibilidade.scikit_learn }}</p></div>
+    </div>
+    <div class="grid-2" style="margin-top:15px">
+      <div><h3>Representações</h3><ul>{% for item in card.representacoes %}<li>{{ item }}</li>{% endfor %}</ul></div>
+      <div><h3>Limitações</h3><ul>{% for item in card.limitacoes %}<li>{{ item }}</li>{% endfor %}</ul></div>
+    </div>
+    <div class="no-do" style="margin-top:15px"><h3>O que este modelo NÃO faz</h3><ul>{% for item in card.o_que_este_modelo_nao_faz %}<li>{{ item }}</li>{% endfor %}</ul></div>
+  </section>
+  {% endif %}
+
+  {% set clusters = artefatos.get('clusters') %}
+  {% if clusters %}
+  <section class="card" id="b5">
+    <div class="section-title"><div class="badge">B5</div><div><h2>Descubra padrões</h2><p class="small">Primeiro observe apenas os grupos criados pelo K-Means. Depois revele os rótulos TRUE/FAKE para comparar — os rótulos não participam do agrupamento.</p></div></div>
+    <div class="cluster-toolbar">
+      <div><strong>{{ clusters.algoritmo }}</strong> · k={{ clusters.n_clusters }} · {{ clusters.representacao }}<br><span class="small">{{ '{:,}'.format(clusters.registros_clusterizados).replace(',', '.') }} registros clusterizados · {{ clusters.pontos_visualizados }} pontos exibidos · PCA 2D explica {{ '%.2f'|format(clusters.pca.variancia_explicada_total*100) }}% da variância desta representação.</span></div>
+      <button type="button" class="btn" id="revealLabels">Revelar TRUE/FAKE</button>
+    </div>
+    <div class="notice"><strong>Regra do experimento:</strong> {{ clusters.nota }}</div>
+    <div class="cluster-frame"><svg id="clusterSvg" viewBox="0 0 900 500" role="img" aria-label="Projeção PCA dos grupos encontrados pelo K-Means"></svg></div>
+    <div id="clusterLegend" class="legend"></div>
+
+    <div id="labelComposition" class="hidden" style="margin-top:18px">
+      <h3>Depois de revelar os rótulos: composição de cada grupo</h3>
+      <div class="table-wrap"><table class="table"><thead><tr><th>Grupo</th><th>Classe</th><th class="num">Quantidade</th><th class="num">%</th></tr></thead><tbody>
+        {% for group in clusters.composicao_apos_revelar_rotulos %}{% for item in group.classes %}<tr><td>Grupo {{ group.cluster + 1 }}</td><td>{{ item.classe|upper }}</td><td class="num">{{ item.quantidade }}</td><td class="num">{{ item.percentual }}%</td></tr>{% endfor %}{% endfor %}
+      </tbody></table></div>
+    </div>
+  </section>
+  {% endif %}
+
+  <section class="card">
+    <h2>Processamento do laboratório</h2>
+    <p class="small">Para manter o deploy leve e reproduzível, o Vercel não recebe nem processa o CSV do dataset. B1–B5 são calculados localmente pelo gerador offline e esta página apenas apresenta os JSONs versionados em <code>static/laboratorio</code>.</p>
+  </section>
+
+  <footer>Etapa B — C1NC0 · Laboratório educacional e auditável. Resultados experimentais não substituem checagem factual.</footer>
+</main>
+
+{% if clusters %}
+<script>
+(() => {
+  const points = {{ clusters.pontos | tojson }};
+  const svg = document.getElementById('clusterSvg');
+  const legend = document.getElementById('clusterLegend');
+  const button = document.getElementById('revealLabels');
+  const composition = document.getElementById('labelComposition');
+  let reveal = false;
+  const NS = 'http://www.w3.org/2000/svg';
+  const clusterColors = ['#285d91','#d28b28','#6652a3','#2f7650','#a84e6d','#58727f','#8a6b32','#4f6f45'];
+  const classColors = {fake:'#b64242', false:'#b64242', falso:'#b64242', true:'#2f7650', verdadeiro:'#2f7650'};
+  const fallbackClassColors = ['#b64242','#2f7650','#6652a3','#d28b28','#58727f'];
+
+  const labels = [...new Set(points.map(p => String(p.classe).toLowerCase()))].sort();
+  const labelColor = {};
+  labels.forEach((label, idx) => { labelColor[label] = classColors[label] || fallbackClassColors[idx % fallbackClassColors.length]; });
+
+  function el(name, attrs = {}) {
+    const node = document.createElementNS(NS, name);
+    Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+    return node;
+  }
+
+  function renderLegend() {
+    legend.innerHTML = '';
+    const entries = reveal
+      ? labels.map(label => [label.toUpperCase(), labelColor[label]])
+      : [...new Set(points.map(p => Number(p.cluster)))].sort((a,b) => a-b).map(c => [`Grupo ${c+1}`, clusterColors[c % clusterColors.length]]);
+    entries.forEach(([name, color]) => {
+      const item = document.createElement('div'); item.className = 'legend-item';
+      const dot = document.createElement('span'); dot.className = 'dot'; dot.style.background = color;
+      const text = document.createElement('span'); text.textContent = name;
+      item.append(dot, text); legend.appendChild(item);
+    });
+  }
+
+  function render() {
+    svg.innerHTML = '';
+    if (!points.length) return;
+    const pad = 38, width = 900, height = 500;
+    const xs = points.map(p => Number(p.x)), ys = points.map(p => Number(p.y));
+    let minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+    if (maxX === minX) maxX = minX + 1; if (maxY === minY) maxY = minY + 1;
+    const sx = x => pad + (Number(x)-minX)/(maxX-minX)*(width-2*pad);
+    const sy = y => height-pad - (Number(y)-minY)/(maxY-minY)*(height-2*pad);
+
+    const bg = el('rect',{x:0,y:0,width,height,fill:'#fbfcfe'}); svg.appendChild(bg);
+    svg.appendChild(el('line',{x1:pad,y1:height-pad,x2:width-pad,y2:height-pad,stroke:'#ccd6e0','stroke-width':1}));
+    svg.appendChild(el('line',{x1:pad,y1:pad,x2:pad,y2:height-pad,stroke:'#ccd6e0','stroke-width':1}));
+
+    points.forEach(p => {
+      const cls = String(p.classe).toLowerCase();
+      const color = reveal ? labelColor[cls] : clusterColors[Number(p.cluster) % clusterColors.length];
+      const circle = el('circle',{cx:sx(p.x),cy:sy(p.y),r:3.2,fill:color,opacity:.70});
+      const title = el('title');
+      title.textContent = reveal
+        ? `Grupo ${Number(p.cluster)+1} · ${String(p.classe).toUpperCase()} · ${p.titulo || 'sem título'}`
+        : `Grupo ${Number(p.cluster)+1} · ${p.titulo || 'sem título'}`;
+      circle.appendChild(title); svg.appendChild(circle);
+    });
+    renderLegend();
+  }
+
+  button.addEventListener('click', () => {
+    reveal = !reveal;
+    button.textContent = reveal ? 'Ocultar TRUE/FAKE' : 'Revelar TRUE/FAKE';
+    composition.classList.toggle('hidden', !reveal);
+    render();
+  });
+  render();
+})();
+</script>
 {% endif %}
-
-<section class="card"><h2>Guiding Constraints — rastreabilidade</h2><table class="table"><tr><th>Status</th><th>Constraint</th><th>Evidência / próximo passo</th></tr>
-<tr><td class="ok">✓</td><td>Algoritmo de classificação</td><td>Naive Bayes já avaliado.</td></tr><tr><td class="ok">✓</td><td>Aprendizado supervisionado</td><td>GaussianNB e MultinomialNB; Laboratório ampliará comparação.</td></tr><tr><td class="pending">○</td><td>Aprendizado não supervisionado</td><td>K-Means em incremento posterior, interpretado sem tratá-lo como verdade/target.</td></tr><tr><td class="pending">◐</td><td>Limpeza / robustez</td><td>B1 diagnostica duplicatas; B2 fará agrupamento de conteúdos relacionados antes do split.</td></tr><tr><td class="ok">✓</td><td>Métricas</td><td>Accuracy, precision, recall, F1 e matriz de confusão; B6 padronizará a comparação.</td></tr><tr><td class="ok">✓</td><td>Python</td><td>Pipeline e aplicação implementados em Python.</td></tr><tr><td class="pending">◐</td><td>Visualizações</td><td>Existentes no notebook; serão incorporadas ao Laboratório.</td></tr></table></section>
-</main></body></html>
+</body>
+</html>

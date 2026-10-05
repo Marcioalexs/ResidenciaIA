@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-05T00:03:56Z",
+  "modelos": [
+    {
+      "modelo_id": "gaussian-meta",
+      "modelo": "GaussianNB",
+      "labels": [
+        "fake",
+        "true"
+      ],
+      "valores": [
+        [
+          705,
+          236
+        ],
+        [
+          164,
+          777
+        ]
+      ],
+      "classe_foco": "fake"
+    },
+    {
+      "modelo_id": "multinomial-tfidf",
+      "modelo": "MultinomialNB",
+      "labels": [
+        "fake",
+        "true"
+      ],
+      "valores": [
+        [
+          936,
+          5
+        ],
+        [
+          14,
+          927
+        ]
+      ],
+      "classe_foco": "fake"
+    },
+    {
+      "modelo_id": "logistic-tfidf",
+      "modelo": "LogisticRegression",
+      "labels": [
+        "fake",
+        "true"
+      ],
+      "valores": [
+        [
+          937,
+          4
+        ],
+        [
+          2,
+          939
+        ]
+      ],
+      "classe_foco": "fake"
+    }
+  ],
+  "como_ler": {
+    "falso_positivo": "O modelo marcou como FAKE um item cujo rótulo do dataset era outra classe.",
+    "falso_negativo": "O modelo não marcou como FAKE um item cujo rótulo do dataset era FAKE."
+  }
+}

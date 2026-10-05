@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-05T00:03:56Z",
+  "dataset": {
+    "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
+    "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
+    "registros": 9408
+  },
+  "artefatos": {
+    "dataset_summary": "dataset-summary.json",
+    "model_comparison": "model-comparison.json",
+    "confusion_matrix": "confusion-matrix.json",
+    "error_examples": "error-examples.json",
+    "model_card": "model-card.json",
+    "clusters": "clusters.json"
+  },
+  "arquitetura": "offline-json-web-readonly"
+}

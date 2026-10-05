@@ -5,10 +5,7 @@ from flask import Flask, jsonify, redirect, render_template, request, url_for
 from ml.article_extractor import coletar_noticia
 from ml.feature_extractor import calcular_features_url
 from ml.model_service import analisar_com_modelos, modelos_disponiveis
-from services.laboratorio_service import (
-    analisar_dataset,
-    executar_experimento,
-)
+from services.laboratorio_runtime import carregar_artefatos_etapa_b
 from services.feedback_service import (
     registrar_analise,
     registrar_feedback,
@@ -351,41 +348,12 @@ def resultados_piloto_legacy():
 
 
 
-@app.route("/laboratorio", methods=["GET", "POST"])
+@app.get("/laboratorio")
 def laboratorio():
-    """Etapa B: diagnóstico e experimentação reproduzível com datasets CSV."""
-    diagnostico = None
-    experimento = None
-    erro_laboratorio = None
-
-    if request.method == "POST":
-        arquivo = request.files.get("dataset")
-        acao = (request.form.get("acao") or "diagnosticar").strip().lower()
-
-        if not arquivo or not arquivo.filename:
-            erro_laboratorio = "Selecione um arquivo CSV."
-        else:
-            try:
-                conteudo = arquivo.read()
-                diagnostico = analisar_dataset(conteudo, arquivo.filename)
-
-                if acao == "treinar":
-                    experimento = executar_experimento(
-                        conteudo,
-                        arquivo.filename,
-                        modelo=(request.form.get("modelo") or "multinomial"),
-                        test_size=float(request.form.get("test_size") or 0.20),
-                        random_state=int(request.form.get("random_state") or 42),
-                    )
-            except Exception as exc:
-                app.logger.exception("Falha no Laboratório C1NC0.")
-                erro_laboratorio = str(exc)
-
+    """Etapa B: no web/Vercel, apenas apresenta artefatos gerados offline."""
     return render_template(
         "laboratorio.html",
-        diagnostico=diagnostico,
-        experimento=experimento,
-        erro_laboratorio=erro_laboratorio,
+        artefatos=carregar_artefatos_etapa_b(),
     )
 
 

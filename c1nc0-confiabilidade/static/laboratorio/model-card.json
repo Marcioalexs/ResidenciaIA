@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-05T00:03:56Z",
+  "nome": "C1NC0 — Etapa B / Laboratório Entenda a IA",
+  "objetivo": "Comparar abordagens de classificação e tornar visíveis dados, métricas, erros, limitações e padrões exploratórios do dataset.",
+  "dataset": {
+    "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
+    "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
+    "registros_lidos": 9408,
+    "registros_com_texto_e_classe": 9408,
+    "colunas": 48,
+    "classes": [
+      {
+        "classe": "true",
+        "quantidade": 4704,
+        "percentual": 50.0
+      },
+      {
+        "classe": "fake",
+        "quantidade": 4704,
+        "percentual": 50.0
+      }
+    ],
+    "origens": [
+      {
+        "origem": "FakeRecogna",
+        "quantidade": 4695,
+        "percentual": 49.9
+      },
+      {
+        "origem": "DatasetFinal",
+        "quantidade": 3496,
+        "percentual": 37.16
+      },
+      {
+        "origem": "Fake.Br Corpus",
+        "quantidade": 1208,
+        "percentual": 12.84
+      },
+      {
+        "origem": "Fake News Net",
+        "quantidade": 9,
+        "percentual": 0.1
+      }
+    ],
+    "duplicatas_linha": 2,
+    "registros_em_grupos_repetidos": 28
+  },
+  "representacoes": [
+    "19 features estruturais/linguísticas, quando disponíveis",
+    "título + texto com TF-IDF de até 100000 features",
+    "19 features estruturais/linguísticas padronizadas para K-Means/PCA"
+  ],
+  "validacao": {
+    "metodo": "StratifiedGroupKFold — primeiro fold usado como holdout",
+    "planejado": "80% treino / 20% teste",
+    "treino": 7526,
+    "teste": 1882,
+    "grupos_treino": 7515,
+    "grupos_teste": 1879,
+    "sobreposicao_grupos": 0,
+    "random_state": 42
+  },
+  "modelos_avaliados": [
+    {
+      "id": "gaussian-meta",
+      "modelo": "GaussianNB",
+      "representacao": "19 features estruturais/linguísticas",
+      "metricas": {
+        "accuracy": 0.78746,
+        "precision": 0.811277,
+        "recall": 0.749203,
+        "f1": 0.779006,
+        "balanced_accuracy": 0.78746
+      },
+      "status": "ok"
+    },
+    {
+      "id": "multinomial-tfidf",
+      "modelo": "MultinomialNB",
+      "representacao": "título + texto / TF-IDF (100000 features)",
+      "metricas": {
+        "accuracy": 0.989904,
+        "precision": 0.985263,
+        "recall": 0.994687,
+        "f1": 0.989952,
+        "balanced_accuracy": 0.989904
+      },
+      "status": "ok"
+    },
+    {
+      "id": "logistic-tfidf",
+      "modelo": "LogisticRegression",
+      "representacao": "título + texto / TF-IDF (100000 features)",
+      "metricas": {
+        "accuracy": 0.996812,
+        "precision": 0.99787,
+        "recall": 0.995749,
+        "f1": 0.996809,
+        "balanced_accuracy": 0.996812
+      },
+      "status": "ok"
+    }
+  ],
+  "limitacoes": [
+    "Os rótulos do dataset podem conter vieses, ruídos ou regras de coleta que o modelo aprende indiretamente.",
+    "O agrupamento de treino/teste controla conteúdo exato normalizado, mas ainda não bloqueia toda similaridade semântica.",
+    "Desempenho elevado no dataset não garante generalização para novos veículos, temas, períodos ou estilos de escrita.",
+    "TF-IDF aprende associações de palavras e expressões; isso não equivale a compreender fatos ou causalidade.",
+    "K-Means encontra proximidade na representação escolhida; os grupos não são classes verdadeiras nem prova de separação natural."
+  ],
+  "o_que_este_modelo_nao_faz": [
+    "Não verifica fatos em fontes externas nem confirma se uma afirmação é verdadeira ou falsa.",
+    "Não substitui leitura lateral, checagem humana, investigação jornalística ou consulta à fonte primária.",
+    "Não determina intenção, ironia, contexto completo ou motivação de quem publicou.",
+    "Não transforma a saída TRUE/FAKE em probabilidade calibrada de veracidade.",
+    "Não deve ser usado sozinho para decisões que afetem pessoas, reputação, direitos ou acesso a oportunidades."
+  ],
+  "uso_recomendado": [
+    "Ensino e auditoria de modelos supervisionados e não supervisionados.",
+    "Comparação metodológica de representações e métricas.",
+    "Geração de perguntas para investigação humana, sempre mantendo incerteza e contexto visíveis."
+  ],
+  "reprodutibilidade": {
+    "random_state": 42,
+    "python": "3.14.3",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit_learn": "1.9.1",
+    "gerador": "services.laboratorio_service.gerar_artefatos_etapa_b"
+  }
+}
