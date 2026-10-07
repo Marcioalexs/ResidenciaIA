@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-07T15:14:39Z",
+  "nome": "dataset_crawler_ptbr_consolidado",
+  "arquivo": "dataset_crawler_ptbr_consolidado.csv",
+  "sha256_original": "1a3f38cfef84314626ae77be53a640d3446107f170c62f9f43d35b570f438a8b",
+  "sha256_treinamento": "73fc677fee9fcd3a7a2b1a5870c8bcdfc5a6f82149bb07783c95ca1e54469976",
+  "registros_arquivo_original": 46383,
+  "registros": 33618,
+  "filtro_elegibilidade": true,
+  "classes": {
+    "true": 22257,
+    "fake": 11361
+  },
+  "percentuais": {
+    "true": 66.21,
+    "fake": 33.79
+  },
+  "origens": {
+    "g1.globo.com": 1960,
+    "www1.folha.uol.com.br": 1030,
+    "www.estadao.com.br": 1008,
+    "www.plantaobrasil.net": 1000,
+    "www.folhapolitica.org": 996,
+    "sbtnews.sbt.com.br": 992,
+    "www.aosfatos.org": 992,
+    "jornal.usp.br": 990,
+    "www.terra.com.br": 988,
+    "www.metropoles.com": 985,
+    "relevantenews.com.br": 985,
+    "www.otempo.com.br": 983
+  },
+  "origens_total": 81,
+  "origens_campo": "dominio",
+  "status_coleta_ok": 33618,
+  "representacoes": {
+    "gaussian": "19 features estruturais/linguísticas",
+    "multinomial": "título + texto com TF-IDF de unigramas e bigramas (até 100.000 características)"
+  },
+  "avaliacao": "StratifiedGroupKFold; primeiro fold como holdout ≈80/20; grupos por conteúdo exato normalizado; random_state=42",
+  "limitacao": "O split impede que duplicatas exatas normalizadas atravessem treino/teste, mas ainda não controla toda similaridade semântica entre republicações. As classes refletem os rótulos do dataset e não constituem verificação factual."
+}

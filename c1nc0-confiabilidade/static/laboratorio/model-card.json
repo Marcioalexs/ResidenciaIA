@@ -1,50 +1,35 @@
 {
   "schema_version": 1,
-  "gerado_em": "2026-10-05T00:03:56Z",
+  "gerado_em": "2026-10-07T15:14:39Z",
   "nome": "C1NC0 — Etapa B / Laboratório Entenda a IA",
   "objetivo": "Comparar abordagens de classificação e tornar visíveis dados, métricas, erros, limitações e padrões exploratórios do dataset.",
   "dataset": {
-    "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
-    "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
-    "registros_lidos": 9408,
-    "registros_com_texto_e_classe": 9408,
-    "colunas": 48,
+    "arquivo": "dataset_crawler_ptbr_consolidado.csv",
+    "sha256": "73fc677fee9fcd3a7a2b1a5870c8bcdfc5a6f82149bb07783c95ca1e54469976",
+    "registros_lidos": 33618,
+    "registros_com_texto_e_classe": 33618,
+    "colunas": 45,
     "classes": [
       {
         "classe": "true",
-        "quantidade": 4704,
-        "percentual": 50.0
+        "quantidade": 22257,
+        "percentual": 66.21
       },
       {
         "classe": "fake",
-        "quantidade": 4704,
-        "percentual": 50.0
+        "quantidade": 11361,
+        "percentual": 33.79
       }
     ],
     "origens": [
       {
-        "origem": "FakeRecogna",
-        "quantidade": 4695,
-        "percentual": 49.9
-      },
-      {
-        "origem": "DatasetFinal",
-        "quantidade": 3496,
-        "percentual": 37.16
-      },
-      {
-        "origem": "Fake.Br Corpus",
-        "quantidade": 1208,
-        "percentual": 12.84
-      },
-      {
-        "origem": "Fake News Net",
-        "quantidade": 9,
-        "percentual": 0.1
+        "origem": "crawler_ptbr_credibilidade_v1",
+        "quantidade": 33618,
+        "percentual": 100.0
       }
     ],
-    "duplicatas_linha": 2,
-    "registros_em_grupos_repetidos": 28
+    "duplicatas_linha": 0,
+    "registros_em_grupos_repetidos": 0
   },
   "representacoes": [
     "19 features estruturais/linguísticas, quando disponíveis",
@@ -54,10 +39,10 @@
   "validacao": {
     "metodo": "StratifiedGroupKFold — primeiro fold usado como holdout",
     "planejado": "80% treino / 20% teste",
-    "treino": 7526,
-    "teste": 1882,
-    "grupos_treino": 7515,
-    "grupos_teste": 1879,
+    "treino": 26894,
+    "teste": 6724,
+    "grupos_treino": 26894,
+    "grupos_teste": 6724,
     "sobreposicao_grupos": 0,
     "random_state": 42
   },
@@ -67,11 +52,11 @@
       "modelo": "GaussianNB",
       "representacao": "19 features estruturais/linguísticas",
       "metricas": {
-        "accuracy": 0.78746,
-        "precision": 0.811277,
-        "recall": 0.749203,
-        "f1": 0.779006,
-        "balanced_accuracy": 0.78746
+        "accuracy": 0.525729,
+        "precision": 0.410641,
+        "recall": 0.927377,
+        "f1": 0.569229,
+        "balanced_accuracy": 0.624066
       },
       "status": "ok"
     },
@@ -80,11 +65,11 @@
       "modelo": "MultinomialNB",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.989904,
-        "precision": 0.985263,
-        "recall": 0.994687,
-        "f1": 0.989952,
-        "balanced_accuracy": 0.989904
+        "accuracy": 0.830904,
+        "precision": 0.698635,
+        "recall": 0.878521,
+        "f1": 0.778319,
+        "balanced_accuracy": 0.842562
       },
       "status": "ok"
     },
@@ -93,11 +78,11 @@
       "modelo": "LogisticRegression",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.996812,
-        "precision": 0.99787,
-        "recall": 0.995749,
-        "f1": 0.996809,
-        "balanced_accuracy": 0.996812
+        "accuracy": 0.924896,
+        "precision": 0.940209,
+        "recall": 0.830546,
+        "f1": 0.881982,
+        "balanced_accuracy": 0.901796
       },
       "status": "ok"
     }

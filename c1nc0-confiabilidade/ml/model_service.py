@@ -10,35 +10,62 @@ from .feature_extractor import FEATURES_META, NOMES_FEATURES
 ROOT = Path(__file__).resolve().parents[1]
 MODELS = ROOT / "models"
 
-DATASET_INFO = {
-    "nome": "DATASET_TERCEIROGENITO_V1_URL_UNIFORME_PT",
-    "registros": 18217,
-    "classes": {
-        "true": 13513,
-        "fake": 4704,
-    },
-    "percentuais": {
-        "true": 74.18,
-        "fake": 25.82,
-    },
-    "origens": {
-        "DatasetFinal": 9974,
-        "FakeRecogna": 4695,
-        "Fake.Br Corpus": 3539,
-        "Fake News Net": 9,
-    },
-    "status_coleta_ok": 18217,
+FALLBACK_DATASET_INFO = {
+    "nome": "Dataset de treinamento não identificado",
+    "arquivo": None,
+    "registros": 0,
+    "classes": {"true": 0, "fake": 0},
+    "percentuais": {"true": 0.0, "fake": 0.0},
+    "origens": {},
+    "origens_total": 0,
+    "status_coleta_ok": 0,
     "representacoes": {
         "gaussian": "19 features estruturais/linguísticas",
         "multinomial": "título + texto com TF-IDF de unigramas e bigramas (até 100.000 características)",
     },
-    "avaliacao": "divisão estratificada 80/20; random_state=42",
+    "avaliacao": "split agrupado por conteúdo; random_state=42",
     "limitacao": (
-        "O dataset é desbalanceado e a auditoria metodológica identificou duplicatas e "
-        "sobreposição de conteúdos entre treino e teste. As métricas atuais são experimentais "
-        "e precisam de validação adicional com agrupamento de conteúdos relacionados e URLs externas."
+        "As métricas são experimentais e dependem da composição do dataset. "
+        "O modelo não verifica fatos nem produz probabilidade calibrada de veracidade."
     ),
 }
+
+
+def carregar_dataset_info():
+    """Carrega do treinamento as informações exibidas pela interface.
+
+    O arquivo models/dataset_info.json é gerado pelo script
+    scripts/gerar_pacote_treinamento_c1nc0.py. O fallback mantém a aplicação
+    funcional caso o arquivo ainda não tenha sido publicado.
+    """
+    path = MODELS / "dataset_info.json"
+    if not path.exists():
+        return dict(FALLBACK_DATASET_INFO)
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return dict(FALLBACK_DATASET_INFO)
+
+    info = dict(FALLBACK_DATASET_INFO)
+    info.update(payload if isinstance(payload, dict) else {})
+    info["classes"] = {
+        **FALLBACK_DATASET_INFO["classes"],
+        **(info.get("classes") or {}),
+    }
+    info["percentuais"] = {
+        **FALLBACK_DATASET_INFO["percentuais"],
+        **(info.get("percentuais") or {}),
+    }
+    info["representacoes"] = {
+        **FALLBACK_DATASET_INFO["representacoes"],
+        **(info.get("representacoes") or {}),
+    }
+    info["origens"] = info.get("origens") or {}
+    return info
+
+
+DATASET_INFO = carregar_dataset_info()
 
 
 def modelos_disponiveis():

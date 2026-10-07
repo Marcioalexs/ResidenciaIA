@@ -1,111 +1,111 @@
 {
   "schema_version": 1,
-  "gerado_em": "2026-10-05T00:03:56Z",
+  "gerado_em": "2026-10-07T15:14:39Z",
   "limite_exemplos_por_tipo": 6,
   "modelos": [
     {
       "modelo_id": "gaussian-meta",
       "modelo": "GaussianNB",
       "classe_foco": "fake",
-      "falsos_positivos_total": 164,
-      "falsos_negativos_total": 236,
-      "erros_total": 400,
+      "falsos_positivos_total": 3024,
+      "falsos_negativos_total": 165,
+      "erros_total": 3189,
       "falsos_positivos": [
         {
-          "id": "37",
-          "titulo": "Só 9 países terão pior resultado do PIB que o Brasil em 2015, estima FMI",
-          "trecho": "A economia brasileira recuou 0,2% no primeiro trimestre de 2015. Apesar do recuo o país não entrou na chamada \"recessão técnica\" – para isso, é preciso que haja queda por dois trimestres consecutivos. A expectativa, no entanto, é que o país não esteja longe disso: o FMI estima que o PIB do Brasil tenha uma redução de 1% em 2015, com inflação de 7,8%. Além...",
-          "url": "https://g1.globo.com/economia/noticia/2015/05/so-9-paises-terao-pior-resultado-do-pib-que-o-brasil-em-2015-estima-fmi.html",
+          "id": "3",
+          "titulo": "Resul ado das eleições 2026 em Quirinópolis (GO): como foi a vo ação no 1º urno",
+          "trecho": "Flavio Bolsonaro (PL) foi o candida o a presiden e mais vo ado em Quirinópolis (GO), com 14.886 vo os. Lula (PT) foi o segundo mais vo ado, com 8.125 vo os. Os dados foram divulgados pelo Tribunal Superior Elei oral (TSE). Es a repor agem mos ra como foi a vo ação para presiden e, governador, senador, depu ado federal e depu ado es adual apenas em Quirinó...",
+          "url": "https://g1.globo.com/go/goias/eleicoes/2026/noticia/2026/10/05/resultado-das-eleicoes-2026-em-quirinopolis-go-como-foi-a-votacao-no-1o-turno.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "103",
-          "titulo": "Renato Gaúcho no São Paulo? Relembre o quase acerto do atacante com o Tricolor em 97 | Ge",
-          "trecho": "A história ficou eternizada com a imagem de Renato Gaúcho segurando a camisa do São Paulo em sua apresentação no salão nobre do Morumbi. Mas o que deu errado na negociação à época? – Era uma proposta válida da Federação Paulista, que queria promover o Paulistão. Foi decisão do Renato não seguir adiante – disse Fernando Casal de Rey, presidente do São Paul...",
-          "url": "https://ge.globo.com/futebol/times/sao-paulo/noticia/renato-gaucho-no-sao-paulo-relembre-o-quase-acerto-do-atacante-com-o-tricolor-em-97.ghtml",
+          "id": "8",
+          "titulo": "Resul ado das eleições 2026 em Por elândia (GO): como foi a vo ação no 1º urno",
+          "trecho": "Flavio Bolsonaro (PL) foi o candida o a presiden e mais vo ado em Por elândia (GO), com 1.451 vo os. Lula (PT) foi o segundo mais vo ado, com 838 vo os. Os dados foram divulgados pelo Tribunal Superior Elei oral (TSE). Es a repor agem mos ra como foi a vo ação para presiden e, governador, senador, depu ado federal e depu ado es adual apenas em Por elândia...",
+          "url": "https://g1.globo.com/go/goias/eleicoes/2026/noticia/2026/10/05/resultado-das-eleicoes-2026-em-portelandia-go-como-foi-a-votacao-no-1o-turno.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "142",
-          "titulo": "Reynaldo Gianecchini relata ano de autoanálise: 'Período de olhar mais para dentro' | Gshow",
-          "trecho": "Reynaldo Gianecchini está longe das novelas desde o início de 2017, quando se despediu de Pedro, protagonista de A Lei do Amor. Se engana, no entanto, quem pensa que, desde então, o ator tem aproveitado um período de descanso. Além de viajar com o espetáculo 'Os Guardas do Taj', no qual contracena com Ricardo Tozzi, ele aproveitou este ano para mergulhar...",
-          "url": "https://gshow.globo.com/cultura-pop/famosos/noticia/reynaldo-gianecchini-relata-ano-de-autoanalise-periodo-de-olhar-mais-para-dentro.ghtml",
+          "id": "14",
+          "titulo": "'Me dis raí com o painel do carro', diz es udan e de medicina após a ropelamen o e mor e de idoso em Cuiabá",
+          "trecho": "O es udan e de medicina iden ificado como Eduardo Henrique de Carvalho, de 20 anos, que havia sido preso em flagran e na úl ima sex a-feira (2), em Cuiabá, suspei o de a ropelar e ma ar Valdemir Ernes o de Souza, 86 anos, na Avenida Beira Rio, afirmou em depoimen o à polícia que se dis raiu ao olhar para o painel do carro momen os an es do aciden e. Ele d...",
+          "url": "https://g1.globo.com/mt/mato-grosso/noticia/2026/10/05/me-distrai-com-o-painel-do-carro-diz-estudante-de-medicina-acusado-de-matar-idoso-atropelado-em-cuiaba.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "161",
-          "titulo": "Versátil, cantor João Sabiá leva o sambalanço para dentro e fora do país | G1",
-          "trecho": "Cantor e compositor João Sabiá — Foto: Divulgação O versátil cantor e compositor João Sabiá vive uma diferente fase da carreira. Ao misturar samba e bossa nova, se consagrou no estilo sambalanço em rodas de gafieira no Rio de Janeiro e São Paulo. Em paralelo, se destaca nas rádios com o novo single autoral \"Me Responda\", que gravou com Luiza Possi. Em ent...",
-          "url": "https://g1.globo.com/sp/santos-regiao/cultura-diversao/noticia/versatil-cantor-joao-sabia-leva-o-sambalanco-para-dentro-e-fora-do-pais.ghtml",
+          "id": "25",
+          "titulo": "Homem dá 'ma a-leão' em mo oris a após aciden e com mor e na RJ-138, em Araruama; VÍDEO",
+          "trecho": "Um vídeo de um aciden e de rânsi o, que resul ou na mor e de um mo ociclis a na RJ-138, em Araruama (RJ), mos ra o mo oris a do carro envolvido na ba ida ser agredido com soco e imobilizado com um 'ma a-leão' na RJ-138, em Araruama, na Região dos Lagos do Rio, nes a segunda-feira (5). A violência chamou a a enção de passageiros que passavam de ônibus pelo...",
+          "url": "https://g1.globo.com/rj/norte-fluminense/noticia/2026/10/05/homem-da-mata-leao-em-motorista-apos-acidente-com-morte-na-rj-138-em-araruama-video.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "214",
-          "titulo": "A história do caminhoneiro que se assumiu crossdresser e roda o Brasil de salto alto | G1",
-          "trecho": "Afrodite se considera heterossexual e quer fazer cirurgia de mudança de sexo — Foto: Alair Ribeiro/BBC Brasil O caminhão Mercedes, de cor azul bebê, estaciona e abre as portas. A motorista, Afrodite, de 68 anos, desce com destreza em cima de um par de saltos, habilidade conquistada nas décadas em que utilizou o calçado escondida de todos. Seu vestido é de...",
-          "url": "https://g1.globo.com/economia/noticia/a-historia-do-caminhoneiro-que-se-assumiu-crossdresser-e-roda-o-brasil-de-salto-alto.ghtml",
+          "id": "29",
+          "titulo": "Coopera ivas e radings: onde a ua o profissional cer ificado Agro-100",
+          "trecho": "Para quem pesquisa onde rabalhar com commodi ies, cons ruir uma carreira em coopera iva ou em uma rading, ou ainda en ender como a uar com agro no mercado financeiro, conhecer formação de preços, comercialização e pro eção de risco ornou-se um diferencial impor an e. A Cer ificação ANCORD Agro-100 foi criada jus amen e para aprofundar e padronizar conheci...",
+          "url": "https://g1.globo.com/pr/parana/especial-publicitario/agrinvest-alem-da-porteira/noticia/2026/10/05/cooperativas-e-tradings-onde-atua-o-profissional-certificado-agro-100.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "243",
-          "titulo": "Fischer volta, e Flamengo bate Mogi no reencontro de Marcelinho e Tyrone",
-          "trecho": "O aquecimento antes do duelo já mostrava que Tyrone Curnell não teria vida fácil diante da torcida do Flamengo. Xingamentos, pressão. O americano do Mogi das Cruzes, pivô de confusão com Marcelinho há menos de um mês, foi marcado de perto pelos rubro-negros. E pareceu sentir o jogo psicológico na sua volta após suspensão da Liga Nacional de Basquete. O gr...",
-          "url": "https://ge.globo.com/basquete/nbb/noticia/2017/02/olivinha-brilha-e-flamengo-bate-mogi-no-reencontro-de-marcelinho-e-tyrone.html",
+          "id": "39",
+          "titulo": "Quem era a passageira da mo o que morreu em aciden e na JK, em Juiz de Fora",
+          "trecho": "Emanuele Vi ória de Oliveira Mendonça inha 23 anos e era enfermeira. — Fo o: Redes Sociais A jovem es ava como passageira de uma mo o que ransi ava sen ido Cen ro no início da madrugada des a segunda. Segundo es emunhas, o veículo es ava em al a velocidade e ba eu violen amen e em uma mure a de pro eção que fica ao lado da avenida. Emanuele inha 23 anos,...",
+          "url": "https://g1.globo.com/mg/zona-da-mata/noticia/2026/10/05/quem-era-a-passageira-de-moto-que-morreu-em-acidente-na-jk-em-juiz-de-fora.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         }
       ],
       "falsos_negativos": [
         {
-          "id": "15",
-          "titulo": "É #FAKE que vídeo mostre mulher ainda viva e mexendo os braços sendo ensacada e considerada morta por Covid-19 | G1",
-          "trecho": "Um vídeo compartilhado nas redes sociais mostra uma paciente que morreu por Covid-19 e é ensacada em um hospital. Os braços da paciente, que estavam acima da cabeça, caem para a maca. Mensagens dizem que a imagem é a prova de que hospitais têm fraudado mortes e enterrado pessoas vivas para aumentar as estatísticas da doença no país. É #FAKE. — Foto: G1 A...",
-          "url": "https://g1.globo.com/fato-ou-fake/coronavirus/noticia/2021/03/31/e-fake-que-video-mostre-mulher-ainda-viva-e-mexendo-os-bracos-sendo-ensacada-e-considerada-morta-por-covid-19.ghtml",
+          "id": "22703",
+          "titulo": "Leia a ín egra da car a do pai de Daniel Vorcaro aos minis ros do STF",
+          "trecho": "Henrique Moura Vorcaro, preso desde maio, afirma em car a aos minis ros do Supremo que sua relação com inves igados era “es ri amen e comercial”, nega obs rução de provas e rela a crises de diver iculi e na Peni enciária Nelson Hungria; ele ambém afirma que esposa e filha recebem ameaças. O empresário Henrique Moura Vorcaro, pai do ex-banqueiro Daniel Vor...",
+          "url": "https://gazetabrasil.com.br/brasil/2026/09/22/leia-a-integra-da-carta-do-pai-de-daniel-vorcaro-aos-ministros-do-stf",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "73",
-          "titulo": "É #FAKE capa do New York Times enaltecendo atos pró-Bolsonaro no Dia do Trabalho | G1",
-          "trecho": "Circula em grupos de WhatsApp o print de uma capa do jornal \"The New York Times\" enaltecendo atos pró-Bolsonaro durante o Dia do Trabalho no Brasil. É #FAKE. — Foto: G1 Trata-se de um montagem grosseira. Um erro de grafia logo na manchete já denuncia a falsidade. Em vez de \"wants\", a palavra está escrita com h: \"whants\". A tentativa era dizer algo como \"O...",
-          "url": "https://g1.globo.com/fato-ou-fake/noticia/2021/05/03/e-fake-capa-do-new-york-times-enaltecendo-atos-pro-bolsonaro.ghtml",
+          "id": "22984",
+          "titulo": "Emmy 2026: veja a lis a comple a de vencedores por ca egoria",
+          "trecho": "Série da Apple TV lidera a 78ª edição do prêmio com vi órias em Melhor Série de Comédia, A or, A riz Coadjuvan e e Direção; Ma hew Rhys e Jean Smar fazem his ória, e Hiro Murai é a única pessoa não branca a subir ao palco A 78ª edição do Emmy Awards, realizada na noi e des a segunda-feira (14) em Los Angeles, consagrou “O Segredo de Widow’s Bay” como a gr...",
+          "url": "https://gazetabrasil.com.br/entretenimento/2026/09/15/emmy-2026-veja-a-lista-completa-de-vencedores-por-categoria",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "88",
-          "titulo": "As maiores fake news contra Greta Thunberg!",
-          "trecho": "Assista ao vídeo que fizemos sobre as principais notícias falsas envolvendo a ativista sueca Greta Thunberg! Greta Ernman Thunberg é uma jovem sueca que ficou conhecida no mundo todo por causa do seu ativismo em favor do meio ambiente! Em 2018, aos 15 anos de idade, Greta Thunberg decidiu não frequentar algumas de suas aulas para protestar ali do lado de...",
-          "url": "https://www.e-farsas.com/as-maiores-fake-news-contra-greta-thunberg.html",
+          "id": "23201",
+          "titulo": "Folha Polí ica: SENADOR AMERICANO ENVIA CARTA A ALEXANDRE DE MORAES; DESEMBARGADOR E PARLAMENTARES EXIGEM IMPEACHMENT",
+          "trecho": "Parlamen ares e cidadãos ques ionam, pelas redes sociais, as arbi rariedades e a perversidade do minis ro Alexandre de Moraes, do Supremo Tribunal Federal, bem como a omissão cúmplice do Senado Federal. O senador americano Shane Je rela ou que enviou uma nova car a ao minis ro Alexandre de Moraes, com cópia para os ou ros minis ros do Supremo Tribunal Fed...",
+          "url": "https://www.folhapolitica.org/2026/01/senador-americano-envia-carta-alexandre.html",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "192",
-          "titulo": "É #FAKE que é recomendável aplicar gelo sobre picada de escorpião | G1",
-          "trecho": "Circula pelas redes sociais um cartaz que recomenda aplicar gelo sobre a picada do escorpião para atrasar a circulação de sangue. A mensagem é #FAKE. Fake — Foto: G1 O gelo não tem nenhum benefício, de acordo com a médica infectologista e gestora de projetos do Núcleo Estratégico de Venenos e Antivenenos do Instituto Butantan, Fan Hui Wen. Ela diz que a r...",
-          "url": "https://g1.globo.com/fato-ou-fake/noticia/2019/01/14/e-fake-que-e-recomendavel-aplicar-gelo-sobre-picada-de-escorpiao.ghtml",
+          "id": "23202",
+          "titulo": "Folha Polí ica: ALEXANDRE DE MORAES É CONFRONTADO APÓS PRISÃO DE FILIPE MARTINS, NOVAS ARBITRARIEDADES E BANCO MASTER - IMPEACHMENT",
+          "trecho": "O minis ro Alexandre de Moraes, do Supremo Tribunal Federal, mandou prender o ex-assessor do ex-presiden e Jair Bolsonaro, Filipe Mar ins, alegando que Mar ins eria consul ado um perfil na pla aforma Linkedin. O advogado de Filipe Mar ins, Jeffrey Chiquini, rela ou: “Filipe Mar ins acaba de ser preso preven ivamen e sem mo ivo algum. Filipe foi preso pelo...",
+          "url": "https://www.folhapolitica.org/2026/01/alexandre-de-moraes-e-confrontado-apos.html",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "221",
-          "titulo": "Vídeos de Osmar Terra são compartilhados como se fossem do ex-ministro Adib Jatene : Projeto Comprova",
-          "trecho": "Vídeos de Osmar Terra são compartilhados como se fossem do ex-ministro Adib Jatene - Falso - Vídeos do deputado Osmar Terra defendendo o isolamento vertical circulam nas redes atribuídos erroneamente ao cardiologista Adib Jatene, falecido em 2014 São falsos os vídeos que atribuem ao falecido médico e ex-ministro da Saúde Adib Jatene a defesa do chamado is...",
-          "url": "https://projetocomprova.com.br/publica%C3%A7%C3%B5es/videos-de-osmar-terra-sao-compartilhados-como-se-fossem-do-ex-ministro-adib-jatene/",
+          "id": "23212",
+          "titulo": "Folha Polí ica: AO VIVO: COALIZÃO PELA SUSPENSÃO DO RECESSO PARLAMENTAR E IMPEACHMENT DE MORAES - MANSÃO BANCO MASTER",
+          "trecho": "Nos úl imos dias do ano, depu ados e senadores se preparam para en ar suspender o recesso parlamen ar para ra ar do escândalo do banco Mas er e pedir, mais uma vez, o impeachmen do minis ro Alexandre de Moraes, do Supremo Tribunal Federal. O senador Magno Mal a disse: “Não dá para fazer de con a que es á udo normal. O recesso parlamen ar precisa ser in er...",
+          "url": "https://www.folhapolitica.org/2025/12/ao-vivo-coalizao-pela-suspensao-do.html",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "240",
-          "titulo": "É #FAKE que novo verme chamado Simla Mirch esteja contaminando pimentões no Brasil | G1",
-          "trecho": "Circula pelas redes sociais um vídeo que mostra um verme dentro de um pimentão verde. Junto com o vídeo circula uma mensagem que diz: \"Gente, cuidado com o pimentão... esse verme chama Simla Mirch... Um novo verme que vive em áreas molhadas do corpo também. Pode causar dor e até vir a matar eventualmente\". A mensagem é #FAKE. selo fake — Foto: Arte/G1 Dou...",
-          "url": "https://g1.globo.com/fato-ou-fake/noticia/2019/08/26/e-fake-que-novo-verme-chamado-simla-mirch-esteja-contaminando-pimentoes.ghtml",
+          "id": "23253",
+          "titulo": "Folha Polí ica: Trump e parlamen ares dos EUA e do Brasil comemoram vi ória acachapan e de Milei: ‘derro a do flagelo socialis a’",
+          "trecho": "A vi ória acachapan e do par ido de Javier Milei na Argen ina, nas eleições parlamen ares que ocorrem na me ade do manda o presidencial, surpreendeu aos que acredi am na velha imprensa e foi mo ivo de comemoração. O presiden e dos EUA, Donald Trump, publicou, em sua rede social: “parabéns ao presiden e Javier Milei por sua vi ória esmagadora na Argen ina....",
+          "url": "https://www.folhapolitica.org/2025/10/trump-e-parlamentares-dos-eua-e-do.html",
           "classe_real": "fake",
           "classe_prevista": "true"
         }
@@ -115,97 +115,105 @@
       "modelo_id": "multinomial-tfidf",
       "modelo": "MultinomialNB",
       "classe_foco": "fake",
-      "falsos_positivos_total": 14,
-      "falsos_negativos_total": 5,
-      "erros_total": 19,
+      "falsos_positivos_total": 861,
+      "falsos_negativos_total": 276,
+      "erros_total": 1137,
       "falsos_positivos": [
         {
-          "id": "17",
-          "titulo": "China apaga mais de 9 mil aplicativos e 700 sites | G1",
-          "trecho": "Bandeiras da China decoram a capital Pequim, durante a realização do congresso do Partido Comunista, em 22 de outubro — Foto: Andy Wong/ AP O órgão supervisor de cibersegurança na China (CAC, na sigla em inglês) informou nesta quarta-feira (23) que o país apagou mais de 7 milhões de informações online, além de mais de 9 mil aplicativos para smartphones ....",
-          "url": "https://g1.globo.com/economia/tecnologia/noticia/2019/01/23/china-apaga-mais-de-9-mil-aplicativos-e-700-sites.ghtml",
+          "id": "14",
+          "titulo": "'Me dis raí com o painel do carro', diz es udan e de medicina após a ropelamen o e mor e de idoso em Cuiabá",
+          "trecho": "O es udan e de medicina iden ificado como Eduardo Henrique de Carvalho, de 20 anos, que havia sido preso em flagran e na úl ima sex a-feira (2), em Cuiabá, suspei o de a ropelar e ma ar Valdemir Ernes o de Souza, 86 anos, na Avenida Beira Rio, afirmou em depoimen o à polícia que se dis raiu ao olhar para o painel do carro momen os an es do aciden e. Ele d...",
+          "url": "https://g1.globo.com/mt/mato-grosso/noticia/2026/10/05/me-distrai-com-o-painel-do-carro-diz-estudante-de-medicina-acusado-de-matar-idoso-atropelado-em-cuiaba.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "227",
-          "titulo": "Setor de eletrônicos está com 24% das fabricantes paralisadas, diz associação | G1",
-          "trecho": "A pandemia de coronavírus levou 24% das fabricantes de eletrônicos do Brasil a paralisar parcial ou totalmente a produção, segundo um levantamento da Associação Brasileira da Indústria Elétrica e Eletrônica (Abinee), realizado com as empresas entre os dias 23 e 25 de março. Dentre as que estão paralisadas, 42% têm paralisação total, e as outras 58% estão...",
-          "url": "https://g1.globo.com/economia/tecnologia/noticia/2020/03/27/setor-de-eletronicos-esta-com-24percent-das-fabricantes-paralisadas-diz-associacao.ghtml",
+          "id": "29",
+          "titulo": "Coopera ivas e radings: onde a ua o profissional cer ificado Agro-100",
+          "trecho": "Para quem pesquisa onde rabalhar com commodi ies, cons ruir uma carreira em coopera iva ou em uma rading, ou ainda en ender como a uar com agro no mercado financeiro, conhecer formação de preços, comercialização e pro eção de risco ornou-se um diferencial impor an e. A Cer ificação ANCORD Agro-100 foi criada jus amen e para aprofundar e padronizar conheci...",
+          "url": "https://g1.globo.com/pr/parana/especial-publicitario/agrinvest-alem-da-porteira/noticia/2026/10/05/cooperativas-e-tradings-onde-atua-o-profissional-certificado-agro-100.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "2158",
-          "titulo": "PF conclui que é falsa mensagem na qual ex-ministro Santos Cruz teria criticado Bolsonaro | G1",
-          "trecho": "O ex-ministro Carlos Alberto Santos Cruz — Foto: Fabio Rodrigues Pozzebom/Agência Brasil Apuração da Diretoria de Combate ao Crime Organizado da Polícia Federal concluiu que são falsas as mensagens que circularam em uma rede social e que contribuíram para a demissão em junho do então ministro Carlos Alberto dos Santos Cruz, da Secretaria de Governo. Embor...",
-          "url": "https://g1.globo.com/politica/noticia/2020/01/29/pf-conclui-que-e-falsa-mensagem-na-qual-ex-ministro-santos-cruz-teria-criticado-bolsonaro.ghtml",
+          "id": "39",
+          "titulo": "Quem era a passageira da mo o que morreu em aciden e na JK, em Juiz de Fora",
+          "trecho": "Emanuele Vi ória de Oliveira Mendonça inha 23 anos e era enfermeira. — Fo o: Redes Sociais A jovem es ava como passageira de uma mo o que ransi ava sen ido Cen ro no início da madrugada des a segunda. Segundo es emunhas, o veículo es ava em al a velocidade e ba eu violen amen e em uma mure a de pro eção que fica ao lado da avenida. Emanuele inha 23 anos,...",
+          "url": "https://g1.globo.com/mg/zona-da-mata/noticia/2026/10/05/quem-era-a-passageira-de-moto-que-morreu-em-acidente-na-jk-em-juiz-de-fora.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "3150",
-          "titulo": "Tecnologia de reconhecimento facial apresenta viés e imprecisão, aponta estudo do governo dos EUA | G1",
-          "trecho": "Instituto de pesquisa testou tecnologias de gigantes como Microsoft, Intel e Tencent. — Foto: REUTERS/Thomas Peter Os sistemas de reconhecimento facial podem produzir resultados imprecisos, especialmente para pessoas que não são brancas, revelou um estudo de um centro de pesquisa do governo dos Estados Unidos publicado nesta quinta-feira (19) e que analis...",
-          "url": "https://g1.globo.com/economia/tecnologia/noticia/2019/12/20/tecnologia-de-reconhecimento-facial-apresenta-vies-e-imprecisao-aponta-estudo-do-governo-dos-eua.ghtml",
+          "id": "48",
+          "titulo": "Adolescen es são a ropelados por mo ociclis a em Juiz de Fora; moradores dizem que ele fazia 'grau'",
+          "trecho": "Mo ociclis a a ingiu adolescen es que es ava sen ados na calçada no Nossa Senhora de Lourdes, em Juiz de Fora — Fo o: PMMG Segundo a Polícia Mili ar, os garo os es avam sen ados na calçada de uma casa quando o mo ociclis a perdeu o con role do veículo e os a ingiu, proje ando-os con ra uma parede. Ainda conforme a polícia, moradores rela aram que o rapaz...",
+          "url": "https://g1.globo.com/mg/zona-da-mata/noticia/2026/10/05/adolescentes-sao-atropelados-por-motociclista-em-juiz-de-fora-moradores-dizem-que-ele-fazia-grau.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "3240",
-          "titulo": "Cinco alimentos saudáveis que devem ser usados com moderação nas dietas",
-          "trecho": "Nem todos os alimentos saudáveis possuem valor calórico baixo. Existem alimentos altamente nutritivos, ricos em “gorduras do bem” (monoinsaturadas e polinsaturadas), vitaminas e minerais que possuem alta concentração calórica. Portanto, é importante limitar sua ingestão por indivíduos que precisam controlar o ganho de peso ou que estejam em programas para...",
-          "url": "https://ge.globo.com/eu-atleta/nutricao/noticia/2015/06/cinco-alimentos-saudaveis-que-devem-ser-usados-com-moderacao-nas-dietas.html",
+          "id": "101",
+          "titulo": "Mili ares mor os em ba ida na BR-163 inham 19 anos e haviam acabado de en rar no Exérci o",
+          "trecho": "Soldados mor os em aciden e na BR-163 — Fo o: Redes Sociais Bruno Fernandes San ana e Jackson Fernandes Leoes da Silva, ambos de 19 anos, eram soldados do Exérci o e serviam no 47º Ba alhão de Infan aria, em Coxim (MS). Os dois morreram após a caminhone e em que es avam ba er con ra uma carre a, nes a segunda-feira (5), na BR-163, em Rio Verde de Ma o Gro...",
+          "url": "https://g1.globo.com/ms/mato-grosso-do-sul/noticia/2026/10/05/militares-mortos-em-batida-na-br-163-tinham-19-anos-e-haviam-acabado-de-entrar-no-exercito.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "4733",
-          "titulo": "Facebook e Instagram removem vídeo de Jair Bolsonaro por violação de regras  | G1",
-          "trecho": "O Facebook e o Instagram removeram nesta segunda-feira (30) um vídeo publicado pelo presidente Jair Bolsonaro no domingo, em que ele provocou aglomerações durante um passeio em Brasília e voltou a se posicionar contra o isolamento social, defendido por autoridades de saúde do mundo inteiro como medida eficaz para conter o coronavírus. De acordo com um por...",
-          "url": "https://g1.globo.com/economia/tecnologia/noticia/2020/03/30/facebook-e-instagram-removem-video-de-jair-bolsonaro-por-violacao-de-regras.ghtml",
+          "id": "108",
+          "titulo": "Filho é preso suspei o de ma ar pai a facadas duran e briga familiar em Guaxupé, MG",
+          "trecho": "Um homem de 66 anos morreu após ser a ingido por golpes de faca duran e um confli o familiar na madrugada des a segunda-feira (5), em uma residência no bairro Recreio dos Bandeiran es, em Guaxupé (MG). O filho dele, de 27 anos, foi preso em flagran e suspei o de homicídio. Segundo a Polícia Mili ar, a própria ví ima acionou a corporação para pedir ajuda a...",
+          "url": "https://g1.globo.com/mg/sul-de-minas/noticia/2026/10/05/homicidios.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         }
       ],
       "falsos_negativos": [
         {
-          "id": "588",
-          "titulo": "É #FAKE que vídeo de chacina de mulheres e crianças por militares foi gravado em Angola | G1",
-          "trecho": "Um vídeo chocante mostra o momento em que duas mulheres e duas crianças são executadas por militares em um país da África. Junto com ele, circula uma legenda que diz: \"Ditador comunista de Angola, amigo de Lula e a quem ele mandou bilhões pelo BNDES, executando covardemente cristãos, até crianças. Isso tem que ser divulgado ao máximo !!!👇👇👇\". A mensagem é...",
-          "url": "https://g1.globo.com/fato-ou-fake/noticia/2019/09/18/e-fake-que-video-de-chacina-de-mulheres-e-criancas-por-militares-foi-gravado-em-angola.ghtml",
+          "id": "22271",
+          "titulo": "Michel Temer anuncia apoio a Flávio Bolsonaro no segundo urno",
+          "trecho": "O ex-presiden e Michel Temer (MDB) anunciou nes a segunda-feira (5) apoio ao senador Flávio Bolsonaro (PL) no segundo urno da eleição presidencial. A declaração foi fei a em vídeo, in i ulado “Declaração à Nação”, publicado nas redes sociais do emedebis a e reproduzido por veículos de imprensa. (Vídeo no final da ma éria). No vídeo, Temer afirmou que o re...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/michel-temer-anuncia-apoio-a-flavio-bolsonaro-no-segundo-turno",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "1134",
-          "titulo": "É verdade que a queda nas ações da Coca-Cola foi culpa do Cristiano Ronaldo?",
-          "trecho": "Publicações culparam o jogador Cristiano Ronaldo pela queda nas ações da Coca-Cola por ele ter tirado duas garrafas da frente em entrevista! Será verdade? A afirmação se espalhou nas redes sociais no final da primeira quinzena de junho de 2021, logo após uma entrevista coletiva com a participação do jogador de futebol Cristiano Ronaldo, quando ele afasta...",
-          "url": "https://www.e-farsas.com/e-verdade-que-a-queda-nas-acoes-da-coca-cola-foi-culpa-do-cristiano-ronaldo.html",
+          "id": "22276",
+          "titulo": "Pe robras lidera apos as do mercado e dispara no primeiro pregão pós-eleição",
+          "trecho": "Papéis da es a al chegam a R$ 54,55 no primeiro pregão após o plei o; mercado reage à van agem de Flávio Bolsonaro e à guinada à direi a no Congresso As ações da Pe robras iniciaram a semana como um dos principais des aques posi ivos do mercado financeiro brasileiro. Por vol a das 11h30 des a segunda-feira (5), no primeiro pregão após o plei o, os papéis...",
+          "url": "https://gazetabrasil.com.br/economia/2026/10/05/petrobras-lidera-apostas-do-mercado-e-dispara-no-primeiro-pregao-pos-eleicao",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "1570",
-          "titulo": "É #FAKE que governo federal decidiu demitir 396 mil servidores por fraude no auxílio emergencial | G1",
-          "trecho": "Selo #FAKE — Foto: G1 A Controladoria-Geral da União – órgão de controle interno do governo federal – afirma que, antes de sofrer uma punição, que pode ser também uma suspensão ou uma advertência, e não apenas a demissão, a conduta irregular do servidor público deve ficar comprovada após condução de Processo Administrativo Disciplinar (PAD), conforme dete...",
-          "url": "https://g1.globo.com/fato-ou-fake/noticia/2020/07/27/e-fake-que-governo-federal-decidiu-demitir-396-mil-servidores-por-fraude-no-auxilio-emergencial.ghtml",
+          "id": "22278",
+          "titulo": "José Dirceu, Delúbio Soares, André Vargas e Rui Falcão não conseguem re ornar à Câmara",
+          "trecho": "Ex-minis ros, ex- esoureiro e ex-vice-presiden e da Câmara não conseguem se eleger; Eduardo Cunha e Tiririca ambém ficam de fora O primeiro urno das eleições de 2026, realizado nes e domingo (4), deixou fora do Congresso Nacional nomes conhecidos da polí ica brasileira. En re os derro ados es ão ex-minis ros, ex-governadores, ex-presiden es do Congresso e...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/jose-dirceu-delubio-soares-andre-vargas-e-rui-falcao-nao-conseguem-retornar-a-camara",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "6403",
-          "titulo": "Frase de Cármen Lúcia de 2018 é tirada de contexto para afirmar que Lula não poderá se candidatar em 2022 : Projeto Comprova",
-          "trecho": "Frase de Cármen Lúcia de 2018 é tirada de contexto para afirmar que Lula não poderá se candidatar em 2022 - Enganoso - Montagem engana ao trazer parte de uma frase dita pela ministra do STF (Supremo Tribunal Federal) Cármen Lúcia, em 2018, sobre a Lei da Ficha Limpa, e descontextualiza ao indicar que o ex-presidente Lula (PT) não poderia ser candidato em...",
-          "url": "https://projetocomprova.com.br/publica%C3%A7%C3%B5es/frase-de-carmen-lucia-de-2018-e-tirada-de-contexto-para-afirmar-que-lula-nao-podera-se-candidatar-em-2022/",
+          "id": "22279",
+          "titulo": "PDT, PSOL/Rede e ou ros par idos ficam abaixo da cláusula de barreira e perdem verba e empo de TV",
+          "trecho": "Federação PSOL/Rede não superou a exigência por 185 vo os no Espíri o San o; PDT, Avan e, Missão e Renovação Solidária ambém não a ingiram os cri érios e perderão acesso ao fundo par idário e ao empo de TV O resul ado das eleições de domingo (4) fez com que par idos como PDT, Avan e, Missão e as federações Renovação Solidária (PRD e Solidariedade) e PSOL/...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/pdt-psol-rede-e-outros-partidos-ficam-abaixo-da-clausula-de-barreira-e-perdem-verba-e-tempo-de-tv",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "8165",
-          "titulo": "Minirreforma não tiraria direitos de todos os trabalhadores como dá a entender vídeo no TikTok : Projeto Comprova",
-          "trecho": "Minirreforma não tiraria direitos de todos os trabalhadores como dá a entender vídeo no TikTok - Enganoso - É enganoso vídeo no TikTok afirmando que a medida provisória sobre a minirreforma trabalhista, derrotada nesta semana no Senado, tiraria direitos de todos os trabalhadores. Segundo texto aprovado na Câmara, ela eliminaria benefícios nos três formato...",
-          "url": "https://projetocomprova.com.br/publica%C3%A7%C3%B5es/minirreforma-nao-tiraria-direitos-de-todos-os-trabalhadores-como-da-a-entender-video-no-tiktok/",
+          "id": "22280",
+          "titulo": "Famosos derro ados nas urnas em 2026: de Rachel Sheherazade a Tiririca",
+          "trecho": "A ores, can ores, apresen adores e influenciadores dispu aram vagas no Legisla ivo, mas não conseguiram vo os suficien es; Rachel Sheherazade eve 22.453 vo os em SP As eleições des e domingo (4) ambém levaram celebridades das ar es e da elevisão às urnas em busca de espaço na polí ica. En re os candida os es avam nomes conhecidos do público como Tiririca,...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/famosos-derrotados-nas-urnas-em-2026-de-rachel-sheherazade-a-tiririca",
+          "classe_real": "fake",
+          "classe_prevista": "true"
+        },
+        {
+          "id": "22282",
+          "titulo": "Veja a lis a comple a dos senadores elei os por es ado",
+          "trecho": "Elei os erão manda o de oi o anos, en re 1º de fevereiro de 2027 e 31 de janeiro de 2035; PL erá a maior bancada, com 19 senadores Nes e domingo (4), os elei ores do país escolheram 54 senadores. Eles erão manda o de oi o anos, en re 1º de fevereiro de 2027 e 31 de janeiro de 2035. Veja abaixo a lis a comple a por es ado: - Acre: Marcio Bi ar (PL) e Mara...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/veja-a-lista-completa-dos-senadores-eleitos-por-estado",
           "classe_real": "fake",
           "classe_prevista": "true"
         }
@@ -215,57 +223,105 @@
       "modelo_id": "logistic-tfidf",
       "modelo": "LogisticRegression",
       "classe_foco": "fake",
-      "falsos_positivos_total": 2,
-      "falsos_negativos_total": 4,
-      "erros_total": 6,
+      "falsos_positivos_total": 120,
+      "falsos_negativos_total": 385,
+      "erros_total": 505,
       "falsos_positivos": [
         {
-          "id": "4733",
-          "titulo": "Facebook e Instagram removem vídeo de Jair Bolsonaro por violação de regras  | G1",
-          "trecho": "O Facebook e o Instagram removeram nesta segunda-feira (30) um vídeo publicado pelo presidente Jair Bolsonaro no domingo, em que ele provocou aglomerações durante um passeio em Brasília e voltou a se posicionar contra o isolamento social, defendido por autoridades de saúde do mundo inteiro como medida eficaz para conter o coronavírus. De acordo com um por...",
-          "url": "https://g1.globo.com/economia/tecnologia/noticia/2020/03/30/facebook-e-instagram-removem-video-de-jair-bolsonaro-por-violacao-de-regras.ghtml",
+          "id": "108",
+          "titulo": "Filho é preso suspei o de ma ar pai a facadas duran e briga familiar em Guaxupé, MG",
+          "trecho": "Um homem de 66 anos morreu após ser a ingido por golpes de faca duran e um confli o familiar na madrugada des a segunda-feira (5), em uma residência no bairro Recreio dos Bandeiran es, em Guaxupé (MG). O filho dele, de 27 anos, foi preso em flagran e suspei o de homicídio. Segundo a Polícia Mili ar, a própria ví ima acionou a corporação para pedir ajuda a...",
+          "url": "https://g1.globo.com/mg/sul-de-minas/noticia/2026/10/05/homicidios.ghtml",
           "classe_real": "true",
           "classe_prevista": "fake"
         },
         {
-          "id": "8669",
-          "titulo": "Como o termo 'fake news' virou arma nos dois lados da batalha política mundial | G1",
-          "trecho": "Em tempo recorde, o termo que descrevia um fenômeno de mídia social se tornou um jargão jornalístico e também sinônimo de difamação. Mas como a expressão fake news evoluiu - e o que vem pela frente no mundo da desinformação? Em meados de 2016, o editor de mídia do site Buzzfeed, Craig Silvermann, identificou uma onda de histórias completamente inventadas...",
-          "url": "https://g1.globo.com/mundo/noticia/como-o-termo-fake-news-virou-arma-nos-dois-lados-da-batalha-politica-mundial.ghtml",
+          "id": "188",
+          "titulo": "Criança morre no TO enquan o brincava em rede",
+          "trecho": "Sede do IML de Palmas — Fo o: Divulgação/SSP Uma criança de se e anos morreu em Palmas enquan o brincava em uma rede. O Serviço de A endimen o Móvel de Urgência (Samu) ainda foi chamado, mas apenas cons a ou a mor e. A equipe de saúde foi informada de que o menino eria sofrido um enforcamen o aciden al. Segundo as informações da Secre aria Municipal de Sa...",
+          "url": "https://g1.globo.com/to/tocantins/noticia/2026/10/05/crianca-morre-no-to-enquanto-brincava-em-rede.ghtml",
+          "classe_real": "true",
+          "classe_prevista": "fake"
+        },
+        {
+          "id": "591",
+          "titulo": "Ma erial radioa ivo roubado seria usado para ra ar pacien e com câncer em SP e segue desaparecido",
+          "trecho": "O ma erial radioa ivo roubado quando era levado para o Hospi al A.C.Camargo, em São Paulo, seria usado no ra amen o de um único pacien e com câncer de prós a a. A van que ranspor ava a carga foi encon rada no sábado (3) pela polícia, mas o produ o segue desaparecido. Nenhum suspei o pelo crime foi iden ificado ou preso. Segundo a Au oridade Nacional de Se...",
+          "url": "https://g1.globo.com/sp/sao-paulo/noticia/2026/10/05/material-radioativo-roubado-seria-usado-para-tratar-paciente-com-cancer-em-sp-e-segue-desaparecido.ghtml",
+          "classe_real": "true",
+          "classe_prevista": "fake"
+        },
+        {
+          "id": "2448",
+          "titulo": "O Senado no ribunal da His ória",
+          "trecho": "Hoje a dispu a presidencial domina a a enção, mas o elei or ambém renovará dois erços de uma ins i uição decisiva da República. O Senado represen a os Es ados, a ravessa governos e par icipa da escolha de al as au oridades. Sua impor ância nes a quadra his órica aparece com especial ni idez dian e da crise do Supremo Tribunal Federal (STF). O Senado não f...",
+          "url": "https://www.estadao.com.br/opiniao/o-senado-no-tribunal-da-historia",
+          "classe_real": "true",
+          "classe_prevista": "fake"
+        },
+        {
+          "id": "2465",
+          "titulo": "Lula e Flávio chegam à eleição em campanha ofuscada por escândalos, crise no STF e a é guerra san a",
+          "trecho": "Gerando resumo BRASÍLIA – Depois de uma campanha elei oral cap urada por escândalos de corrupção e pela crise no Supremo Tribunal Federal (STF), o País vai às urnas nes e domingo, 4, enfren ando uma divisão polí ica que jogou a erceira via para escan eio e afunilou a dispu a à Presidência em apenas dois nomes com chances de vencer. De um lado es á o presi...",
+          "url": "https://www.estadao.com.br/politica/eleicoes/lula-e-flavio-chegam-a-eleicao-em-campanha-ofuscada-por-escandalos-crise-no-stf-e-ate-guerra-santa",
+          "classe_real": "true",
+          "classe_prevista": "fake"
+        },
+        {
+          "id": "2616",
+          "titulo": "PM pede para mili an es saírem da concen ração na Paulis a; pe is as falam em ameaça de prisão",
+          "trecho": "Gerando resumo O úl imo a o de campanha do presiden e Luiz Inácio Lula da Silva (PT) e do candida o ao governo de São Paulo, Fernando Haddad (PT), an es do primeiro urno eve um princípio de confusão na manhã des e sábado, 3, na região da rua Augus a, em São Paulo, após policiais mili ares pedirem a re irada de caminhões posicionados no local. Pelo sis ema...",
+          "url": "https://www.estadao.com.br/politica/eleicoes/pm-pede-para-militantes-sairem-da-concentracao-na-paulista-petistas-falam-em-ameaca-de-prisao",
           "classe_real": "true",
           "classe_prevista": "fake"
         }
       ],
       "falsos_negativos": [
         {
-          "id": "1045",
-          "titulo": "Lionel Richie tracks Sofia Richie's phone",
-          "trecho": "Lionel Richie tracks Sofia Richie's phone 'My dad tracks my phone once a day' https://t.co/yZjWfjcoaH — Daily Mail Celebrity (@DailyMailCeleb) May 31, 2017 It seems Lionel Richie is keeping a closer eye than many may have thought on his youngest daughter. Sofia, who was just partying in Cannes with Scott Disick, tweeted that her dad tracks her phone once...",
-          "url": "https://ohnotheydidnt.livejournal.com/106418170.html",
+          "id": "22271",
+          "titulo": "Michel Temer anuncia apoio a Flávio Bolsonaro no segundo urno",
+          "trecho": "O ex-presiden e Michel Temer (MDB) anunciou nes a segunda-feira (5) apoio ao senador Flávio Bolsonaro (PL) no segundo urno da eleição presidencial. A declaração foi fei a em vídeo, in i ulado “Declaração à Nação”, publicado nas redes sociais do emedebis a e reproduzido por veículos de imprensa. (Vídeo no final da ma éria). No vídeo, Temer afirmou que o re...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/michel-temer-anuncia-apoio-a-flavio-bolsonaro-no-segundo-turno",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "1134",
-          "titulo": "É verdade que a queda nas ações da Coca-Cola foi culpa do Cristiano Ronaldo?",
-          "trecho": "Publicações culparam o jogador Cristiano Ronaldo pela queda nas ações da Coca-Cola por ele ter tirado duas garrafas da frente em entrevista! Será verdade? A afirmação se espalhou nas redes sociais no final da primeira quinzena de junho de 2021, logo após uma entrevista coletiva com a participação do jogador de futebol Cristiano Ronaldo, quando ele afasta...",
-          "url": "https://www.e-farsas.com/e-verdade-que-a-queda-nas-acoes-da-coca-cola-foi-culpa-do-cristiano-ronaldo.html",
+          "id": "22274",
+          "titulo": "TSE revela o mo ivo do apagão de quase 50 minu os na apuração",
+          "trecho": "Presiden e do ribunal, Kassio Nunes Marques, afirma que fluxo acima do normal provocou in ervalo de quase 50 minu os sem a ualização dos resul ados; área écnica não iden ificou problema que comprome esse o processamen o dos vo os O presiden e do Tribunal Superior Elei oral (TSE), minis ro Kassio Nunes Marques, afirmou nes e domingo (4) que o a raso de qua...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/tse-revela-o-motivo-do-apagao-de-quase-50-minutos-na-apuracao",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "6300",
-          "titulo": "Can't- Keep- A- Man Aniston Loves Being Naked!",
-          "trecho": "Can't- Keep- A- Man Aniston Loves Being Naked! 'Jennifer Aniston Is Always Half-Naked!' A former bodyguard reveals all about Jen's love of revealing all... Jennifer Aniston is in great shape and knows it, according to a former bodyguard who claims the actress likes to parade around “half-naked” at home. Apparently one of the perks of being part of the Fri...",
-          "url": "https://ohnotheydidnt.livejournal.com/30245005.html",
+          "id": "22276",
+          "titulo": "Pe robras lidera apos as do mercado e dispara no primeiro pregão pós-eleição",
+          "trecho": "Papéis da es a al chegam a R$ 54,55 no primeiro pregão após o plei o; mercado reage à van agem de Flávio Bolsonaro e à guinada à direi a no Congresso As ações da Pe robras iniciaram a semana como um dos principais des aques posi ivos do mercado financeiro brasileiro. Por vol a das 11h30 des a segunda-feira (5), no primeiro pregão após o plei o, os papéis...",
+          "url": "https://gazetabrasil.com.br/economia/2026/10/05/petrobras-lidera-apostas-do-mercado-e-dispara-no-primeiro-pregao-pos-eleicao",
           "classe_real": "fake",
           "classe_prevista": "true"
         },
         {
-          "id": "8165",
-          "titulo": "Minirreforma não tiraria direitos de todos os trabalhadores como dá a entender vídeo no TikTok : Projeto Comprova",
-          "trecho": "Minirreforma não tiraria direitos de todos os trabalhadores como dá a entender vídeo no TikTok - Enganoso - É enganoso vídeo no TikTok afirmando que a medida provisória sobre a minirreforma trabalhista, derrotada nesta semana no Senado, tiraria direitos de todos os trabalhadores. Segundo texto aprovado na Câmara, ela eliminaria benefícios nos três formato...",
-          "url": "https://projetocomprova.com.br/publica%C3%A7%C3%B5es/minirreforma-nao-tiraria-direitos-de-todos-os-trabalhadores-como-da-a-entender-video-no-tiktok/",
+          "id": "22278",
+          "titulo": "José Dirceu, Delúbio Soares, André Vargas e Rui Falcão não conseguem re ornar à Câmara",
+          "trecho": "Ex-minis ros, ex- esoureiro e ex-vice-presiden e da Câmara não conseguem se eleger; Eduardo Cunha e Tiririca ambém ficam de fora O primeiro urno das eleições de 2026, realizado nes e domingo (4), deixou fora do Congresso Nacional nomes conhecidos da polí ica brasileira. En re os derro ados es ão ex-minis ros, ex-governadores, ex-presiden es do Congresso e...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/jose-dirceu-delubio-soares-andre-vargas-e-rui-falcao-nao-conseguem-retornar-a-camara",
+          "classe_real": "fake",
+          "classe_prevista": "true"
+        },
+        {
+          "id": "22279",
+          "titulo": "PDT, PSOL/Rede e ou ros par idos ficam abaixo da cláusula de barreira e perdem verba e empo de TV",
+          "trecho": "Federação PSOL/Rede não superou a exigência por 185 vo os no Espíri o San o; PDT, Avan e, Missão e Renovação Solidária ambém não a ingiram os cri érios e perderão acesso ao fundo par idário e ao empo de TV O resul ado das eleições de domingo (4) fez com que par idos como PDT, Avan e, Missão e as federações Renovação Solidária (PRD e Solidariedade) e PSOL/...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/pdt-psol-rede-e-outros-partidos-ficam-abaixo-da-clausula-de-barreira-e-perdem-verba-e-tempo-de-tv",
+          "classe_real": "fake",
+          "classe_prevista": "true"
+        },
+        {
+          "id": "22280",
+          "titulo": "Famosos derro ados nas urnas em 2026: de Rachel Sheherazade a Tiririca",
+          "trecho": "A ores, can ores, apresen adores e influenciadores dispu aram vagas no Legisla ivo, mas não conseguiram vo os suficien es; Rachel Sheherazade eve 22.453 vo os em SP As eleições des e domingo (4) ambém levaram celebridades das ar es e da elevisão às urnas em busca de espaço na polí ica. En re os candida os es avam nomes conhecidos do público como Tiririca,...",
+          "url": "https://gazetabrasil.com.br/politica/2026/10/05/famosos-derrotados-nas-urnas-em-2026-de-rachel-sheherazade-a-tiririca",
           "classe_real": "fake",
           "classe_prevista": "true"
         }

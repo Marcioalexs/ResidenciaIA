@@ -67,7 +67,14 @@
 <div class="metric"><strong>{{ resultado.ml.dataset.classes.true }}</strong><br>grupo TRUE ({{ resultado.ml.dataset.percentuais.true }}%)</div>
 <div class="metric"><strong>{{ resultado.ml.dataset.classes.fake }}</strong><br>grupo FAKE ({{ resultado.ml.dataset.percentuais.fake }}%)</div>
 </div>
-<p><strong>Origens:</strong> DatasetFinal (9.974), FakeRecogna (4.695), Fake.Br Corpus (3.539) e Fake News Net (9).</p>
+<p>
+{% if resultado.ml.dataset.origens %}
+<strong>Principais origens:</strong>
+{% for origem, quantidade in resultado.ml.dataset.origens.items() %}
+{{ origem }} ({{ quantidade }}){% if not loop.last %}, {% endif %}
+{% endfor %}.
+{% endif %}
+</p>
 <p><strong>Configuração da avaliação:</strong> {{ resultado.ml.dataset.avaliacao }}.</p>
 <p class="small"><strong>Limitação conhecida:</strong> {{ resultado.ml.dataset.limitacao }}</p>
 </div>

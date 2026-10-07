@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
-  "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
-  "registros": 9408,
-  "colunas": 48,
+  "arquivo": "dataset_crawler_ptbr_consolidado.csv",
+  "sha256": "73fc677fee9fcd3a7a2b1a5870c8bcdfc5a6f82149bb07783c95ca1e54469976",
+  "registros": 33618,
+  "colunas": 45,
   "nomes_colunas": [
     "id",
     "classe",
@@ -49,10 +49,7 @@
     "diversidade_lexical",
     "coerencia_titulos_pct",
     "texto_palavras_suficientes",
-    "extracao_elegivel",
-    "classe_normalizada",
-    "status_url_recalculo",
-    "links_extraidos"
+    "extracao_elegivel"
   ],
   "colunas_reconhecidas": {
     "classe": "classe",
@@ -69,91 +66,66 @@
   "classes": [
     {
       "classe": "true",
-      "quantidade": 4704,
-      "percentual": 50.0
+      "quantidade": 22257,
+      "percentual": 66.21
     },
     {
       "classe": "fake",
-      "quantidade": 4704,
-      "percentual": 50.0
+      "quantidade": 11361,
+      "percentual": 33.79
     }
   ],
   "origens": [
     {
-      "origem": "FakeRecogna",
-      "quantidade": 4695,
-      "percentual": 49.9
-    },
-    {
-      "origem": "DatasetFinal",
-      "quantidade": 3496,
-      "percentual": 37.16
-    },
-    {
-      "origem": "Fake.Br Corpus",
-      "quantidade": 1208,
-      "percentual": 12.84
-    },
-    {
-      "origem": "Fake News Net",
-      "quantidade": 9,
-      "percentual": 0.1
+      "origem": "crawler_ptbr_credibilidade_v1",
+      "quantidade": 33618,
+      "percentual": 100.0
     }
   ],
   "origens_tipo": "coluna_dataset",
-  "ausentes_total": 32589,
+  "ausentes_total": 54950,
   "ausentes_por_coluna": [
     {
       "coluna": "erro_coleta",
-      "quantidade": 9408,
+      "quantidade": 33618,
       "percentual": 100.0
-    },
-    {
-      "coluna": "links_extraidos",
-      "quantidade": 9408,
-      "percentual": 100.0
-    },
-    {
-      "coluna": "id",
-      "quantidade": 5912,
-      "percentual": 62.84
     },
     {
       "coluna": "autor",
-      "quantidade": 5646,
-      "percentual": 60.01
+      "quantidade": 8157,
+      "percentual": 24.26
     },
     {
       "coluna": "assunto",
-      "quantidade": 2013,
-      "percentual": 21.4
-    },
-    {
-      "coluna": "html_lang",
-      "quantidade": 120,
-      "percentual": 1.28
-    },
-    {
-      "coluna": "titulo_og",
-      "quantidade": 39,
-      "percentual": 0.41
-    },
-    {
-      "coluna": "descricao",
-      "quantidade": 34,
-      "percentual": 0.36
+      "quantidade": 8078,
+      "percentual": 24.03
     },
     {
       "coluna": "data_publicacao",
-      "quantidade": 9,
-      "percentual": 0.1
+      "quantidade": 3677,
+      "percentual": 10.94
+    },
+    {
+      "coluna": "html_lang",
+      "quantidade": 1007,
+      "percentual": 3.0
+    },
+    {
+      "coluna": "descricao",
+      "quantidade": 371,
+      "percentual": 1.1
+    },
+    {
+      "coluna": "titulo_og",
+      "quantidade": 42,
+      "percentual": 0.12
     }
   ],
-  "linhas_duplicadas": 2,
-  "titulos_repetidos_registros": 26,
-  "textos_repetidos_registros": 28,
-  "grupos_conteudo": 9394,
-  "registros_em_grupos_repetidos": 28,
+  "linhas_duplicadas": 0,
+  "titulos_repetidos_registros": 2203,
+  "textos_repetidos_registros": 0,
+  "grupos_conteudo": 33618,
+  "registros_em_grupos_repetidos": 0,
   "grupos_com_rotulos_conflitantes": 0,
   "features_meta_disponiveis": [
     "qtd_links_externos",
@@ -179,24 +151,22 @@
   "features_meta_total": 19,
   "caracteristicas": {
     "titulos_preenchidos": {
-      "preenchidos": 9408,
+      "preenchidos": 33618,
       "percentual": 100.0
     },
     "textos_preenchidos": {
-      "preenchidos": 9408,
+      "preenchidos": 33618,
       "percentual": 100.0
     },
     "urls_preenchidas": {
-      "preenchidos": 9408,
+      "preenchidos": 33618,
       "percentual": 100.0
     },
-    "media_caracteres_titulo": 81.6,
-    "media_caracteres_texto": 4526.7,
-    "mediana_caracteres_texto": 3495.0
+    "media_caracteres_titulo": 74.3,
+    "media_caracteres_texto": 3903.4,
+    "mediana_caracteres_texto": 2578.0
   },
   "avisos": [
-    "Há 2 linhas exatamente duplicadas.",
-    "28 registros pertencem a grupos de conteúdo exato repetido. O split agrupado mantém cada grupo inteiro em treino ou teste.",
     "O agrupamento atual controla duplicatas exatas após normalização, mas não garante separação de republicações semanticamente equivalentes."
   ]
 }

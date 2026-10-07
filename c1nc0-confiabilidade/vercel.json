@@ -3,7 +3,7 @@
   "framework": "flask",
   "functions": {
     "app.py": {
-      "excludeFiles": "{models/pt_core_news_sm/**,notebooks/**,scripts/**,docs/**,resources/**,services/laboratorio_service.py,**/__pycache__/**,**/*.pyc}"
+      "excludeFiles": "{models/pt_core_news_sm/**,notebooks/**,scripts/**,docs/**,resources/**,dist/**,services/laboratorio_service.py,**/__pycache__/**,**/*.pyc}"
     }
   }
 }
