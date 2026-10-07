@@ -120,7 +120,8 @@ def coletar_noticia(url: str):
     dados = {
         "url": url, "url_final": None, "dominio": None, "http_status": None,
         "titulo": "", "titulo_html": None, "titulo_h1": None, "titulo_og": None,
-        "texto": "", "autor": None, "data": None, "canonical": None, "imagem": None,
+        "texto": "", "resumo": "", "qtd_paragrafos": 0, "qtd_palavras": 0,
+        "autor": None, "data": None, "canonical": None, "imagem": None,
         "links_externos": [], "qtd_links_externos": 0, "dominios_externos": [],
         "qtd_dominios_externos": 0, "json_ld": False, "coerencia_h1_og": None,
         "status": None, "erro": None,
@@ -156,8 +157,17 @@ def coletar_noticia(url: str):
             if tag_time:
                 dados["data"] = tag_time.get("datetime") or tag_time.get_text(" ", strip=True)
         canonical = soup.find("link", rel="canonical")
-        dados["canonical"] = canonical.get("href") if canonical else None
-        dados["imagem"] = obter_meta(soup, "og:image") or normalizar_imagem(procurar_json_ld(json_ld, "image"))
+        canonical_href = canonical.get("href") if canonical else None
+        dados["canonical"] = urljoin(response.url, canonical_href) if canonical_href else None
+
+        imagem = obter_meta(soup, "og:image") or normalizar_imagem(procurar_json_ld(json_ld, "image"))
+        dados["imagem"] = urljoin(response.url, imagem) if imagem else None
+
+        descricao = (
+            obter_meta(soup, "description")
+            or obter_meta(soup, "og:description")
+            or obter_meta(soup, "twitter:description")
+        )
 
         # Mesma estratégia do notebook: parágrafos com ao menos 30 caracteres.
         textos = []
@@ -166,6 +176,14 @@ def coletar_noticia(url: str):
             if len(trecho) >= 30:
                 textos.append(trecho)
         dados["texto"] = re.sub(r"\s+", " ", " ".join(textos)).strip()
+        dados["qtd_paragrafos"] = len(textos)
+        dados["qtd_palavras"] = len(dados["texto"].split())
+
+        if descricao:
+            dados["resumo"] = re.sub(r"\s+", " ", descricao).strip()[:700]
+        elif textos:
+            resumo = " ".join(textos[:2])
+            dados["resumo"] = re.sub(r"\s+", " ", resumo).strip()[:700]
 
         links, dominios = extrair_links_externos(soup, response.url)
         dados["links_externos"] = links

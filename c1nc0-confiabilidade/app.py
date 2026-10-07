@@ -18,54 +18,83 @@ app.config["MAX_CONTENT_LENGTH"] = 80 * 1024 * 1024  # 80 MB; dataset completo d
 
 
 def indicios_observaveis(dados):
-    """
-    Organiza os elementos que a aplicação conseguiu observar
-    diretamente na página analisada.
+    """Monta os cartões de observação usados pela interface pública.
 
-    Estes elementos são indícios e não representam um veredito
-    sobre a veracidade da notícia.
+    Os campos extras (``id``, ``rotulo``, ``valor`` e ``tom``) servem apenas
+    para apresentação. ``ok``, ``nome`` e ``texto`` permanecem compatíveis
+    com a versão anterior do template.
     """
     return [
         {
+            "id": "coerencia",
+            "nome": "Coerência entre os títulos",
+            "rotulo": "Título visível × metadados",
+            "valor": (
+                f"{dados.get('coerencia_h1_og')}%"
+                if dados.get("coerencia_h1_og") is not None
+                else "Sem comparação"
+            ),
+            "tom": "mint",
+            "ok": dados.get("coerencia_h1_og") is not None,
+            "texto": (
+                "Semelhança entre o título visível e o título informado pela página: "
+                f"{dados.get('coerencia_h1_og')}%."
+                if dados.get("coerencia_h1_og") is not None
+                else "Não havia dados suficientes para comparar H1 e og:title."
+            ),
+        },
+        {
+            "id": "links",
+            "nome": "Links e referências externas",
+            "rotulo": "Outros sites citados",
+            "valor": f"{dados.get('qtd_dominios_externos', 0)} domínios",
+            "tom": "blue",
+            "ok": dados.get("qtd_links_externos", 0) > 0,
+            "texto": (
+                f"{dados.get('qtd_links_externos', 0)} links externos em "
+                f"{dados.get('qtd_dominios_externos', 0)} domínios externos."
+            ),
+        },
+        {
+            "id": "origem",
             "nome": "Origem e autoria",
+            "rotulo": "Site da publicação",
+            "valor": dados.get("dominio") or "Não identificado",
+            "tom": "violet",
             "ok": bool(dados.get("dominio")),
             "texto": (
-                f"Domínio identificado: "
-                f"{dados.get('dominio') or 'não identificado'}. "
+                f"Domínio identificado: {dados.get('dominio') or 'não identificado'}. "
                 f"Autor: {dados.get('autor') or 'não identificado'}."
             ),
         },
         {
+            "id": "data",
             "nome": "Data",
+            "rotulo": "Data informada pela página",
+            "valor": "Encontrada" if dados.get("data") else "Não identificada",
+            "tom": "amber",
             "ok": bool(dados.get("data")),
-            "texto": (
-                f"Data recuperada: "
-                f"{dados.get('data') or 'não encontrada'}."
-            ),
+            "texto": f"Data recuperada: {dados.get('data') or 'não encontrada'}.",
         },
         {
-            "nome": "Links e referências externas",
-            "ok": dados.get("qtd_links_externos", 0) > 0,
-            "texto": (
-                f"{dados.get('qtd_links_externos', 0)} links externos "
-                f"em {dados.get('qtd_dominios_externos', 0)} "
-                f"domínios externos."
-            ),
-        },
-        {
+            "id": "imagem",
             "nome": "Imagem principal",
+            "rotulo": "Metadado visual",
+            "valor": "Encontrada" if dados.get("imagem") else "Não identificada",
+            "tom": "rose",
             "ok": bool(dados.get("imagem")),
             "texto": (
                 "Imagem principal declarada nos metadados."
                 if dados.get("imagem")
-                else (
-                    "Imagem principal não localizada "
-                    "nos metadados analisados."
-                )
+                else "Imagem principal não localizada nos metadados analisados."
             ),
         },
         {
+            "id": "estrutura",
             "nome": "Dados de identificação da página",
+            "rotulo": "Dados estruturados",
+            "valor": "Disponíveis" if dados.get("json_ld") else "Não localizados",
+            "tom": "slate",
             "ok": bool(dados.get("json_ld")),
             "texto": (
                 "A página fornece dados estruturados de identificação."
@@ -73,20 +102,21 @@ def indicios_observaveis(dados):
                 else "Não foram localizados dados estruturados de identificação da página."
             ),
         },
-        {
-            "nome": "Coerência entre os títulos",
-            "ok": dados.get("coerencia_h1_og") is not None,
-            "texto": (
-                f"Semelhança entre o título visível e o título informado pela página: "
-                f"{dados.get('coerencia_h1_og')}%."
-                if dados.get("coerencia_h1_og") is not None
-                else (
-                    "Não havia dados suficientes para comparar "
-                    "H1 e og:title."
-                )
-            ),
-        },
     ]
+
+
+def preparar_resumo_visual(dados):
+    """Gera apenas informações de apresentação a partir do conteúdo coletado."""
+    texto = " ".join((dados.get("texto") or "").split())
+    resumo = dados.get("resumo") or texto[:620]
+    if resumo and len(resumo) < len(texto) and not resumo.endswith((".", "!", "?", "…")):
+        resumo = resumo.rstrip() + "…"
+
+    return {
+        "resumo": resumo or "Não foi possível extrair um resumo textual desta página.",
+        "qtd_palavras": dados.get("qtd_palavras") or len(texto.split()),
+        "qtd_paragrafos": dados.get("qtd_paragrafos"),
+    }
 
 
 def limites_da_analise():
@@ -222,6 +252,7 @@ def pagina_inicial():
 
         resultado = {
             "dados": dados,
+            "apresentacao": preparar_resumo_visual(dados),
             "indicios": indicios_observaveis(dados),
             "limites": limites_da_analise(),
             "checagens": roteiro_checagem(),
