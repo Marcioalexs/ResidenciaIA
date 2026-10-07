@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-07T18:10:12Z",
+  "dataset_original": {
+    "arquivo": "dataset_crawler_ptbr_consolidado_revC1NC0.csv",
+    "sha256": "97c091bca6d76d788f81f82828ff6c8ae4860414055e57e88af93e898576e99c",
+    "linhas": 48484
+  },
+  "dataset_treinamento": {
+    "sha256": "0cdf89c775dbbce33175598d63491554a460600a9b3c7ffaf07c824a1603cfad",
+    "linhas": 33899,
+    "classes": {
+      "true": 22511,
+      "fake": 11388
+    },
+    "filtro_elegibilidade": true,
+    "deduplicacao_url": {
+      "coluna_url": "url_dataset",
+      "urls_repetidas_removidas": 973,
+      "registros_antes": 34872,
+      "registros_depois": 33899
+    },
+    "conteudo_repetido": {
+      "grupos_conteudo_repetido": 144,
+      "registros_em_grupos_conteudo_repetido": 425,
+      "repeticoes_conteudo_alem_primeiro": 281,
+      "conteudos_unicos": 33618
+    }
+  },
+  "validacao_runtime": {
+    "gaussian_classes": [
+      "fake",
+      "true"
+    ],
+    "multinomial_classes": [
+      "fake",
+      "true"
+    ],
+    "tfidf_vocabulario": 100000
+  },
+  "arquivos": {
+    "models/gaussian_nb_pipeline.joblib": {
+      "bytes": 2369,
+      "sha256": "d523f159fc2ffda4058f068130bad3942c151a2c8da887735785260d22e336b9"
+    },
+    "models/tfidf_vectorizer.joblib": {
+      "bytes": 1160521,
+      "sha256": "b26b2a7c75e4c9069b1f27d315ef84a8c815482fc2ed320a25b70c07a27462fc"
+    },
+    "models/multinomial_nb.joblib": {
+      "bytes": 2253865,
+      "sha256": "c1a50b9c4212f12368ec683fba67eef978df928d59ab4ca67cabf349b90b1d16"
+    },
+    "models/model_metadata.json": {
+      "bytes": 2309,
+      "sha256": "4b0b05586b75865033f17977acc0d56ee84150df2a9643956e3469fc91adba9d"
+    },
+    "models/dataset_info.json": {
+      "bytes": 2094,
+      "sha256": "84f73f5ebdc5096a888dbf366555943ef6b8c25f086821e47ea0767d4c9f0b39"
+    },
+    "static/laboratorio/manifest.json": {
+      "bytes": 580,
+      "sha256": "1dd494ab9913f404c755fff6b15c1983057631103f561d14dde86e4ee20e50c1"
+    },
+    "static/laboratorio/dataset-summary.json": {
+      "bytes": 4102,
+      "sha256": "2dc4c8231e8087eca7e7aff5d2979f264d2f2b6b8b87fb99524189d23ed9a810"
+    },
+    "static/laboratorio/model-comparison.json": {
+      "bytes": 2633,
+      "sha256": "8d4d003881ce19468b2881233dd2f9ea8933276b6efd8edcc7b9f96ffb46ff0b"
+    },
+    "static/laboratorio/confusion-matrix.json": {
+      "bytes": 1201,
+      "sha256": "9029959d66a5782fb06541567189c7e8a24c07e3e54bf7caafae62617146d7b7"
+    },
+    "static/laboratorio/error-examples.json": {
+      "bytes": 28540,
+      "sha256": "b5c5da8446aef3d0de58ee7c31c680719a0d2e24c53c953e448d9b276af00b39"
+    },
+    "static/laboratorio/model-card.json": {
+      "bytes": 4252,
+      "sha256": "6a5f08bde26048f7889b8c8209d1f7cdb83e3192dfc114002354ee8c742d6ab8"
+    },
+    "static/laboratorio/clusters.json": {
+      "bytes": 392561,
+      "sha256": "bb29fcb3a814e1d5b9af7c55a60e661df53df1debab63707b1f7366b96bd7c9e"
+    }
+  }
+}

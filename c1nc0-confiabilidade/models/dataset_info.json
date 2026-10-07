@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "gerado_em": "2026-10-07T18:08:30Z",
+  "nome": "dataset_crawler_ptbr_consolidado_revC1NC0",
+  "arquivo": "dataset_crawler_ptbr_consolidado_revC1NC0.csv",
+  "sha256_original": "97c091bca6d76d788f81f82828ff6c8ae4860414055e57e88af93e898576e99c",
+  "sha256_treinamento": "0cdf89c775dbbce33175598d63491554a460600a9b3c7ffaf07c824a1603cfad",
+  "registros_arquivo_original": 48484,
+  "registros": 33899,
+  "filtro_elegibilidade": true,
+  "classes": {
+    "true": 22511,
+    "fake": 11388
+  },
+  "percentuais": {
+    "true": 66.41,
+    "fake": 33.59
+  },
+  "origens": {
+    "g1.globo.com": 1977,
+    "www1.folha.uol.com.br": 1032,
+    "www.estadao.com.br": 1008,
+    "www.plantaobrasil.net": 1000,
+    "www.boatos.org": 1000,
+    "www.folhapolitica.org": 996,
+    "www.terra.com.br": 994,
+    "sbtnews.sbt.com.br": 992,
+    "www.aosfatos.org": 992,
+    "jornal.usp.br": 991,
+    "relevantenews.com.br": 985,
+    "www.metropoles.com": 985
+  },
+  "origens_total": 81,
+  "origens_campo": "dominio",
+  "status_coleta_ok": 33899,
+  "duplicidades": {
+    "coluna_url": "url_dataset",
+    "urls_repetidas_removidas": 973,
+    "registros_apos_elegibilidade": 34872,
+    "registros_apos_deduplicacao_url": 33899,
+    "grupos_conteudo_repetido": 144,
+    "registros_em_grupos_conteudo_repetido": 425,
+    "repeticoes_conteudo_alem_primeiro": 281,
+    "conteudos_unicos": 33618
+  },
+  "representacoes": {
+    "gaussian": "19 features estruturais/linguísticas",
+    "multinomial": "título + texto com TF-IDF de unigramas e bigramas (até 100.000 características)"
+  },
+  "avaliacao": "Filtro extracao_elegivel=True; remoção de repetições da mesma URL; StratifiedGroupKFold com primeiro fold como holdout ≈80/20; grupos por conteúdo exato normalizado; random_state=42",
+  "limitacao": "URLs diferentes com conteúdo exatamente igual são preservadas, mas ficam no mesmo grupo e nunca atravessam treino/teste. O método ainda não controla toda similaridade semântica entre textos reescritos. As classes refletem os rótulos do dataset e não constituem verificação factual."
+}

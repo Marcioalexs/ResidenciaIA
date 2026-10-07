@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "gerado_em": "2026-10-05T00:03:56Z",
+  "gerado_em": "2026-10-07T18:08:30Z",
   "dataset": {
-    "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
-    "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
-    "registros": 9408
+    "arquivo": "dataset_crawler_ptbr_consolidado_revC1NC0.csv",
+    "sha256": "0cdf89c775dbbce33175598d63491554a460600a9b3c7ffaf07c824a1603cfad",
+    "registros": 33899
   },
   "artefatos": {
     "dataset_summary": "dataset-summary.json",

@@ -1,19 +1,77 @@
 {
-  "version": "Naive_Bayes_V1",
+  "version": "C1NC0_crawler_ptbr_grouped_v4_url_content",
+  "dataset_rows_eligible": 33899,
   "random_state": 42,
-  "split": "80/20 estratificado",
+  "split": "aprox. 80/20 estratificado por grupos de conteúdo exato normalizado",
+  "train_rows": 27119,
+  "test_rows": 6780,
+  "group_overlap": 0,
   "gaussian_19_features": {
-    "accuracy": 0.7316136114160263,
-    "precision_fake": 0.4767295597484277,
-    "recall_fake": 0.4027630180658874,
-    "f1_fake": 0.43663594470046085
+    "accuracy": 0.5312684365781711,
+    "precision_focus": 0.4130266718206417,
+    "recall_focus": 0.9381035996488147,
+    "f1_focus": 0.5735373054213634,
+    "focus_class": "fake",
+    "confusion_labels": [
+      "fake",
+      "true"
+    ],
+    "confusion_matrix": [
+      [
+        2137,
+        141
+      ],
+      [
+        3037,
+        1465
+      ]
+    ]
   },
   "multinomial_tfidf_title_text": {
-    "accuracy": 0.9892974753018661,
-    "precision_fake": 0.9859913793103449,
-    "recall_fake": 0.9723698193411264,
-    "f1_fake": 0.9791332263242376
+    "accuracy": 0.8342182890855457,
+    "precision_focus": 0.7007654836464857,
+    "recall_focus": 0.884108867427568,
+    "f1_focus": 0.781832298136646,
+    "focus_class": "fake",
+    "confusion_labels": [
+      "fake",
+      "true"
+    ],
+    "confusion_matrix": [
+      [
+        2014,
+        264
+      ],
+      [
+        860,
+        3642
+      ]
+    ]
   },
   "tfidf_features": 100000,
-  "warning": "Saídas experimentais; não representam prova ou probabilidade calibrada de veracidade."
+  "limitation": "Repetições da mesma URL são removidas antes do treino. URLs diferentes com conteúdo exatamente igual são mantidas, porém agrupadas para nunca atravessarem treino/teste. Similaridade semântica entre republicações reescritas ainda não é controlada.",
+  "warning": "Saídas experimentais; não representam prova ou probabilidade calibrada de veracidade.",
+  "gerado_em": "2026-10-07T18:08:30Z",
+  "dataset": {
+    "arquivo": "dataset_crawler_ptbr_consolidado_revC1NC0.csv",
+    "sha256_original": "97c091bca6d76d788f81f82828ff6c8ae4860414055e57e88af93e898576e99c",
+    "sha256_treinamento": "0cdf89c775dbbce33175598d63491554a460600a9b3c7ffaf07c824a1603cfad",
+    "linhas_arquivo_original": 48484,
+    "linhas_treinamento": 33899,
+    "filtro_elegibilidade": true,
+    "classes": {
+      "true": 22511,
+      "fake": 11388
+    },
+    "duplicidades": {
+      "coluna_url": "url_dataset",
+      "urls_repetidas_removidas": 973,
+      "registros_apos_elegibilidade": 34872,
+      "registros_apos_deduplicacao_url": 33899,
+      "grupos_conteudo_repetido": 144,
+      "registros_em_grupos_conteudo_repetido": 425,
+      "repeticoes_conteudo_alem_primeiro": 281,
+      "conteudos_unicos": 33618
+    }
+  }
 }
