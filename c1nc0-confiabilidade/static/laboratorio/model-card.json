@@ -1,50 +1,35 @@
 {
   "schema_version": 1,
-  "gerado_em": "2026-10-05T00:03:56Z",
+  "gerado_em": "2026-10-08T01:55:35Z",
   "nome": "C1NC0 — Etapa B / Laboratório Entenda a IA",
   "objetivo": "Comparar abordagens de classificação e tornar visíveis dados, métricas, erros, limitações e padrões exploratórios do dataset.",
   "dataset": {
-    "arquivo": "CHECKPOINT_V6_PROGRESSO.csv",
-    "sha256": "f627cf872e59bc4d1c7a9184d9658f38d404f3b8468460bf2f1b2ca895e7ad12",
-    "registros_lidos": 9408,
-    "registros_com_texto_e_classe": 9408,
-    "colunas": 48,
+    "arquivo": "dataset_crawler_ptbr_consolidado_revC1NC0.csv",
+    "sha256": "7b1d2c280dcbcc647b05c1500e7c41efd4dae1d9de33454724be8ec739302571",
+    "registros_lidos": 33899,
+    "registros_com_texto_e_classe": 33899,
+    "colunas": 47,
     "classes": [
       {
         "classe": "true",
-        "quantidade": 4704,
-        "percentual": 50.0
+        "quantidade": 22511,
+        "percentual": 66.41
       },
       {
         "classe": "fake",
-        "quantidade": 4704,
-        "percentual": 50.0
+        "quantidade": 11388,
+        "percentual": 33.59
       }
     ],
     "origens": [
       {
-        "origem": "FakeRecogna",
-        "quantidade": 4695,
-        "percentual": 49.9
-      },
-      {
-        "origem": "DatasetFinal",
-        "quantidade": 3496,
-        "percentual": 37.16
-      },
-      {
-        "origem": "Fake.Br Corpus",
-        "quantidade": 1208,
-        "percentual": 12.84
-      },
-      {
-        "origem": "Fake News Net",
-        "quantidade": 9,
-        "percentual": 0.1
+        "origem": "crawler_ptbr_credibilidade_v1",
+        "quantidade": 33899,
+        "percentual": 100.0
       }
     ],
-    "duplicatas_linha": 2,
-    "registros_em_grupos_repetidos": 28
+    "duplicatas_linha": 0,
+    "registros_em_grupos_repetidos": 425
   },
   "representacoes": [
     "19 features estruturais/linguísticas, quando disponíveis",
@@ -54,10 +39,10 @@
   "validacao": {
     "metodo": "StratifiedGroupKFold — primeiro fold usado como holdout",
     "planejado": "80% treino / 20% teste",
-    "treino": 7526,
-    "teste": 1882,
-    "grupos_treino": 7515,
-    "grupos_teste": 1879,
+    "treino": 27119,
+    "teste": 6780,
+    "grupos_treino": 26902,
+    "grupos_teste": 6716,
     "sobreposicao_grupos": 0,
     "random_state": 42
   },
@@ -67,11 +52,11 @@
       "modelo": "GaussianNB",
       "representacao": "19 features estruturais/linguísticas",
       "metricas": {
-        "accuracy": 0.78746,
-        "precision": 0.811277,
-        "recall": 0.749203,
-        "f1": 0.779006,
-        "balanced_accuracy": 0.78746
+        "accuracy": 0.531268,
+        "precision": 0.413027,
+        "recall": 0.938104,
+        "f1": 0.573537,
+        "balanced_accuracy": 0.631757
       },
       "status": "ok"
     },
@@ -80,11 +65,11 @@
       "modelo": "MultinomialNB",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.989904,
-        "precision": 0.985263,
-        "recall": 0.994687,
-        "f1": 0.989952,
-        "balanced_accuracy": 0.989904
+        "accuracy": 0.833776,
+        "precision": 0.700035,
+        "recall": 0.884109,
+        "f1": 0.781377,
+        "balanced_accuracy": 0.846208
       },
       "status": "ok"
     },
@@ -93,11 +78,11 @@
       "modelo": "LogisticRegression",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.996812,
-        "precision": 0.99787,
-        "recall": 0.995749,
-        "f1": 0.996809,
-        "balanced_accuracy": 0.996812
+        "accuracy": 0.918584,
+        "precision": 0.9315,
+        "recall": 0.817823,
+        "f1": 0.870968,
+        "balanced_accuracy": 0.893696
       },
       "status": "ok"
     }

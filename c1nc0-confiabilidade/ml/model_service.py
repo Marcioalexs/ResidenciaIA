@@ -10,7 +10,7 @@ from .feature_extractor import FEATURES_META, NOMES_FEATURES
 ROOT = Path(__file__).resolve().parents[1]
 MODELS = ROOT / "models"
 
-DATASET_INFO = {
+DEFAULT_DATASET_INFO = {
     "nome": "DATASET_TERCEIROGENITO_V1_URL_UNIFORME_PT",
     "registros": 18217,
     "classes": {
@@ -34,11 +34,28 @@ DATASET_INFO = {
     },
     "avaliacao": "divisão estratificada 80/20; random_state=42",
     "limitacao": (
-        "O dataset é desbalanceado e a auditoria metodológica identificou duplicatas e "
-        "sobreposição de conteúdos entre treino e teste. As métricas atuais são experimentais "
-        "e precisam de validação adicional com agrupamento de conteúdos relacionados e URLs externas."
+        "Informações de compatibilidade com o dataset anterior. "
+        "Execute o treinamento atualizado para gerar models/dataset_info.json."
     ),
 }
+
+
+def _carregar_dataset_info():
+    """Carrega metadados do dataset usados no treinamento atual."""
+    path = MODELS / "dataset_info.json"
+    if not path.exists():
+        return DEFAULT_DATASET_INFO
+
+    try:
+        info = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(info, dict):
+            return DEFAULT_DATASET_INFO
+        return info
+    except (OSError, json.JSONDecodeError):
+        return DEFAULT_DATASET_INFO
+
+
+DATASET_INFO = _carregar_dataset_info()
 
 
 def modelos_disponiveis():

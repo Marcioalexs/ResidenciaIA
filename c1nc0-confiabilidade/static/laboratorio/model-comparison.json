@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
-  "gerado_em": "2026-10-05T00:03:56Z",
+  "gerado_em": "2026-10-08T01:55:35Z",
   "classe_foco": "fake",
   "split": {
     "metodo": "StratifiedGroupKFold — primeiro fold usado como holdout",
     "planejado": "80% treino / 20% teste",
-    "treino": 7526,
-    "teste": 1882,
-    "grupos_treino": 7515,
-    "grupos_teste": 1879,
+    "treino": 27119,
+    "teste": 6780,
+    "grupos_treino": 26902,
+    "grupos_teste": 6716,
     "sobreposicao_grupos": 0,
     "random_state": 42
   },
@@ -25,14 +25,14 @@
       "modelo": "GaussianNB",
       "representacao": "19 features estruturais/linguísticas",
       "metricas": {
-        "accuracy": 0.78746,
-        "precision": 0.811277,
-        "recall": 0.749203,
-        "f1": 0.779006,
-        "balanced_accuracy": 0.78746
+        "accuracy": 0.531268,
+        "precision": 0.413027,
+        "recall": 0.938104,
+        "f1": 0.573537,
+        "balanced_accuracy": 0.631757
       },
       "classe_foco": "fake",
-      "tempo_segundos": 0.172,
+      "tempo_segundos": 0.123,
       "status": "ok"
     },
     {
@@ -40,14 +40,14 @@
       "modelo": "MultinomialNB",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.989904,
-        "precision": 0.985263,
-        "recall": 0.994687,
-        "f1": 0.989952,
-        "balanced_accuracy": 0.989904
+        "accuracy": 0.833776,
+        "precision": 0.700035,
+        "recall": 0.884109,
+        "f1": 0.781377,
+        "balanced_accuracy": 0.846208
       },
       "classe_foco": "fake",
-      "tempo_segundos": 0.092,
+      "tempo_segundos": 0.559,
       "status": "ok"
     },
     {
@@ -55,21 +55,21 @@
       "modelo": "LogisticRegression",
       "representacao": "título + texto / TF-IDF (100000 features)",
       "metricas": {
-        "accuracy": 0.996812,
-        "precision": 0.99787,
-        "recall": 0.995749,
-        "f1": 0.996809,
-        "balanced_accuracy": 0.996812
+        "accuracy": 0.918584,
+        "precision": 0.9315,
+        "recall": 0.817823,
+        "f1": 0.870968,
+        "balanced_accuracy": 0.893696
       },
       "classe_foco": "fake",
-      "tempo_segundos": 0.44,
+      "tempo_segundos": 3.444,
       "status": "ok"
     }
   ],
   "melhor_f1_observado": {
     "modelo_id": "logistic-tfidf",
     "modelo": "LogisticRegression",
-    "f1": 0.996809
+    "f1": 0.870968
   },
   "nota": "A comparação mede aderência aos rótulos do dataset no mesmo split agrupado. Ela não mede veracidade factual fora desse contexto."
 }
